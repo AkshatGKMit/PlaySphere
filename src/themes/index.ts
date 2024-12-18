@@ -1,4 +1,4 @@
-import { Dark, Light } from './colors';
+import { Dark, Light, Palettes } from './colors';
 
 export const ThemeMode = {
   light: 'light',
@@ -8,9 +8,11 @@ export const ThemeMode = {
 export const Theme: Theme = {
   light: {
     background: Light.background,
+    primaryText: Palettes.primary.shade0,
   },
   dark: {
     background: Dark.background,
+    primaryText: Palettes.primary.shade100,
   },
 } as const;
 
