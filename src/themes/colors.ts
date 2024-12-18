@@ -2,6 +2,8 @@ import { Opacity } from '@constants/style';
 import { colorWithOpacity } from '@utility/themeHelpers';
 
 export const Colors = {
+  white: '#ffffff',
+  black: '#000000',
   transparent: '#00000000',
 };
 
