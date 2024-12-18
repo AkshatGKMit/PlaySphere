@@ -1,4 +1,6 @@
 export { displayName as APP_NAME } from '../../app.json';
-export * from './style';
+export * from './componentSpecifications';
+export * from './icons';
 export * from './images';
 export * from './store';
+export * from './style';
