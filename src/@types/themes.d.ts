@@ -6,6 +6,7 @@ declare global {
 
   interface ThemeColors {
     background: string;
+    primaryText: string;
   }
 
   interface Theme {
