@@ -14,7 +14,6 @@ interface GameBackgroundResponse {
   dominant_color: string;
   saturated_color: string;
 }
-type GameBackgroundsResponse = GameBackgroundResponse[];
 
 interface UserDetailsResponse {
   id: number;
@@ -45,8 +44,6 @@ interface EntityFilterResponse {
   image_background?: string;
   description?: string;
 }
-type EntityFiltersResponse = EntityFilterResponse[];
-type PaginatedEntityFiltersResponse = PaginatedData<EntityFilterResponse>;
 
 interface EntityDetailsResponse {
   id: number;
@@ -59,7 +56,6 @@ interface EntityDetailsResponse {
   year_start?: number | null;
   year_end?: number | null;
 }
-type AllEntityResponse = PaginatedData<EntityDetailsResponse>;
 
 interface GameSystemPlatformResponse {
   platform: EntityFilterResponse;
@@ -69,7 +65,6 @@ interface GameSystemPlatformResponse {
     recommended?: string;
   };
 }
-type GameSystemPlatformsResponse = GameSystemPlatformResponse[];
 
 interface GameDetailResponse {
   id: number;
@@ -124,8 +119,6 @@ interface GameDetailResponse {
   clip: null;
   description_raw: string;
 }
-type GameDetailsResponse = GameDetailResponse[];
-type PaginatedGamesResponse = PaginatedData<GameDetailResponse>;
 
 interface GameMovieResponse {
   id: number;
@@ -136,8 +129,6 @@ interface GameMovieResponse {
     max: string;
   };
 }
-type GameMoviesResponse = GameMovieResponse[];
-type PaginatedGameMoviesResponse = PaginatedData<GameMovieResponse>;
 
 interface CollectionDetailResponse {
   id: number;
@@ -159,8 +150,6 @@ interface CollectionDetailResponse {
   is_private: boolean;
   game_covers: GameBackgroundsResponse;
 }
-type CollectionDetailsResponse = CollectionDetailResponse[];
-type PaginatedCollectionDetailsResponse = PaginatedData<CollectionDetailResponse>;
 
 interface CollectionFeedResponse {
   id: number;
@@ -173,8 +162,6 @@ interface CollectionFeedResponse {
   game: GameDetailResponse;
   user: UserDetailsResponse | null;
 }
-type CollectionFeedsResponse = CollectionFeedResponse[];
-type PaginatedCollectionFeedsResponse = PaginatedData<CollectionFeedResponse>;
 
 interface AddGameToFavoriteErrorResponse {
   game: string[];
@@ -190,7 +177,6 @@ interface UserGenreStatResponse {
   percent: number;
   genre: EntityFilterResponse;
 }
-type UserGenreStatsResponse = UserGenreStatResponse[];
 
 interface UserGenreResponse {
   count: number;
@@ -224,5 +210,20 @@ interface AddNewCollectionResponseError {
 interface LeaderboardUserResponse {
   user: UserDetailsResponse;
 }
+
+type GameBackgroundsResponse = GameBackgroundResponse[];
+type EntityFiltersResponse = EntityFilterResponse[];
+type PaginatedEntityFiltersResponse = PaginatedData<EntityFilterResponse>;
+type AllEntityResponse = PaginatedData<EntityDetailsResponse>;
+type GameSystemPlatformsResponse = GameSystemPlatformResponse[];
+type GameDetailsResponse = GameDetailResponse[];
+type PaginatedGamesResponse = PaginatedData<GameDetailResponse>;
+type GameMoviesResponse = GameMovieResponse[];
+type PaginatedGameMoviesResponse = PaginatedData<GameMovieResponse>;
+type CollectionDetailsResponse = CollectionDetailResponse[];
+type PaginatedCollectionDetailsResponse = PaginatedData<CollectionDetailResponse>;
+type CollectionFeedsResponse = CollectionFeedResponse[];
+type UserGenreStatsResponse = UserGenreStatResponse[];
+type PaginatedCollectionFeedsResponse = PaginatedData<CollectionFeedResponse>;
 type LeaderboardUsersResponse = LeaderboardUserResponse[];
 type PaginatedLeaderboardUsersResponse = PaginatedData<LeaderboardUserResponse>;
