@@ -1,28 +1,28 @@
-interface LoginRequestBody {
+interface LoginBody {
   email: string;
   password: string;
 }
 
-interface RegisterRequestBody extends LoginRequestBody {
+interface RegisterBody extends LoginBody {
   username: string;
 }
 
-interface AddNewOrUpdateCollectionRequestBody {
+interface AddNewOrUpdateCollectionBody {
   name: string;
   description?: string;
   is_private?: boolean;
 }
 
-interface AddGameToCollectionRequestBody {
+interface AddGameToCollectionBody {
   games: number[];
 }
 
-interface AddGameToFavoriteRequestBody {
+interface AddGameToFavoriteBody {
   game: number;
   position: number;
 }
 
-interface AddToLibraryRequestBody {
+interface AddToLibraryBody {
   game: number;
   status: LibraryStatus;
 }
