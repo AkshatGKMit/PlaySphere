@@ -13,24 +13,6 @@ const {
 
 const { login: loginEndpoint, register: registerEndpoint } = authEndpoints;
 
-export async function requestLogin(loginData: LoginBody) {
-  const response = await _post<AuthSuccessResponse, AuthErrorResponse, LoginBody>(
-    loginEndpoint,
-    loginData,
-  );
-
-  return response;
-}
-
-export async function requestSignUp(signUpData: RegisterBody) {
-  const response = await _post<AuthSuccessResponse, AuthErrorResponse, RegisterBody>(
-    registerEndpoint,
-    signUpData,
-  );
-
-  return response;
-}
-
 const {
   current: currentUserEndpoint,
   overview: userOverviewEndpoint,
@@ -39,56 +21,8 @@ const {
   statistics: userStatsEndpoint,
   genres: userGenreEndpoint,
   myCollections: userCollectionsEndpoint,
+  gameInCollection: gameInCollectionEndpoint,
 } = userEndpoints;
-
-export async function fetchCurrentUser() {
-  const response = await _get<UserDetailsResponse>(currentUserEndpoint);
-
-  return response;
-}
-
-export async function fetchUserOverview(userId: number) {
-  const response = await _get<UserDetailsResponse>(userOverviewEndpoint(userId));
-
-  return response;
-}
-
-export async function fetchUserStats(userId: number) {
-  const response = await _get<UserStats>(userStatsEndpoint(userId));
-
-  return response;
-}
-
-export async function fetchUserGenre(userId: number, params?: ListQueryParams) {
-  const response = await _get<UserGenreResponse>(userGenreEndpoint(userId), {
-    params,
-  });
-
-  return response;
-}
-
-export async function fetchUserCollections(userId: number, params?: ListQueryParams) {
-  const response = await _get<PaginatedCollectionDetailsResponse>(userCollectionsEndpoint(userId), {
-    params,
-  });
-
-  return response;
-}
-
-export async function requestAddToFavorites(requestBody: AddGameToFavoriteBody) {
-  const response = await _post<AddGameToFavoriteBody, AddGameToFavoriteBody>(
-    addToFavoritesEndpoint,
-    requestBody,
-  );
-
-  return response;
-}
-
-export async function requestRemoveFavorites(position: number) {
-  const response = await _delete<{}, DetailErrorResponse>(removeFromFavoritesEndpoint(position));
-
-  return response;
-}
 
 const {
   details: gameDetailsEndpoint,
@@ -99,90 +33,9 @@ const {
   addToLibrary: addToLibraryEndpoint,
   removeFromLibrary: removeFromLibraryEndpoint,
   updateLibraryStatus: updateLibraryStatusEndpoint,
-  addToCollection: addGameToCollectionEndpoint,
+  addOrRemoveFromCollection: addOrRemoveGameFromCollectionEndpoint,
   removeFromCollection: removeGameFromCollectionEndpoint,
 } = gamesEndpoint;
-
-export async function fetchGames(url: string, params?: ListQueryParams) {
-  const response = await _get<PaginatedGamesResponse, ListQueryParams>(url, {
-    params,
-  });
-
-  return response;
-}
-
-export async function fetchGameDetails(gameId: number) {
-  const response = await _get<GameDetailResponse>(gameDetailsEndpoint(gameId));
-
-  return response;
-}
-
-export async function fetchGameMovies(gameId: number) {
-  const response = await _get<PaginatedGameMoviesResponse>(gameMoviesEndpoint(gameId));
-
-  return response;
-}
-
-export async function fetchGameRedditPosts(gameId: number) {
-  const response = await _get<PaginatedRedditPosts>(gameRedditPostsEndpoint(gameId));
-
-  return response;
-}
-
-export async function fetchGameScreenshots(gameId: number) {
-  const response = await _get<PaginatedScreenshots>(gameScreenshotsEndpoint(gameId));
-
-  return response;
-}
-
-export async function fetchGameCollections(gameId: number) {
-  const response = await _get<PaginatedCollectionDetailsResponse>(gameCollectionsEndpoint(gameId));
-
-  return response;
-}
-
-export async function requestAddGameToLibrary(body: AddToLibraryBody) {
-  const response = await _post<AddToLibraryBody, AddToLibraryResponseError>(
-    addToLibraryEndpoint,
-    body,
-  );
-
-  return response;
-}
-
-export async function requestRemoveGameFromLibrary(gameId: number) {
-  const response = await _delete(removeFromLibraryEndpoint(gameId));
-
-  return response;
-}
-
-export async function requestUpdateGameLibrary(gameId: number, body: UpdateGameLibraryStatus) {
-  const response = await _patch<UpdateLibraryResponseSuccess>(
-    updateLibraryStatusEndpoint(gameId),
-    body,
-  );
-
-  return response;
-}
-
-export async function requestAddGameToCollection(
-  collectionId: number,
-  body: AddGameToCollectionBody,
-) {
-  const response = await _post<
-    AddGameToCollectionBody,
-    AddGameToCollectionResponseError,
-    AddGameToCollectionBody
-  >(addGameToCollectionEndpoint(collectionId), body);
-
-  return response;
-}
-
-export async function requestRemoveGameFromCollection(collectionId: number, feedId: number) {
-  const response = await _delete(removeGameFromCollectionEndpoint(collectionId, feedId));
-
-  return response;
-}
 
 const {
   collectionFeed: collectionFeedEndpoint,
@@ -190,85 +43,188 @@ const {
   updateDeleteCollection: updateDeleteCollectionEndpoint,
 } = collectionsEndpoint;
 
-export async function fetchCollectionFeed(collectionId: number) {
-  const response = await _get<PaginatedCollectionFeedsResponse>(
-    collectionFeedEndpoint(collectionId),
-  );
+const { top30: top30OnLeaderboardEndpoint, topLeaderboardsOfGame: topLeaderboardsOfGameEndpoint } =
+  leaderboardsEndpoint;
 
-  return response;
+const { list: systemListEndpoint, details: systemDetailsEndpoint } = systemsEndpoint;
+
+// #region - Authentication Calls
+export async function requestLogin(loginData: LoginBody) {
+  return await _post<AuthSuccessResponse, AuthErrorResponse, LoginBody>(loginEndpoint, loginData);
+}
+
+export async function requestSignUp(signUpData: RegisterBody) {
+  return await _post<AuthSuccessResponse, AuthErrorResponse, RegisterBody>(
+    registerEndpoint,
+    signUpData,
+  );
+}
+// #endregion
+
+// #region - User Calls
+export async function fetchCurrentUser() {
+  return await _get<UserDetailsResponse>(currentUserEndpoint);
+}
+
+export async function fetchUserOverview(userId: number) {
+  return await _get<UserDetailsResponse>(userOverviewEndpoint(userId));
+}
+
+export async function fetchUserStats(userId: number) {
+  return await _get<UserStats>(userStatsEndpoint(userId));
+}
+
+export async function fetchUserGenre(userId: number, params?: ListQueryParams) {
+  return await _get<UserGenreResponse>(userGenreEndpoint(userId), {
+    params,
+  });
+}
+
+export async function fetchUserCollections(userId: number, params?: ListQueryParams) {
+  return await _get<PaginatedCollectionDetailsResponse>(userCollectionsEndpoint(userId), {
+    params,
+  });
+}
+
+export async function fetchGameInCollection(gameId: number) {
+  return await _get<GameInCollectionsResponse>(gameInCollectionEndpoint(gameId));
+}
+
+export async function requestAddToFavorites(requestBody: AddGameToFavoriteBody) {
+  return await _post<AddGameToFavoriteBody, AddGameToFavoriteBody>(
+    addToFavoritesEndpoint,
+    requestBody,
+  );
+}
+
+export async function requestRemoveFavorites(position: number) {
+  return await _delete<{}, DetailErrorResponse>(removeFromFavoritesEndpoint(position));
+}
+// #endregion
+
+// #region - Games Calls
+export async function fetchGames(url: string, params?: ListQueryParams) {
+  return await _get<PaginatedGamesResponse, ListQueryParams>(url, {
+    params,
+  });
+}
+
+export async function fetchGameDetails(gameId: number) {
+  return await _get<GameDetailResponse>(gameDetailsEndpoint(gameId));
+}
+
+export async function fetchGameMovies(gameId: number) {
+  return await _get<PaginatedGameMoviesResponse>(gameMoviesEndpoint(gameId));
+}
+
+export async function fetchGameRedditPosts(gameId: number) {
+  return await _get<PaginatedRedditPosts>(gameRedditPostsEndpoint(gameId));
+}
+
+export async function fetchGameScreenshots(gameId: number) {
+  return await _get<PaginatedScreenshots>(gameScreenshotsEndpoint(gameId));
+}
+
+export async function fetchGameCollections(gameId: number) {
+  return await _get<PaginatedCollectionDetailsResponse>(gameCollectionsEndpoint(gameId));
+}
+
+export async function requestAddGameToLibrary(body: AddToLibraryBody) {
+  return await _post<AddToLibraryBody, AddToLibraryResponseError>(addToLibraryEndpoint, body);
+}
+
+export async function requestRemoveGameFromLibrary(gameId: number) {
+  return await _delete(removeFromLibraryEndpoint(gameId));
+}
+
+export async function requestUpdateGameLibrary(gameId: number, body: UpdateGameLibraryStatus) {
+  return await _patch<UpdateLibraryResponseSuccess>(updateLibraryStatusEndpoint(gameId), body);
+}
+
+export async function requestAddGameToCollection(
+  collectionId: number,
+  body: AddOrRemoveGameFromCollectionBody,
+) {
+  return await _post<AddOrRemoveGameFromCollectionBody, AddOrRemoveGameFromCollectionResponseError>(
+    addOrRemoveGameFromCollectionEndpoint(collectionId),
+    body,
+  );
+}
+
+export async function requestRemoveGameFromCollection(
+  collectionId: number,
+  body: AddOrRemoveGameFromCollectionBody,
+) {
+  return await _delete<
+    AddOrRemoveGameFromCollectionBody,
+    AddOrRemoveGameFromCollectionResponseError
+  >(addOrRemoveGameFromCollectionEndpoint(collectionId), body);
+}
+
+export async function requestRemoveGameFromCollectionFeed(collectionId: number, feedId: number) {
+  return await _delete(removeGameFromCollectionEndpoint(collectionId, feedId));
+}
+// #endregion
+
+// #region - Collection Calls
+export async function fetchCollectionFeed(collectionId: number, params?: ListQueryParams) {
+  return await _get<PaginatedCollectionFeedsResponse>(collectionFeedEndpoint(collectionId), {
+    params,
+  });
 }
 
 export async function requestAddNewCollection(newCollection: AddNewOrUpdateCollectionBody) {
-  const response = await _post<CollectionDetailResponse, AddNewCollectionResponseError>(
+  return await _post<AddNewOrUpdateCollectionBody, AddNewCollectionResponseError>(
     addNewCollectionEndpoint,
     newCollection,
   );
-
-  return response;
 }
 
 export async function requestUpdateCollection(
   collectionId: number,
   updatedCollection: Partial<AddNewOrUpdateCollectionBody>,
 ) {
-  const response = await _post<CollectionDetailResponse, AddNewCollectionResponseError>(
+  return await _post<CollectionDetailResponse, AddNewCollectionResponseError>(
     updateDeleteCollectionEndpoint(collectionId),
     updatedCollection,
   );
-
-  return response;
 }
 
 export async function requestDeleteCollection(collectionId: number) {
-  const response = await _delete(updateDeleteCollectionEndpoint(collectionId));
-
-  return response;
+  return await _delete(updateDeleteCollectionEndpoint(collectionId));
 }
+// #endregion
 
-const { top30: top30OnLeaderboardEndpoint, topLeaderboardsOfGame: topLeaderboardsOfGameEndpoint } =
-  leaderboardsEndpoint;
-
+// #region - Leaderboard Calls
 export async function fetchTopUsersInLeaderboards(params?: ListQueryParams) {
-  const response = await _get<PaginatedLeaderboardUsersResponse>(top30OnLeaderboardEndpoint, {
+  return await _get<PaginatedLeaderboardUsersResponse>(top30OnLeaderboardEndpoint, {
     params,
   });
-
-  return response;
 }
 
 export async function fetchTopUsersInLeaderboardOfGame(gameId: number, params?: ListQueryParams) {
-  const response = await _get<PaginatedLeaderboardUsersResponse>(
-    topLeaderboardsOfGameEndpoint(gameId),
-    { params },
-  );
-
-  return response;
+  return await _get<PaginatedLeaderboardUsersResponse>(topLeaderboardsOfGameEndpoint(gameId), {
+    params,
+  });
 }
+//#endregion
 
-const { list: systemListEndpoint, details: systemDetailsEndpoint } = systemsEndpoint;
-
+// #region  - System Platform Calls
 export async function fetchSystemPlatforms(params?: ListQueryParams) {
-  const response = await _get<PaginatedEntityFiltersResponse>(systemListEndpoint, { params });
-
-  return response;
+  return await _get<PaginatedEntityFiltersResponse>(systemListEndpoint, { params });
 }
 
 export async function fetchSystemPlatformDetails(platformId: number) {
-  const response = await _get<EntityFilterResponse>(systemDetailsEndpoint(platformId));
-
-  return response;
+  return await _get<EntityFilterResponse>(systemDetailsEndpoint(platformId));
 }
 
 const { list: tagListEndpoint, details: tagDetailsEndpoint } = tagsEndpoint;
 
 export async function fetchTags(params?: ListQueryParams) {
-  const response = await _get<PaginatedEntityFiltersResponse>(tagListEndpoint, { params });
-
-  return response;
+  return await _get<PaginatedEntityFiltersResponse>(tagListEndpoint, { params });
 }
 
 export async function fetchTagDetails(tagId: number) {
-  const response = await _get<EntityFilterResponse>(tagDetailsEndpoint(tagId));
-
-  return response;
+  return await _get<EntityFilterResponse>(tagDetailsEndpoint(tagId));
 }
+// #endregion
