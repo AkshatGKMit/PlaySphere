@@ -10,6 +10,9 @@ import {
   ViewStyle,
 } from 'react-native';
 
+import { AddToCollectionDialogThemedStyles } from '@components/addToCollectionDialog';
+import { ThemedStyles as DropdownStyles } from '@components/dropdown';
+import { ThemedStyles as GameCardStyles } from '@components/gameCard';
 import { IconFamily } from '@constants';
 
 declare global {
@@ -92,6 +95,43 @@ declare global {
     listStyles: StyleProp<ViewStyle>;
   }
 
+  interface FeedGameCardProps {
+    feed: CollectionFeed;
+    collectionId: number;
+  }
+
+  interface GameCardStyleProps {
+    styles: ReturnType<typeof GameCardStyles>;
+  }
+
+  interface GamCardImageViewProps extends GameCardStyleProps {
+    uri: string;
+    ageRating?: AgeRatingType | null;
+    ageRatingStyles: StyleProp<ViewStyle>;
+    rating: number | null;
+  }
+
+  interface GameCardContentProps extends GameCardStyleProps {
+    name: string;
+    emoji: string | null;
+    releaseDate: string | null;
+    genres: EntityFilters | null;
+    genreList?: string;
+    systemPlatformNames?: string[];
+    showAddToCollectionDialog: () => void;
+    hideAddButton?: boolean;
+  }
+
+  interface GameCardProps {
+    game: Game;
+    hideAddButton?: boolean;
+    children?: ReactNode;
+  }
+
+  interface GameListStylesProps {
+    styles: ReturnType<typeof GameListThemedStyles>;
+  }
+
   interface GameListFooterProps {
     showNoConnectionScreenMessage: boolean;
     hasNextPage: boolean;
@@ -167,6 +207,17 @@ declare global {
     onClose?: () => void;
   }
 
+  interface GameCardSystemPlatformProps {
+    systemPlatforms: string[];
+    starSize?: number;
+  }
+
+  interface RenderHtmlProps {
+    html: string;
+    maxLines?: number;
+    children?: ReactNode;
+  }
+
   interface TextBlockProps extends TextProps {
     fontFamily?: FontFamily;
     typography?: Typography;
@@ -182,4 +233,6 @@ declare global {
     onPressTrailingIcon?: () => void;
     error?: string;
   }
+
+  type GameListHeaderProps = GameListStylesProps & ViewProps;
 }
