@@ -9,9 +9,8 @@ import Icon from '@components/icon';
 import { DefaultObjectLayout, Icons, isIos, QueryKeys, Routes } from '@constants';
 import useStyles from '@config/useStyles';
 import ApiConstants from '@network/apiConstants';
-import { useAppDispatch, useAppSelector } from '@store';
+import { useAppDispatch } from '@store';
 import { logout } from '@store/reducers/auth';
-import { homeScreenPush } from '@store/reducers/homeScreen';
 import { removeUser } from '@store/reducers/user';
 import { Colors, globalStyles } from '@themes';
 
@@ -31,14 +30,11 @@ const { currentUser: currentUserKey } = QueryKeys;
 const { home: homeRoute, collections: collectionsRoute } = Routes.Stack;
 
 const FloatingDrawer = () => {
-  const { navigate, dispatch, goBack } = useNavigation<StackNavigation>();
+  const { navigate, dispatch } = useNavigation<StackNavigation>();
   const { top: topInsets } = useSafeAreaInsets();
 
   const queryClient = useQueryClient();
   const appDispatch = useAppDispatch();
-  const { currentIndex: currentScreenIndex, lastIndex: lastScreenIndex } = useAppSelector(
-    (state) => state.homeScreen,
-  );
 
   const [visible, setVisible] = useState(false);
   const [buttonLayout, setButtonLayout] = useState(DefaultObjectLayout);
@@ -52,12 +48,11 @@ const FloatingDrawer = () => {
 
       const pushAction = StackActions.replace(homeRoute, routeParam);
 
-      appDispatch(homeScreenPush(index));
       dispatch(pushAction);
-      setVisible(false);
       navigate(homeRoute, routeParam);
+      setVisible(false);
     },
-    [appDispatch, dispatch, navigate],
+    [dispatch, navigate],
   );
 
   const _measureButton = useCallback(
@@ -97,17 +92,6 @@ const FloatingDrawer = () => {
 
   const onPressButton = useCallback(
     (index: number) => {
-      if (currentScreenIndex === index) {
-        setVisible(false);
-        return;
-      }
-
-      if (index === lastScreenIndex) {
-        setVisible(false);
-        goBack();
-        return;
-      }
-
       switch (index) {
         case 0:
           replaceNavigation(0, listGamesEndpoints, 'Popular Games');
@@ -136,7 +120,7 @@ const FloatingDrawer = () => {
 
       setVisible(false);
     },
-    [currentScreenIndex, goBack, lastScreenIndex, navigate, onPressLogout, replaceNavigation],
+    [navigate, onPressLogout, replaceNavigation],
   );
 
   const { top: buttonTop, left: buttonLeft } = buttonLayout;
