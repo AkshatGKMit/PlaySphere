@@ -13,6 +13,7 @@ import {
 import { AddToCollectionDialogThemedStyles } from '@components/addToCollectionDialog';
 import { ThemedStyles as DropdownStyles } from '@components/dropdown';
 import { ThemedStyles as GameCardStyles } from '@components/gameCard';
+import FloatingDrawerThemedStyles from '@config/floatingDrawer/styles';
 import { IconFamily } from '@constants';
 
 declare global {
@@ -93,6 +94,15 @@ declare global {
     onLayout: (event: LayoutChangeEvent) => void;
     listViewStyles: Animated.WithAnimatedArray | Animated.WithAnimatedObject;
     listStyles: StyleProp<ViewStyle>;
+  }
+
+  interface FloatingDrawerButtonProps {
+    icon: IconType;
+    name: string;
+    onPress: () => void;
+    index: number;
+    styles: ReturnType<typeof FloatingDrawerThemedStyles>;
+    color?: string;
   }
 
   interface FeedGameCardProps {
