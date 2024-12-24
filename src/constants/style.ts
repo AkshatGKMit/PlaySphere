@@ -63,6 +63,8 @@ export const Typography = {
   labelLarge: { fontSize: 14, fontFamily: FontFamily.normal.medium },
   labelMedium: { fontSize: 12, fontFamily: FontFamily.normal.medium },
   labelSmall: { fontSize: 11, fontFamily: FontFamily.normal.medium },
+
+  smallest: { fontSize: 9, fontFamily: FontFamily.normal.medium },
 } as const;
 
 export const Elevation = {
