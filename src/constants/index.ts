@@ -40,6 +40,15 @@ export const MainSystemPlatforms = {
   xbox: 'xbox',
 } as const;
 
+export const DefaultObjectLayout: ObjectLayout = {
+  height: 0,
+  width: 0,
+  left: 0,
+  bottom: 0,
+  top: 0,
+  right: 0,
+};
+
 
 export { displayName as APP_NAME } from '../../app.json';
 export * from './componentSpecifications';

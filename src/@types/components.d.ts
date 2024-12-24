@@ -49,6 +49,19 @@ declare global {
     size?: number | 'small' | 'large';
   }
 
+  interface ObjectLayout {
+    top: number;
+    right: number;
+    bottom: number;
+    left: number;
+    height: number;
+    width: number;
+    minHeight?: number;
+    minWidth?: number;
+    maxHeight?: number;
+    maxWidth?: number;
+  }
+
   interface RefManagerParams extends RefOptions {
     child: React.JSX.Element | null;
     onClose?: () => void;
