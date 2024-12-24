@@ -227,6 +227,7 @@ declare global {
 
   interface RenderHtmlProps {
     html: string;
+    color?: string;
     maxLines?: number;
     children?: ReactNode;
   }

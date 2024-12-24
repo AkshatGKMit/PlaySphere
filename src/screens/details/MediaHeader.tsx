@@ -7,7 +7,7 @@ import Video, { ControlsStyles, VideoRef } from 'react-native-video';
 import Icon from '@components/icon';
 import useShimmerColor from '@config/useShimmerColor';
 import { IMAGES, Icons, isIos } from '@constants';
-import { globalStyles } from '@themes';
+import { Colors, globalStyles } from '@themes';
 
 const Shimmer = ({ styles, theme }: DetailsThemeStyleProps) => {
   const { backgroundColor } = useShimmerColor(theme);
@@ -58,13 +58,14 @@ const VideoHeader = ({ movie, styles, setIsVideo }: DetailsVideoHeaderProps) => 
           setIsVideo(false);
         }}
       />
-      {controlsVisible && isIos ? (
+      {controlsVisible || isIos ? (
         <TouchableOpacity
           style={styles.fullScreenButton}
           onPress={() => videoRef.current?.setFullScreen(true)}
         >
           <Icon
             icon={Icons.materialIcons.fullscreen}
+            color={Colors.white}
             size={30}
           />
         </TouchableOpacity>
@@ -118,6 +119,7 @@ const MediaHeader = ({
           >
             <Icon
               icon={Icons.materialIcons.playArrow}
+              color={Colors.white}
               size={40}
             />
           </TouchableOpacity>

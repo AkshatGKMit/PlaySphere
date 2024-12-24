@@ -4,6 +4,7 @@ import { View, Pressable } from 'react-native';
 import Icon from '@components/icon';
 import { Icons } from '@constants';
 import Dialog from '@components/dialog';
+import { Colors } from '@themes';
 
 import ThemedStyles from './styles';
 
@@ -13,7 +14,8 @@ const CloseIcon = (styles: ReturnType<typeof ThemedStyles>) => {
       <Pressable onPress={() => Dialog.hide()}>
         <Icon
           icon={Icons.materialIcons.close}
-          size={16}
+          color={Colors.white}
+          size={20}
         />
       </Pressable>
     </View>

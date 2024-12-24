@@ -43,43 +43,33 @@ const About = ({
   }
 
   return (
-    <>
-      <View style={styles.separator} />
-      <View style={styles.contentSection}>
-        <View style={styles.aboutContainer}>
-          <TextBlock
-            typography={Typography.titleLarge}
-            fontWeight={FontWeight.bold}
-          >
-            About
-          </TextBlock>
-          {showFullAbout ? (
-            <Pressable onPress={() => setShowFullAbout(!showFullAbout)}>
-              <TextBlock
-                style={styles.readMoreText}
-                color={theme.all.secondary}
-              >
-                Show Less
-              </TextBlock>
-            </Pressable>
-          ) : null}
-        </View>
-        <RenderHtml
-          html={description}
-          maxLines={showFullAbout ? undefined : 5}
-          children={
-            <Pressable onPress={() => setShowFullAbout(!showFullAbout)}>
-              <TextBlock
-                style={styles.readMoreText}
-                color={theme.all.secondary}
-              >
-                {showFullAbout ? 'Show Less' : 'Read More'}
-              </TextBlock>
-            </Pressable>
-          }
-        />
+    <View style={styles.contentSection}>
+      <View style={styles.aboutContainer}>
+        <TextBlock
+          typography={Typography.titleLarge}
+          fontWeight={FontWeight.bold}
+        >
+          About
+        </TextBlock>
+        {showFullAbout ? (
+          <Pressable onPress={() => setShowFullAbout(!showFullAbout)}>
+            <TextBlock style={styles.readMoreText}>Show Less</TextBlock>
+          </Pressable>
+        ) : null}
       </View>
-    </>
+      <RenderHtml
+        html={description}
+        maxLines={showFullAbout ? undefined : 6}
+        color={theme.all.secondary}
+        children={
+          <Pressable onPress={() => setShowFullAbout(!showFullAbout)}>
+            <TextBlock style={styles.readMoreText}>
+              {showFullAbout ? 'Show Less' : 'Read More'}
+            </TextBlock>
+          </Pressable>
+        }
+      />
+    </View>
   );
 };
 

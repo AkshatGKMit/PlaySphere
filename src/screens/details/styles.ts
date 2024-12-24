@@ -93,6 +93,11 @@ const ThemedStyles = (theme: ThemeColors, insets: EdgeInsets) => {
       marginVertical: 5,
       gap: 5,
     },
+    scrollContentSection: {
+      paddingHorizontal: 10,
+      marginVertical: 15,
+      gap: 20,
+    },
     aboutContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
@@ -114,9 +119,24 @@ const ThemedStyles = (theme: ThemeColors, insets: EdgeInsets) => {
       flexDirection: 'row',
       gap: 0,
     },
+    metricValueContainer: {
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: 3,
+    },
+    metricValueSeparator: {
+      width: 0.8,
+      height: '100%',
+      backgroundColor: colorWithOpacity(theme.all.outline, Opacity.level4),
+    },
+    ratedForValue: {
+      borderRadius: 2,
+      padding: 2,
+    },
     ratingWrapper: {
       position: 'relative',
       flexDirection: 'row',
+      justifyContent: 'space-between',
       gap: 5,
     },
     ratingTitle: {
@@ -125,7 +145,7 @@ const ThemedStyles = (theme: ThemeColors, insets: EdgeInsets) => {
     },
     ratingContainer: {
       flex: 1,
-      maxWidth: '70%',
+      maxWidth: '54%',
       height: 10,
       backgroundColor: theme.all.surfaceContainerHigh,
       borderRadius: 5,

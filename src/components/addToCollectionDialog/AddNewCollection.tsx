@@ -17,7 +17,6 @@ const AddNewCollection = ({
 }: AddNewCollectionProps) => {
   return (
     <View style={styles.addNewCollectionContainer}>
-      <View style={styles.separator} />
       <TextBlock
         typography={Typography.titleLarge}
         fontWeight={FontWeight.bold}
@@ -33,14 +32,14 @@ const AddNewCollection = ({
       <View style={styles.buttonView}>
         <TouchableOpacity
           activeOpacity={0.8}
-          style={styles.buttonButton}
+          style={styles.buttonContainer}
           onPress={onClose}
         >
           <TextBlock typography={Typography.bodyLarge}>Cancel</TextBlock>
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.8}
-          style={[styles.buttonButton, styles.createButton]}
+          style={[styles.buttonContainer, styles.createButton]}
           disabled={loading}
           onPress={onCreate}
         >

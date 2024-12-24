@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     top: 0,
     right: 0,
     margin: 5,
-    padding: 6,
+    padding: 3,
     backgroundColor: colorWithOpacity(Colors.black, 0.5),
     borderRadius: 15,
   },

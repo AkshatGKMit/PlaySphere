@@ -93,6 +93,7 @@ const AddToCollectionDialog = ({ game }: { game: Game }) => {
       <TextBlock
         typography={Typography.titleLarge}
         fontWeight={FontWeight.bold}
+        style={styles.dialogHeading}
       >
         Select a Collection
       </TextBlock>
@@ -105,6 +106,7 @@ const AddToCollectionDialog = ({ game }: { game: Game }) => {
         updateGameLoading={updateGameLoading}
         styles={styles}
       />
+      <View style={styles.separator} />
       {isAddNew ? (
         <AddNewCollection
           newCollection={newCollection}

@@ -10,6 +10,7 @@ import useStyles from '@config/useStyles';
 import { Elevation, Icons } from '@constants';
 import useGameDetailsQuery from '@network/hooks/useGameDetailsQuery';
 import { useAppSelector } from '@store';
+import { Colors } from '@themes';
 import { formatAgeRatingToAge } from '@utility/helpers';
 import { getShadowStyle } from '@utility/style';
 
@@ -136,6 +137,7 @@ const Details = () => {
         >
           <Icon
             icon={Icons.materialCommunityIcons.arrowLeft}
+            color={Colors.white}
             size={24}
           />
         </TouchableOpacity>
@@ -147,6 +149,7 @@ const Details = () => {
         showsVerticalScrollIndicator={false}
         stickyHeaderIndices={[isSticky ? 0 : 2]}
         scrollEnabled={yOffset >= 0 && !gameLoading}
+        overScrollMode="never"
       >
         {isSticky ? (
           <View>

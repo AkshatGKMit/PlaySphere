@@ -1,5 +1,5 @@
-import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
-import React, { memo, useCallback, useMemo, useState } from 'react';
+import { Alert, BackHandler, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RouteProp, useRoute } from '@react-navigation/native';
 
@@ -22,6 +22,25 @@ const Home = () => {
   const [yOffset, setYOffset] = useState(0);
 
   const styles = useStyles((themeColors) => ThemedStyles(themeColors, insets));
+
+  const onBackPress = useCallback(() => {
+    Alert.alert('Confirm Exit', 'Are you sure you want to exit?', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      { text: 'Exit', onPress: () => BackHandler.exitApp() },
+    ]);
+    return true;
+  }, []);
+
+  useEffect(() => {
+    const hardwareBackPress = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+    return () => {
+      hardwareBackPress.remove();
+    };
+  }, [onBackPress]);
 
   const onScroll = useCallback(({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { y } = nativeEvent.contentOffset;

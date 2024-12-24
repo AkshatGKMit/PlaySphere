@@ -1,10 +1,10 @@
 import React from 'react';
-import { Animated, View } from 'react-native';
+import { Animated, ScrollView, View } from 'react-native';
 
 import TextBlock from '@components/textBlock';
 import useShimmerColor from '@config/useShimmerColor';
 import { FontWeight, Typography } from '@constants';
-import { parseDateString } from '@utility/helpers';
+import { getColorForScore, parseDateString } from '@utility/helpers';
 
 const Shimmer = ({ styles, theme }: DetailsThemeStyleProps) => {
   const { backgroundColor } = useShimmerColor(theme);
@@ -40,36 +40,52 @@ const Metrics = ({
     );
   }
 
+  const ratedStyles = [styles.ratedForValue, { backgroundColor: ratedFor?.color }];
+
   return (
-    <View style={styles.contentSection}>
-      <TextBlock
-        typography={Typography.titleLarge}
-        fontWeight={FontWeight.bold}
-      >
-        Metrics
-      </TextBlock>
+    <ScrollView
+      horizontal
+      contentContainerStyle={styles.scrollContentSection}
+      showsHorizontalScrollIndicator={false}
+    >
       {released ? (
-        <TextBlock>
-          Release Date:{' '}
+        <View style={styles.metricValueContainer}>
           <TextBlock fontWeight={FontWeight.semibold}>{parseDateString(released)}</TextBlock>
-        </TextBlock>
+          <TextBlock typography={Typography.labelSmall}>Release Date</TextBlock>
+        </View>
       ) : null}
+      <View style={styles.metricValueSeparator} />
       {metaCritic ? (
-        <TextBlock>
-          Critics Score: <TextBlock fontWeight={FontWeight.semibold}>{metaCritic}%</TextBlock>
-        </TextBlock>
+        <View style={styles.metricValueContainer}>
+          <TextBlock
+            fontWeight={FontWeight.semibold}
+            color={getColorForScore(metaCritic)}
+          >
+            {metaCritic}%
+          </TextBlock>
+          <TextBlock typography={Typography.labelSmall}>Critics</TextBlock>
+        </View>
       ) : null}
+      <View style={styles.metricValueSeparator} />
       {ratedFor ? (
-        <TextBlock>
-          Rated For: <TextBlock fontWeight={FontWeight.semibold}>{ratedFor.age}+</TextBlock>
-        </TextBlock>
+        <View style={styles.metricValueContainer}>
+          <TextBlock
+            fontWeight={FontWeight.semibold}
+            style={ratedStyles}
+          >
+            {ratedFor.age}+
+          </TextBlock>
+          <TextBlock typography={Typography.labelSmall}>Rated For</TextBlock>
+        </View>
       ) : null}
+      <View style={styles.metricValueSeparator} />
       {playtime ? (
-        <TextBlock>
-          Average Playtime: <TextBlock fontWeight={FontWeight.semibold}>{playtime} Hours</TextBlock>
-        </TextBlock>
+        <View style={styles.metricValueContainer}>
+          <TextBlock fontWeight={FontWeight.semibold}>{playtime} Hrs</TextBlock>
+          <TextBlock typography={Typography.labelSmall}>Avg. Playtime</TextBlock>
+        </View>
       ) : null}
-    </View>
+    </ScrollView>
   );
 };
 

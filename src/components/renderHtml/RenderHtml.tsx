@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import TextBlock from '@components/textBlock';
 import { FontWeight } from '@constants';
 
-const RenderHtml = ({ html, children, maxLines }: RenderHtmlProps) => {
+const RenderHtml = ({ html, children, maxLines, color }: RenderHtmlProps) => {
   const parseHtml = (text: string) => {
     if (!text) {
       return '';
@@ -15,15 +15,22 @@ const RenderHtml = ({ html, children, maxLines }: RenderHtmlProps) => {
 
     return parts.map((part, index) => {
       const match = part.match(/^<\/?([a-zA-Z][a-zA-Z0-9]*)\s*([^>]*)?>$/);
-      if (match) {
-        const tagName = match[0].toLowerCase();
+      if (match || part === '\n') {
+        const tagName = match?.[0].toLowerCase();
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const attributes = match[2] ? parseAttributes(match[2]) : {};
+        const attributes = match?.[2] ? parseAttributes(match[2]) : {};
 
         switch (tagName) {
           case '<p>':
-            return <TextBlock key={index}>{parseHtml(parts[index + 1])}</TextBlock>;
+            return (
+              <TextBlock
+                key={index}
+                color={color}
+              >
+                {parseHtml(parts[index + 1])}
+              </TextBlock>
+            );
           case '<b>':
             return (
               <TextBlock
@@ -35,11 +42,22 @@ const RenderHtml = ({ html, children, maxLines }: RenderHtmlProps) => {
             );
           case '<br />':
             return '\n';
-          default:
-            return;
         }
+
+        if (part === '\n') {
+          return part + part;
+        }
+
+        return '';
       } else {
-        return <TextBlock key={index}>{part}</TextBlock>;
+        return (
+          <TextBlock
+            key={index}
+            color={color}
+          >
+            {part}
+          </TextBlock>
+        );
       }
     });
   };
@@ -58,7 +76,12 @@ const RenderHtml = ({ html, children, maxLines }: RenderHtmlProps) => {
 
   return (
     <View>
-      <TextBlock numberOfLines={maxLines}>{parseHtml(html)}</TextBlock>
+      <TextBlock
+        color={color}
+        numberOfLines={maxLines}
+      >
+        {parseHtml(html)}
+      </TextBlock>
       {children}
     </View>
   );

@@ -6,6 +6,7 @@ import Icon from '@components/icon';
 import Loader from '@components/loader';
 import { Icons } from '@constants';
 import useCollectionMutation from '@network/hooks/useCollectionMutation';
+import { Colors } from '@themes';
 
 import styles from './styles';
 
@@ -34,7 +35,8 @@ const FeedGameCard = ({ feed, collectionId }: FeedGameCardProps) => {
           <Loader size={'small'} />
         ) : (
           <Icon
-            icon={Icons.materialCommunityIcons.trashCan}
+            icon={Icons.materialIcons.close}
+            color={Colors.white}
             size={16}
           />
         )}

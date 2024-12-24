@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { Opacity } from '@constants';
-import { globalStyles } from '@themes';
+import { Colors, globalStyles } from '@themes';
 import { colorWithOpacity } from '@utility/style';
 
 const ThemedStyles = (theme: ThemeColors) => {
@@ -10,7 +10,7 @@ const ThemedStyles = (theme: ThemeColors) => {
       position: 'relative',
       backgroundColor: theme.all.surfaceContainerHigh,
       padding: 12,
-      borderRadius: 20,
+      borderRadius: 12,
       minWidth: '100%',
       gap: 10,
     },
@@ -19,12 +19,17 @@ const ThemedStyles = (theme: ThemeColors) => {
       zIndex: 10,
       top: 0,
       right: 0,
-      margin: 10,
-      backgroundColor: colorWithOpacity(theme.all.surface, 0.5),
+      margin: 14,
+      backgroundColor: colorWithOpacity(Colors.black, 0.5),
       padding: 5,
-      borderRadius: 20,
+      borderRadius: 4,
+    },
+    dialogHeading: {
+      paddingLeft: 5,
+      paddingVertical: 5,
     },
     content: {
+      paddingHorizontal: 5,
       minHeight: 200,
     },
     noContentContainer: {
@@ -48,7 +53,7 @@ const ThemedStyles = (theme: ThemeColors) => {
     collectionContainer: {
       flexWrap: 'wrap',
       flexDirection: 'row',
-      gap: 2,
+      gap: 5,
     },
     collection: {
       flexDirection: 'row',
@@ -57,7 +62,12 @@ const ThemedStyles = (theme: ThemeColors) => {
       padding: 10,
       gap: 10,
       backgroundColor: theme.all.surfaceContainerHighest,
-      height: 40,
+      borderRadius: 20,
+      borderWidth: 1,
+      borderColor: Colors.transparent,
+    },
+    selectedCollection: {
+      borderColor: theme.primaryText,
     },
     collectionName: {
       textTransform: 'capitalize',
@@ -73,14 +83,14 @@ const ThemedStyles = (theme: ThemeColors) => {
       alignItems: 'center',
       gap: 15,
     },
-    buttonButton: {
+    buttonContainer: {
       ...globalStyles.flex1,
       ...globalStyles.rowCenter,
       marginTop: 5,
       gap: 3,
       padding: 10,
       borderRadius: 15,
-      backgroundColor: theme.all.surfaceContainerLow,
+      backgroundColor: theme.all.surfaceContainerLowest,
     },
     createButton: {
       backgroundColor: theme.primaryText,
