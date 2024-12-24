@@ -6,7 +6,7 @@ import useRippleEffect from '@config/useRippleEffect';
 import { ICON_BUTTON_CONSTANTS } from '@constants';
 import { useAppSelector } from '@store';
 import { globalStyles } from '@themes';
-import { colorWithOpacity } from '@utility/themeHelpers';
+import { colorWithOpacity } from '@utility/style';
 
 const { THEME, MEASUREMENTS, STANDARD } = ICON_BUTTON_CONSTANTS;
 
