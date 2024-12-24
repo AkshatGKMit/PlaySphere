@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ICON_BUTTON_CONSTANTS } from '@constants';
 import { useAppSelector } from '@store';
-import { colorWithOpacity } from '@utility/themeHelpers';
+import { colorWithOpacity } from '@utility/style';
 
 import IconButtonMain from './IconButtonMain';
 

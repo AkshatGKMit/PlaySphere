@@ -1,6 +1,6 @@
-import { createStyles } from '@utility/styles';
+import { StyleSheet } from 'react-native';
 
-const styles = createStyles({
+const styles = StyleSheet.create({
   button: {
     padding: 5,
     borderRadius: 40,

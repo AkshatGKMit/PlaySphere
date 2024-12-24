@@ -1,10 +1,14 @@
 import { Opacity } from '@constants/style';
-import { colorWithOpacity } from '@utility/themeHelpers';
+import { colorWithOpacity } from '@utility/style';
 
 export const Colors = {
   white: '#ffffff',
+  grey: '#808080',
   black: '#000000',
   transparent: '#00000000',
+  yellow: '#ffc54b',
+  red: '#ff0000',
+  green: '#0ff000',
 };
 
 export const Palettes = {
