@@ -1,3 +1,18 @@
+import { Platform } from 'react-native';
+
+import { capitalizeWord } from '@utility/helpers';
+
+export const isIos = Platform.OS === 'ios';
+
+export const Routes = {
+  Stack: {
+    home: 'Home',
+    search: 'Search',
+    details: 'Details',
+    collections: 'Collections',
+    collectionGames: 'Collection Games',
+  },
+} as const;
 
 export const LibraryStatus = {
   owned: 'owned',
@@ -14,6 +29,9 @@ export const AuthFields: AuthFields = {
   username: 'username',
 };
 
+export const StorageKey = {
+  token: 'token',
+} as const;
 
 export const RatingCategory = {
   exceptional: 'exceptional',
