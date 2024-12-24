@@ -5,7 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import TextBlock from '@components/textBlock';
 import { IMAGES, Typography, FontWeight, APP_NAME } from '@constants';
 import { Colors, globalStyles } from '@themes';
-import { colorWithOpacity } from '@utility/themeHelpers';
+import { colorWithOpacity } from '@utility/style';
 
 const AppIntro = (opacity?: Animated.Value) => {
   const introStyles = [styles.gradientContainer, { opacity: opacity ?? 1 }];
