@@ -6,7 +6,7 @@ interface AuthErrorResponse {
   username?: string[];
   email?: string[];
   password?: string[];
-  non_field_errors: string[];
+  non_field_errors?: string[];
 }
 
 interface GameBackgroundResponse {
@@ -72,12 +72,12 @@ interface GameDetailResponse {
   name: string;
   name_original: string;
   description: string;
-  metacritic: number;
+  metacritic: number | null;
   metacritic_platforms: {
     metascore: number;
     url: string;
     platform: {
-      platform: 4;
+      platform: number;
       name: string;
       slug: string;
     };
@@ -92,7 +92,7 @@ interface GameDetailResponse {
   rating_top: number;
   ratings: {
     id: number;
-    title: string;
+    title: RatingCategory;
     count: number;
     percent: number;
   }[];
@@ -112,10 +112,10 @@ interface GameDetailResponse {
       slug: string;
     };
   }[];
-  platforms: GameSystemPlatformsResponse;
-  genres: EntityFiltersResponse;
-  tags: EntityFiltersResponse;
-  esrb_rating: EntityFilterResponse;
+  platforms: GameSystemPlatformsResponse | null;
+  genres: EntityFiltersResponse | null;
+  tags: EntityFiltersResponse | null;
+  esrb_rating: EntityFilterResponse | null;
   clip: null;
   description_raw: string;
 }
@@ -197,7 +197,7 @@ interface UpdateLibraryResponseError {
   status: string[];
 }
 
-interface AddGameToCollectionResponseError {
+interface AddOrRemoveGameFromCollectionResponseError {
   games: string[];
 }
 
@@ -211,6 +211,14 @@ interface LeaderboardUserResponse {
   user: UserDetailsResponse;
 }
 
+interface GameInCollectionResponse {
+  id: number;
+  slug: string;
+  name: string;
+  game_in_collection: boolean;
+}
+
+type GameInCollectionsResponse = GameInCollectionResponse[];
 type GameBackgroundsResponse = GameBackgroundResponse[];
 type EntityFiltersResponse = EntityFilterResponse[];
 type PaginatedEntityFiltersResponse = PaginatedData<EntityFilterResponse>;

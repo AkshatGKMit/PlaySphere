@@ -10,6 +10,7 @@ const ApiConstants = {
     },
     user: {
       current: '/users/current',
+      gameInCollection: (gameId: number) => `/users/current/collections/${gameId}`,
       overview: (userId: number) => `/users/${userId}`,
       allGames: (userId: number) => `/users/${userId}/games`,
       recentGames: (userId: number) => `/users/${userId}/games/recently`,
@@ -30,6 +31,8 @@ const ApiConstants = {
       main: '/games/lists/main',
       mostPopular: '/games/lists/popular',
       bestOfTheYear: '/games/lists/greatest',
+      thisWeekGames: 'games/lists/recent-games',
+      popularIn2023: 'games/lists/greatest',
       listCalendarMonthGames: (year: number, month: number) => `/games/calendar/${year}/${month}`,
       listSitemapsOfGames: (letter: string) => `/games/sitemap?letter=${letter}`,
       details: (gameId: number) => `/games/${gameId}`,
@@ -40,7 +43,7 @@ const ApiConstants = {
       addToLibrary: '/users/current/games',
       removeFromLibrary: (gameId: number) => `/users/current/games/${gameId}`,
       updateLibraryStatus: (gameId: number) => `/users/current/games/${gameId}`,
-      addToCollection: (collectionId: number) => `/collections/${collectionId}/games`,
+      addOrRemoveFromCollection: (collectionId: number) => `/collections/${collectionId}/games`,
       removeFromCollection: (collectionId: number, feedId: number) =>
         `/collections/${collectionId}/feed/${feedId}`,
     },

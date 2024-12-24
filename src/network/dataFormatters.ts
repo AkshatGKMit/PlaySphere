@@ -82,7 +82,7 @@ export function formatGameDetail(gameResponse: GameDetailResponse): Game {
     saturatedColor: saturated_color,
     screenshotsCount: screenshots_count,
     toBeAnnounced: tba,
-    systemPlatforms: platforms.map(formatGamePlatform),
+    systemPlatforms: platforms?.map(formatGamePlatform) ?? null,
   };
 
   return game;
@@ -163,8 +163,11 @@ export function formatCollection(collectionResponse: CollectionDetailResponse): 
 export function formatCollectionFeed(
   collectionFeedResponse: CollectionFeedResponse,
 ): CollectionFeed {
+  const { game } = collectionFeedResponse;
+
   const collectionFeed: CollectionFeed = {
     ...collectionFeedResponse,
+    game: formatGameDetail(game),
   };
 
   return collectionFeed;
@@ -176,5 +179,16 @@ export function formatLeaderboard(leaderboardResponse: LeaderboardUserResponse):
   return {
     ...leaderboardResponse,
     user: formatUserDetails(user),
+  };
+}
+
+export function formatGameInCollection(
+  gameInCollectionResponse: GameInCollectionResponse,
+): GameInCollection {
+  const { game_in_collection } = gameInCollectionResponse;
+
+  return {
+    ...gameInCollectionResponse,
+    gameInCollection: game_in_collection,
   };
 }
