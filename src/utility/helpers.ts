@@ -86,3 +86,16 @@ export const formatAgeRatingToAge = (ageRating?: EntityFilter | null): AgeRating
 
   return null;
 };
+
+export const getColorForScore = (score: number) => {
+  if (score < 0 || score > 100) {
+    throw new Error('Score must be between 0 and 100.');
+  }
+
+  // Calculate the red and green values based on the score
+  const red = Math.round((100 - score) * 2.55); // Red decreases from 255 to 0
+  const green = Math.round(score * 2.55); // Green increases from 0 to 255
+
+  // Return the color in RGB format
+  return `rgb(${red}, ${green}, 0)`; // Blue is fixed at 0
+};

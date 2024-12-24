@@ -1,14 +1,11 @@
 import React, { useCallback } from 'react';
-import { Alert, Pressable, TouchableOpacity, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
 
-import Icon from '@components/icon';
-import Loader from '@components/loader';
 import TextBlock from '@components/textBlock';
-import { IMAGES, Typography, FontWeight, Icons, Routes } from '@constants';
-import useCollectionMutation from '@network/hooks/useCollectionMutation';
-import { globalStyles } from '@themes';
+import { IMAGES, Typography, FontWeight, Routes } from '@constants';
+import { Colors, globalStyles } from '@themes';
 
 import styles from './styles';
 
@@ -18,28 +15,6 @@ const CollectionCard = ({ collection }: { collection: Collection }) => {
   const { id, gameBackground, name, gamesCount } = collection;
 
   const { navigate } = useNavigation<StackNavigation>();
-
-  const { removeCollectionLoading, mutateRemoveCollection } = useCollectionMutation();
-
-  const onPressDelete = useCallback(() => {
-    Alert.alert(
-      'Confirm Delete',
-      'Are you sure you want to delete?',
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Delete',
-          onPress: () => {
-            mutateRemoveCollection(id);
-          },
-        },
-      ],
-      { cancelable: true },
-    );
-  }, [id, mutateRemoveCollection]);
 
   const onPressCard = useCallback(() => {
     if (gamesCount) {
@@ -64,6 +39,7 @@ const CollectionCard = ({ collection }: { collection: Collection }) => {
             numberOfLines={2}
             typography={Typography.titleLarge}
             fontWeight={FontWeight.bold}
+            color={Colors.white}
             style={styles.title}
           >
             {name}
@@ -72,25 +48,11 @@ const CollectionCard = ({ collection }: { collection: Collection }) => {
             numberOfLines={2}
             typography={Typography.bodySmall}
             fontWeight={FontWeight.bold}
+            color={Colors.white}
             style={styles.title}
           >
             {gamesCount} Games
           </TextBlock>
-          <TouchableOpacity
-            activeOpacity={0.9}
-            onPress={onPressDelete}
-            disabled={removeCollectionLoading}
-            style={styles.deleteContainer}
-          >
-            {removeCollectionLoading ? (
-              <Loader size={'small'} />
-            ) : (
-              <Icon
-                icon={Icons.materialCommunityIcons.trashCan}
-                size={16}
-              />
-            )}
-          </TouchableOpacity>
         </View>
       </Pressable>
     </FastImage>

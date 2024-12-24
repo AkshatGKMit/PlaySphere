@@ -2,8 +2,8 @@ import { StyleSheet } from 'react-native';
 import { EdgeInsets } from 'react-native-safe-area-context';
 
 import { Elevation } from '@constants';
-import { globalStyles } from '@themes';
-import { getShadowStyle } from '@utility/style';
+import { Colors, globalStyles } from '@themes';
+import { colorWithOpacity, getShadowStyle } from '@utility/style';
 
 const ThemedStyles = (theme: ThemeColors, insets: EdgeInsets) => {
   return StyleSheet.create({
@@ -17,6 +17,11 @@ const ThemedStyles = (theme: ThemeColors, insets: EdgeInsets) => {
       gap: 10,
       padding: 10,
       ...getShadowStyle(Elevation.level4),
+    },
+    headerRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 20,
     },
     searchContainer: {
       flex: 1,
@@ -51,6 +56,19 @@ const ThemedStyles = (theme: ThemeColors, insets: EdgeInsets) => {
     listEmptyRow: {
       gap: 8,
       flexDirection: 'row',
+    },
+    deleteButton: {
+      marginHorizontal: 10,
+      marginTop: 10,
+      marginBottom: insets.bottom + 10,
+      maxWidth: '100%',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 8,
+      backgroundColor: colorWithOpacity(Colors.red, 0.5),
+      padding: 8,
+      borderRadius: 20,
     },
   });
 };

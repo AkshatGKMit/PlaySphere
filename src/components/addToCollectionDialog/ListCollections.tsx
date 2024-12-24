@@ -1,11 +1,9 @@
 import React, { useCallback } from 'react';
 import { ScrollView, TouchableOpacity } from 'react-native';
 
-import Icon from '@components/icon';
 import Loader from '@components/loader';
 import TextBlock from '@components/textBlock';
-import { FontWeight, Icons } from '@constants';
-import { Colors } from '@themes';
+import { FontWeight } from '@constants';
 
 const ListCollections = ({
   gameInCollections,
@@ -24,11 +22,16 @@ const ListCollections = ({
       {gameInCollections.map((collection) => {
         const { gameInCollection, id, name } = collection;
 
+        const collectionStyles = [
+          styles.collection,
+          gameInCollection ? styles.selectedCollection : null,
+        ];
+
         return (
           <TouchableOpacity
             key={id}
             activeOpacity={0.8}
-            style={styles.collection}
+            style={collectionStyles}
             onPress={() => onPressCollection(collection)}
           >
             <TextBlock
@@ -38,19 +41,7 @@ const ListCollections = ({
             >
               {name}
             </TextBlock>
-            {isLoading(id) ? (
-              <Loader />
-            ) : gameInCollection ? (
-              <Icon
-                icon={Icons.fontAwesome.check}
-                color={Colors.green}
-              />
-            ) : (
-              <Icon
-                icon={Icons.materialIcons.add}
-                size={18}
-              />
-            )}
+            {isLoading(id) ? <Loader /> : null}
           </TouchableOpacity>
         );
       })}

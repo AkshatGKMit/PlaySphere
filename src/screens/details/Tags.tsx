@@ -16,7 +16,7 @@ const Tags = ({ genres, tags, styles }: DetailsTagsProps) => {
           Tags
         </TextBlock>
         <View style={styles.wrapContainer}>
-          {genres?.map(({ id, name: genreName }) => (
+          {genres?.slice(0, 4).map(({ id, name: genreName }) => (
             <TextBlock
               key={id}
               style={styles.chip}
@@ -24,7 +24,7 @@ const Tags = ({ genres, tags, styles }: DetailsTagsProps) => {
               {genreName}
             </TextBlock>
           ))}
-          {tags?.map(({ id, name: tagName }) => (
+          {tags?.slice(0, 4).map(({ id, name: tagName }) => (
             <TextBlock
               key={id}
               style={styles.chip}

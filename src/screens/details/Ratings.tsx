@@ -44,6 +44,10 @@ const RatingCategoryContainer = ({ rating, styles }: DetailsRatingCategoryContai
       >
         <Animated.View style={ratingAnimatedStyles} />
       </View>
+      <TextBlock typography={Typography.bodySmall}>
+        {percent.toFixed(1)}
+        <TextBlock typography={Typography.labelSmall}>%</TextBlock>
+      </TextBlock>
     </View>
   );
 };

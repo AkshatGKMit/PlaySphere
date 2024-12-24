@@ -150,7 +150,10 @@ const FloatingDrawer = () => {
           style={globalStyles.flex1}
           onPress={() => setVisible(false)}
         >
-          <BlurView style={globalStyles.fullPositionAbsolute} />
+          <BlurView
+            style={globalStyles.fullPositionAbsolute}
+            blurAmount={0}
+          />
           <View style={styles.modalContainer}>
             <View style={[styles.closeIcon, { top: buttonTop, left: buttonLeft }]}>
               <Icon

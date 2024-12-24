@@ -1,9 +1,17 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Alert, FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from 'react-native';
+import {
+  Alert,
+  FlatList,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
 import FeedGameCard from '@components/feedGameCard';
+import Icon from '@components/icon';
 import { IconButton } from '@components/iconButton';
 import Loader from '@components/loader';
 import { ListEmptyComponent, ListFooterComponent } from '@components/pageListComponent';
@@ -14,7 +22,7 @@ import useCollectionQuery from '@network/hooks/useCollectionQuery';
 import useCollectionFeedsQuery from '@network/hooks/useCollectionFeedsQuery';
 import useCollectionMutation from '@network/hooks/useCollectionMutation';
 import { useAppSelector } from '@store';
-import { globalStyles } from '@themes';
+import { Colors, globalStyles } from '@themes';
 import { getShadowStyle } from '@utility/style';
 
 import ThemedStyles from './styles';
@@ -49,18 +57,23 @@ const CollectionGames = () => {
   }, [goBack, refetch]);
 
   const onPressDelete = useCallback(() => {
-    Alert.alert('Confirm Exit', 'Are you sure you want to exit?', [
-      {
-        text: 'Cancel',
-        style: 'cancel',
-      },
-      {
-        text: 'Delete',
-        onPress: () => {
-          mutateRemoveCollection(collectionId);
+    Alert.alert(
+      'Confirm Delete',
+      'Are you sure you want to delete?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
         },
-      },
-    ]);
+        {
+          text: 'Delete',
+          onPress: () => {
+            mutateRemoveCollection(collectionId);
+          },
+        },
+      ],
+      { cancelable: true },
+    );
   }, [collectionId, mutateRemoveCollection]);
 
   useEffect(() => {
@@ -112,6 +125,7 @@ const CollectionGames = () => {
           <IconButton
             icon={Icons.materialCommunityIcons.trashCan}
             onPress={onPressDelete}
+            color={Colors.red}
           />
         )}
       </View>
@@ -150,6 +164,21 @@ const CollectionGames = () => {
         showsVerticalScrollIndicator={false}
         onEndReached={onEndReached}
       />
+      <TouchableOpacity
+        style={styles.deleteButton}
+        onPress={onPressDelete}
+      >
+        <Icon
+          icon={Icons.materialCommunityIcons.trashCan}
+          size={22}
+        />
+        <TextBlock
+          typography={Typography.bodyLarge}
+          fontWeight={FontWeight.bold}
+        >
+          Delete Collection
+        </TextBlock>
+      </TouchableOpacity>
     </View>
   );
 };
