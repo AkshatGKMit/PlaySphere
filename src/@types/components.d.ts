@@ -18,6 +18,41 @@ declare global {
     hide: (onClose?: () => void) => void;
   }
 
+  interface DropDownItem {
+    id: string | number;
+    label: string;
+    value: string | number | boolean;
+  }
+
+  type DropdownItems = DropDownItem[];
+
+  interface DropdownProps {
+    items: DropdownItems;
+    value?: DropDownItem | null;
+    onSelect: (item: DropDownItem) => void;
+    hint?: string;
+    buttonInitials?: string;
+  }
+
+  interface DropdownStylesProps {
+    styles: ReturnType<typeof DropdownStyles>;
+  }
+
+  interface DropdownRenderItemProps extends DropdownStylesProps {
+    item: DropDownItem;
+    setFocus: (value: boolean) => void;
+    onSelect: (item: DropDownItem) => void;
+  }
+
+  interface DropDownRenderListProps extends DropdownStylesProps {
+    items: DropdownItems;
+    setFocus: (value: boolean) => void;
+    onSelect: (item: DropDownItem) => void;
+    onLayout: (event: LayoutChangeEvent) => void;
+    listViewStyles: Animated.WithAnimatedArray | Animated.WithAnimatedObject;
+    listStyles: StyleProp<ViewStyle>;
+  }
+
   type IconFamily = (typeof IconFamily)[keyof typeof IconFamily];
 
   interface IconType {
