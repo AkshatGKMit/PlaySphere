@@ -39,6 +39,11 @@ declare global {
 
   type IconButtonProps = IconButtonMainProps;
 
+  interface LoaderProps {
+    color?: string;
+    size?: number | 'small' | 'large';
+  }
+
   interface TextBlockProps extends TextProps {
     fontFamily?: FontFamily;
     typography?: Typography;
