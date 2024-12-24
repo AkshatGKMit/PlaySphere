@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     flex: 1,
     ...globalStyles.columnCenter,
     gap: 4,
-    backgroundColor: colorWithOpacity(Colors.black, 0.6),
+    backgroundColor: colorWithOpacity(Colors.black, 0.5),
     padding: 4,
   },
   title: {

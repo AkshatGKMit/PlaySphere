@@ -11,6 +11,7 @@ import {
   requestRemoveGameFromCollectionFeed,
 } from '@network/apiEndpointCalls';
 import { useAppSelector } from '@store';
+import useQueryKeys from '@config/useQueryKeys';
 
 const {
   createNewCollection: createNewCollectionKey,
@@ -25,15 +26,39 @@ const {
 const useCollectionMutation = () => {
   const queryClient = useQueryClient();
   const { user } = useAppSelector((state) => state.user);
+  const { getKeysContaining } = useQueryKeys();
 
   const [updateGameLoading, setUpdateGameLoading] = useState(false);
   const [removeCollectionLoading, setRemoveCollectionLoading] = useState(false);
   const [removeGameFromCollectionLoading, setRemoveGameFromCollectionLoading] = useState(false);
 
-  const onUpdateGameMutationSuccess = useCallback(
-    (_: unknown, variables: AddOrRemoveFromCollectionVariables) => {
-      const { collectionId, gameId, isAdding } = variables;
+  //#region - Update Query Cached Data
+  const updateCollectionInQueryData = useCallback(
+    (collectionId: number) => {
+      const keys = getKeysContaining(userCollectionsKey);
 
+      for (const key of keys) {
+        const response = queryClient.getQueryData<AxiosResponse<GameInCollectionsResponse>>(key);
+
+        if (!response) {
+          continue;
+        }
+
+        const newCollections = response.data.filter(({ id }) => id !== collectionId);
+
+        const newResponse: AxiosResponse<GameInCollectionsResponse> = {
+          ...response,
+          data: newCollections,
+        };
+
+        queryClient.setQueryData<AxiosResponse<GameInCollectionsResponse>>(key, newResponse);
+      }
+    },
+    [getKeysContaining, queryClient],
+  );
+
+  const updateGameInCollectionQueryData = useCallback(
+    ({ collectionId, gameId, isAdding }: AddOrRemoveFromCollectionVariables) => {
       const response = queryClient.getQueryData<AxiosResponse<GameInCollectionsResponse>>([
         userCollectionsKey,
         gameId,
@@ -62,14 +87,22 @@ const useCollectionMutation = () => {
         [userCollectionsKey, gameId],
         newResponse,
       );
+    },
+    [queryClient],
+  );
+  //#endregion
 
-      queryClient.invalidateQueries({ queryKey: [userCollectionsKey] });
+  //#region - Update game in collection Mutation
+  const onUpdateGameMutationSuccess = useCallback(
+    (_: unknown, variables: AddOrRemoveFromCollectionVariables) => {
+      updateGameInCollectionQueryData(variables);
+
       queryClient.invalidateQueries({ queryKey: [myCollectionsKey] });
       queryClient.invalidateQueries({ queryKey: [collectionGamesKey] });
 
       setUpdateGameLoading(false);
     },
-    [queryClient],
+    [queryClient, updateGameInCollectionQueryData],
   );
 
   const updateGameInCollectionMutationFunction = useCallback(
@@ -81,28 +114,31 @@ const useCollectionMutation = () => {
     },
     [],
   );
+  //#endregion
 
+  //#region - Add New Collection Mutation
   const onAddNewCollectionSuccess = () => {
     queryClient.invalidateQueries({ queryKey: [userCollectionsKey] });
     queryClient.refetchQueries({ queryKey: [myCollectionsKey, user?.id] });
     queryClient.invalidateQueries({ queryKey: [createNewCollectionKey] });
   };
 
-  const onRemoveCollectionSuccess = () => {
-    queryClient.invalidateQueries({ queryKey: [userCollectionsKey] });
-    queryClient.refetchQueries({ queryKey: [myCollectionsKey, user?.id] });
-    queryClient.invalidateQueries({ queryKey: [removeCollectionKey] });
+  const addNewCollectionMutationFunction = useCallback(
+    async (newCollectionName: AddNewOrUpdateCollectionBody) => {
+      return requestAddNewCollection(newCollectionName);
+    },
+    [],
+  );
+  //#endregion
 
-    setRemoveCollectionLoading(false);
-  };
-
+  //#region - Remove Game from collection Mutation
   const onRemoveGameFromCollectionSuccess = (
     _: any,
     { collectionId, gameId }: RemoveGameFromCollectionVariables,
   ) => {
     queryClient.invalidateQueries({ queryKey: [collectionGamesKey, collectionId] });
 
-    queryClient.invalidateQueries({ queryKey: [userCollectionsKey, gameId] });
+    updateGameInCollectionQueryData({ collectionId, gameId, isAdding: false });
   };
 
   const removeGameFromCollectionMutationFunction = useCallback(
@@ -111,17 +147,23 @@ const useCollectionMutation = () => {
     },
     [],
   );
+  //#endregion
 
-  const addNewCollectionMutationFunction = useCallback(
-    async (newCollectionName: AddNewOrUpdateCollectionBody) => {
-      return requestAddNewCollection(newCollectionName);
-    },
-    [],
-  );
+  //#region - Remove Collection Mutation
+  const onRemoveCollectionSuccess = (_: unknown, collectionId: number) => {
+    updateCollectionInQueryData(collectionId);
+
+    queryClient.refetchQueries({ queryKey: [myCollectionsKey, user?.id] });
+    queryClient.invalidateQueries({ queryKey: [removeCollectionKey] });
+
+    setRemoveCollectionLoading(false);
+  };
 
   const removeCollectionMutationFunction = useCallback(async (collectionId: number) => {
+    return Promise.resolve();
     return requestDeleteCollection(collectionId);
   }, []);
+  //#endregion
 
   const {
     mutate: mutateAddNewCollection,
@@ -146,8 +188,8 @@ const useCollectionMutation = () => {
 
   const {
     mutate: mutateGameToCollection,
-    isPending: updateGameLoadingState,
-    isSuccess: updateGameSuccess,
+    isPending: updateGameToCollectionLoadingState,
+    isSuccess: updateGameToCollectionSuccess,
   } = useMutation({
     mutationKey: [updateGameInCollectionKey],
     mutationFn: updateGameInCollectionMutationFunction,
@@ -165,10 +207,10 @@ const useCollectionMutation = () => {
   });
 
   useEffect(() => {
-    if (updateGameLoadingState) {
-      setUpdateGameLoading(updateGameLoadingState);
+    if (updateGameToCollectionLoadingState) {
+      setUpdateGameLoading(updateGameToCollectionLoadingState);
     }
-  }, [updateGameLoadingState]);
+  }, [updateGameToCollectionLoadingState]);
 
   useEffect(() => {
     if (removeCollectionLoadingState) {
@@ -198,7 +240,7 @@ const useCollectionMutation = () => {
     addNewCollectionLoading,
     addNewCollectionError,
     mutateGameToCollection,
-    updateGameSuccess,
+    updateGameToCollectionSuccess,
     updateGameLoading,
     mutateRemoveCollection,
     removeCollectionSuccess,

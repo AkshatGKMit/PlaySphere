@@ -18,7 +18,6 @@ import { ListEmptyComponent, ListFooterComponent } from '@components/pageListCom
 import TextBlock from '@components/textBlock';
 import useStyles from '@config/useStyles';
 import { Elevation, FontWeight, Icons, Typography } from '@constants';
-import useCollectionQuery from '@network/hooks/useCollectionQuery';
 import useCollectionFeedsQuery from '@network/hooks/useCollectionFeedsQuery';
 import useCollectionMutation from '@network/hooks/useCollectionMutation';
 import { useAppSelector } from '@store';
@@ -49,12 +48,9 @@ const CollectionGames = () => {
   const { removeCollectionLoading, mutateRemoveCollection, removeCollectionSuccess } =
     useCollectionMutation();
 
-  const { refetch } = useCollectionQuery();
-
   const closeScreen = useCallback(() => {
-    refetch();
     goBack();
-  }, [goBack, refetch]);
+  }, [goBack]);
 
   const onPressDelete = useCallback(() => {
     Alert.alert(

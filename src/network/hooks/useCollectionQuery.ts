@@ -45,7 +45,6 @@ const useCollectionQuery = (params?: ListQueryParams) => {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-    refetch,
     isRefetching,
   } = useInfiniteQuery<
     AxiosResponse<PaginatedCollectionDetailsResponse>,
@@ -93,7 +92,6 @@ const useCollectionQuery = (params?: ListQueryParams) => {
     fetchNextPage,
     isFetchingNextPage,
     online,
-    refetch,
     isRefetching,
   };
 };
