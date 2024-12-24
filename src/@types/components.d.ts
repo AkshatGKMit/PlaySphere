@@ -13,6 +13,35 @@ declare global {
     fontWeight?: FontWeight;
   }
 
+  interface AddNewCollectionStyles {
+    styles: ReturnType<typeof AddToCollectionDialogThemedStyles>;
+  }
+
+  interface AddNewCollectionProps extends AddNewCollectionStyles {
+    newCollection: string;
+    newCollectionFieldError: string;
+    setNewCollection: (text: string) => void;
+    onClose: () => void;
+    onCreate: () => void;
+    loading: boolean;
+  }
+
+  interface CollectionContainerProps extends AddNewCollectionStyles {
+    gameInCollections: GameInCollections;
+    gameInCollectionsRefetching: boolean;
+    gameInCollectionsLoading: boolean;
+    mutatingId: number | null;
+    onPressCollection: (collection: GameInCollection) => void;
+    updateGameLoading: boolean;
+  }
+
+  interface ListCollectionsProps extends AddNewCollectionStyles {
+    gameInCollections: GameInCollections;
+    onPressCollection: (collection: GameInCollection) => void;
+    updateGameLoading: boolean;
+    mutatingId: number | null;
+  }
+
   interface DialogRef {
     show: (params: RefManagerParams) => void;
     hide: (onClose?: () => void) => void;
