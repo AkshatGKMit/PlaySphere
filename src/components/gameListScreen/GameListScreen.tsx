@@ -18,7 +18,13 @@ import ThemedStyles from './styles';
 
 const { mainGameList: mainGameListKey } = QueryKeys;
 
-const GameListScreen = ({ onScroll, url, params, header }: GameListScreenProps) => {
+const GameListScreen = ({
+  onScroll,
+  url,
+  params,
+  header,
+  listHeaderBackgroundColor,
+}: GameListScreenProps) => {
   const insets = useSafeAreaInsets();
   const { colors: theme } = useAppSelector((state) => state.theme);
 
@@ -50,6 +56,14 @@ const GameListScreen = ({ onScroll, url, params, header }: GameListScreenProps) 
   return (
     <View style={styles.screen}>
       {header}
+      <ListHeaderComponent
+        orderBy={orderBy}
+        setOrderBy={setOrderBy}
+        selectedSystemPlatform={selectedSystemPlatform}
+        setSelectedSystemPlatform={setSelectedSystemPlatform}
+        styles={styles}
+        listHeaderBackgroundColor={listHeaderBackgroundColor}
+      />
       <FlatList<Game>
         numColumns={2}
         style={globalStyles.flex1}
@@ -69,15 +83,6 @@ const GameListScreen = ({ onScroll, url, params, header }: GameListScreenProps) 
         initialNumToRender={12}
         keyExtractor={({ id }) => id.toString()}
         onScroll={onScroll}
-        ListHeaderComponent={
-          <ListHeaderComponent
-            orderBy={orderBy}
-            setOrderBy={setOrderBy}
-            selectedSystemPlatform={selectedSystemPlatform}
-            setSelectedSystemPlatform={setSelectedSystemPlatform}
-            styles={styles}
-          />
-        }
         ListEmptyComponent={
           <ListEmptyComponent
             styles={styles}
@@ -91,7 +96,6 @@ const GameListScreen = ({ onScroll, url, params, header }: GameListScreenProps) 
             showNoConnectionScreenMessage={online.showNoConnectionScreenMessage}
           />
         }
-        stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}
         onEndReached={onEndReached}
       />

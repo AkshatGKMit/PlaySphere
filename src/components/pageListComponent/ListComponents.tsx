@@ -42,6 +42,7 @@ export const ListHeaderComponent = ({
   selectedSystemPlatform,
   setOrderBy,
   setSelectedSystemPlatform,
+  listHeaderBackgroundColor,
   show = true,
 }: GameListHeaderProps) => {
   if (!show) {
@@ -49,7 +50,7 @@ export const ListHeaderComponent = ({
   }
 
   return (
-    <View style={styles.listHeaderContainer}>
+    <View style={[styles.listHeaderContainer, { backgroundColor: listHeaderBackgroundColor }]}>
       <Dropdown
         items={orderByDropdownItems}
         onSelect={setOrderBy}

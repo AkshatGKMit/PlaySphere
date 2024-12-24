@@ -9,7 +9,7 @@ import FloatingDrawer from '@config/floatingDrawer/FloatingDrawer';
 
 const { search: searchRoute } = Routes.Stack;
 
-const Header = ({ styles, headerStyles, children }: HomeHeaderProps) => {
+const Header = ({ styles, headerStyles, children, theme }: HomeHeaderProps) => {
   const { navigate } = useNavigation<StackNavigation>();
 
   return (
@@ -25,7 +25,12 @@ const Header = ({ styles, headerStyles, children }: HomeHeaderProps) => {
             icon={Icons.feather.search}
             size={18}
           />
-          <TextBlock typography={Typography.titleMedium}>Search 878,875 games</TextBlock>
+          <TextBlock
+            typography={Typography.titleMedium}
+            color={theme.all.tertiary}
+          >
+            Search 878,875 games
+          </TextBlock>
         </TouchableOpacity>
       </View>
       {children}

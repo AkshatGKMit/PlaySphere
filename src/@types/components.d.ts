@@ -13,6 +13,7 @@ import {
 import { AddToCollectionDialogThemedStyles } from '@components/addToCollectionDialog';
 import { ThemedStyles as DropdownStyles } from '@components/dropdown';
 import { ThemedStyles as GameCardStyles } from '@components/gameCard';
+import { ThemedStyles as GameListThemedStyles } from '@components/gameListScreen';
 import FloatingDrawerThemedStyles from '@config/floatingDrawer/styles';
 import { IconFamily } from '@constants';
 
@@ -153,6 +154,7 @@ declare global {
     setOrderBy: (item: DropDownItem) => void;
     selectedSystemPlatform: DropDownItem;
     setSelectedSystemPlatform: (item: DropDownItem) => void;
+    listHeaderBackgroundColor?: string;
     show?: boolean;
   }
 
@@ -163,6 +165,7 @@ declare global {
 
   interface GameListScreenProps {
     url: string;
+    listHeaderBackgroundColor?: string;
     header?: ReactNode;
     params?: ListQueryParams;
     onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;

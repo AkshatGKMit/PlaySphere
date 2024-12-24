@@ -23,6 +23,7 @@ declare global {
 
   interface HomeHeaderProps extends HomeStylesProps, ViewProps {
     headerStyles: StyleProp<ViewStyle>;
+    theme: ThemeColors;
   }
 
   interface DetailsStyleProps {

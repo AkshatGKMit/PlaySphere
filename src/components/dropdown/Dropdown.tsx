@@ -124,6 +124,7 @@ const Dropdown = ({ value, items, onSelect, hint, buttonInitials }: DropdownProp
       <Pressable
         onPress={() => setFocus((prevFocus) => !prevFocus)}
         onLayout={_measureButton}
+        style={globalStyles.flex1}
       >
         <View style={styles.button}>
           <TextBlock style={styles.buttonText}>

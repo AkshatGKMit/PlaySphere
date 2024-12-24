@@ -35,6 +35,7 @@ const ThemedStyles = (theme: ThemeColors, insets: EdgeInsets) => {
     listContentStyle: {
       gap: 10,
       position: 'relative',
+      paddingTop: 10,
       paddingHorizontal: 10,
       paddingBottom: insets.bottom + 10,
     },
@@ -42,10 +43,11 @@ const ThemedStyles = (theme: ThemeColors, insets: EdgeInsets) => {
       gap: 8,
     },
     listHeaderContainer: {
-      flex: 1,
+      height: 45,
       flexDirection: 'row',
       gap: 8,
-      marginTop: 5,
+      paddingHorizontal: 10,
+      paddingBottom: 5,
       ...getShadowStyle(Elevation.level2),
     },
     listEmptyContainer: {
