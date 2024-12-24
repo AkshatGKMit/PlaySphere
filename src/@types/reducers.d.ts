@@ -3,3 +3,7 @@ interface ThemeState {
   colors: ThemeColors;
   isDark: boolean;
 }
+
+interface AuthState {
+  isAuthorized: boolean | null;
+}
