@@ -43,6 +43,10 @@ const StackNavigator = () => {
         name={collectionGamesRoute}
         component={CollectionGames}
       />
+      <Stack.Screen
+        name={detailsRoute}
+        component={Details}
+      />
     </Stack.Navigator>
   );
 };

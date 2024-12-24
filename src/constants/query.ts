@@ -11,4 +11,7 @@ export const QueryKeys = {
   myCollections: 'myCollections',
   collectionGames: 'collectionGames',
   removeGameFromCollection: 'removeGameInCollection',
+  gameDetails: 'gameDetails',
+  gameScreenshots: 'gameScreenShots',
+  gameMovies: 'gameMovies',
 };
