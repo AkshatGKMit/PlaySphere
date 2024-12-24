@@ -61,4 +61,12 @@ declare global {
     color?: string;
     style?: StyleProp<Omit<TextStyle, 'fontFamily' | 'fontSize' | 'color'>>;
   }
+
+  interface TextFieldProps extends TextInputProps {
+    placeholder: string;
+    leadingIcon?: IconType;
+    trailingIcon?: IconType;
+    onPressTrailingIcon?: () => void;
+    error?: string;
+  }
 }
