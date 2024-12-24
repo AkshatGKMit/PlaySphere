@@ -13,6 +13,11 @@ declare global {
     fontWeight?: FontWeight;
   }
 
+  interface DialogRef {
+    show: (params: RefManagerParams) => void;
+    hide: (onClose?: () => void) => void;
+  }
+
   type IconFamily = (typeof IconFamily)[keyof typeof IconFamily];
 
   interface IconType {
@@ -42,6 +47,11 @@ declare global {
   interface LoaderProps {
     color?: string;
     size?: number | 'small' | 'large';
+  }
+
+  interface RefManagerParams extends RefOptions {
+    child: React.JSX.Element | null;
+    onClose?: () => void;
   }
 
   interface TextBlockProps extends TextProps {
