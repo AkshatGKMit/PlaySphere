@@ -13,7 +13,7 @@ interface AddNewOrUpdateCollectionBody {
   is_private?: boolean;
 }
 
-interface AddGameToCollectionBody {
+interface AddOrRemoveGameFromCollectionBody {
   games: number[];
 }
 
@@ -43,4 +43,5 @@ interface ListQueryParams {
   tags?: string;
   metacritic?: string;
   ordering?: string;
+  year?: number;
 }
