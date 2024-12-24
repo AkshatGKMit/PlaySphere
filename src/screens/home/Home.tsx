@@ -29,13 +29,18 @@ const Home = () => {
     setYOffset(y);
   }, []);
 
+  const backgroundColor = useMemo(
+    () => (yOffset > 0 ? theme.all.surfaceContainer : theme.all.surface),
+    [theme.all.surface, theme.all.surfaceContainer, yOffset],
+  );
+
   const headerStyles = useMemo(
     () => [
       styles.header,
-      { backgroundColor: yOffset > 0 ? theme.all.surfaceContainer : theme.all.surface },
+      { backgroundColor },
       getShadowStyle(yOffset > 0 ? Elevation.level5 : Elevation.level0),
     ],
-    [styles.header, theme.all.surface, theme.all.surfaceContainer, yOffset],
+    [backgroundColor, styles.header, yOffset],
   );
 
   const { url, title, params: queryParams } = params! as HomeRouteProps;
@@ -45,10 +50,12 @@ const Home = () => {
       url={url}
       params={queryParams}
       onScroll={onScroll}
+      listHeaderBackgroundColor={backgroundColor}
       header={
         <Header
           headerStyles={headerStyles}
           styles={styles}
+          theme={theme}
         >
           <TextBlock
             typography={Typography.headlineLarge}
