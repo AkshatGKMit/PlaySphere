@@ -3,6 +3,16 @@ import { StyleProp, TextProps, TextStyle } from 'react-native';
 import { IconFamily } from '@constants';
 
 declare global {
+  interface ActionButtonProps extends ViewProps {
+    label: string;
+    onPress?: () => void;
+    leadingIcon?: IconType;
+    trailingIcon?: IconType;
+    loading?: boolean;
+    typography?: Typography;
+    fontWeight?: FontWeight;
+  }
+
   type IconFamily = (typeof IconFamily)[keyof typeof IconFamily];
 
   interface IconType {

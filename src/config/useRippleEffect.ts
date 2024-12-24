@@ -54,7 +54,7 @@ const useRippleEffect = () => {
   const rippleStyles = [
     rippleStyle,
     {
-      backgroundColor: theme.inverted.main,
+      backgroundColor: theme.main,
       transform: [{ scale }],
       opacity,
     },
