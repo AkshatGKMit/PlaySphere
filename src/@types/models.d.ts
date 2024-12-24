@@ -41,7 +41,7 @@ interface User {
 
 interface Rating {
   id: number;
-  title: string;
+  title: RatingCategory;
   count: number;
   percent: number;
 }
@@ -63,8 +63,8 @@ interface Game {
   name: string;
   originalName: string;
   description: string;
-  metaCritic: number;
-  released: string;
+  metaCritic: number | null;
+  released: string | null;
   toBeAnnounced: boolean;
   updated: string | null;
   backgroundImage: string;
@@ -82,10 +82,10 @@ interface Game {
   redditUrl: string;
   saturatedColor: string;
   dominantColor: string;
-  systemPlatforms: GameSystemPlatforms;
-  genres: EntityFilters;
-  tags: EntityFilters;
-  ageRating: EntityFilter;
+  systemPlatforms: GameSystemPlatforms | null;
+  genres: EntityFilters | null;
+  tags: EntityFilters | null;
+  ageRating: EntityFilter | null;
   rawDescription: string;
 }
 type Games = Game[];
@@ -159,7 +159,7 @@ interface CollectionFeed {
   id: number;
   created: string;
   text: string;
-  game: GameDetailResponse;
+  game: Game;
   user: UserDetailsResponse | null;
 }
 type CollectionFeeds = CollectionFeed[];
@@ -238,5 +238,15 @@ interface UserGameLibrary extends PaginatedData<Movie> {
 interface LeaderboardUser {
   user: User;
 }
+
+interface GameInCollection {
+  id: number;
+  slug: string;
+  name: string;
+  gameInCollection: boolean;
+}
+
+type Collections = Collection[];
+type GameInCollections = GameInCollection[];
 type LeaderboardUsers = LeaderboardUser[];
 type PaginatedLeaderboardUsers = PaginatedData<LeaderboardUser>;
