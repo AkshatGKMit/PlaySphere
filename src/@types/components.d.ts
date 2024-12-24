@@ -53,6 +53,25 @@ declare global {
     listStyles: StyleProp<ViewStyle>;
   }
 
+  interface GameListFooterProps {
+    showNoConnectionScreenMessage: boolean;
+    hasNextPage: boolean;
+    hasData: boolean;
+  }
+
+  interface GameListHeaderProps extends GameListStylesProps {
+    orderBy: DropDownItem;
+    setOrderBy: (item: DropDownItem) => void;
+    selectedSystemPlatform: DropDownItem;
+    setSelectedSystemPlatform: (item: DropDownItem) => void;
+    show?: boolean;
+  }
+
+  interface GameListListEmptyComponentProps extends GameListStylesProps {
+    theme: ThemeColors;
+    show?: boolean;
+  }
+
   type IconFamily = (typeof IconFamily)[keyof typeof IconFamily];
 
   interface IconType {

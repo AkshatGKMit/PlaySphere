@@ -1,3 +1,13 @@
+
+export const LibraryStatus = {
+  owned: 'owned',
+  playing: 'playing',
+  beaten: 'beaten',
+  dropped: 'dropped',
+  yet: 'yet',
+  toPlay: 'toPlay',
+} as const;
+
 export const AuthFields: AuthFields = {
   email: 'email',
   password: 'password',
@@ -49,6 +59,73 @@ export const DefaultObjectLayout: ObjectLayout = {
   right: 0,
 };
 
+export const Errors = {
+  noInternet: 'No Internet Connection',
+};
+
+export const orderByDropdownItems: DropdownItems = [
+  { id: 1, value: 'relevance', label: 'Relevance' },
+  { id: 2, value: 'name', label: 'Name' },
+  { id: 3, value: 'released', label: 'Released' },
+  { id: 4, value: 'added', label: 'Added' },
+  { id: 5, value: 'created', label: 'Created' },
+  { id: 6, value: 'updated', label: 'Updated' },
+  { id: 7, value: 'rating', label: 'Rating' },
+  { id: 8, value: 'metacritic', label: 'Critics Score' },
+];
+
+export const systemPlatformDropdownItems: DropdownItems = [
+  {
+    id: 0,
+    value: 'any',
+    label: 'Any',
+  },
+  {
+    id: 1,
+    value: MainSystemPlatforms.android,
+    label: capitalizeWord(MainSystemPlatforms.android),
+  },
+  {
+    id: 2,
+    value: MainSystemPlatforms.ios,
+    label: capitalizeWord(MainSystemPlatforms.ios),
+  },
+  {
+    id: 3,
+    value: MainSystemPlatforms.linux,
+    label: capitalizeWord(MainSystemPlatforms.linux),
+  },
+  {
+    id: 4,
+    value: MainSystemPlatforms.macintosh,
+    label: capitalizeWord(MainSystemPlatforms.macintosh),
+  },
+  {
+    id: 5,
+    value: MainSystemPlatforms.macos,
+    label: capitalizeWord(MainSystemPlatforms.macos),
+  },
+  {
+    id: 6,
+    value: MainSystemPlatforms.nintendo,
+    label: capitalizeWord(MainSystemPlatforms.nintendo),
+  },
+  {
+    id: 7,
+    value: MainSystemPlatforms.pc,
+    label: capitalizeWord(MainSystemPlatforms.pc),
+  },
+  {
+    id: 8,
+    value: MainSystemPlatforms.playstation,
+    label: capitalizeWord(MainSystemPlatforms.playstation),
+  },
+  {
+    id: 9,
+    value: MainSystemPlatforms.xbox,
+    label: capitalizeWord(MainSystemPlatforms.xbox),
+  },
+];
 
 export { displayName as APP_NAME } from '../../app.json';
 export * from './componentSpecifications';

@@ -16,6 +16,22 @@ export function parseDateString(dateString: string, matchWithToday?: boolean) {
   return inputDate.toLocaleDateString('en-US', options);
 }
 
+export const debounce = <T extends (...args: any[]) => void>(
+  func: T,
+  delay: number,
+): ((...args: Parameters<T>) => void) => {
+  let timer: NodeJS.Timeout | undefined;
+
+  return (...args: Parameters<T>): void => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};
+
 export const formatAgeRatingToAge = (ageRating?: EntityFilter | null): AgeRatingType | null => {
   if (
     !ageRating ||
