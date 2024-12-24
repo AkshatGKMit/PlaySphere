@@ -1,32 +1,54 @@
 import React, { useEffect } from 'react';
-import { View, Text, useColorScheme } from 'react-native';
+import { useColorScheme, LogBox } from 'react-native';
 import { Provider } from 'react-redux';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { NavigationContainer } from '@react-navigation/native';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { APP_NAME } from '@constants';
+import Dialog from '@components/dialog';
+import Navigator from '@navigation/Navigator';
 import store, { useAppDispatch } from '@store';
+import { fetchTokenFromStorage } from '@store/reducers/auth';
 import { switchTheme } from '@store/reducers/theme';
 import { ThemeMode } from '@themes';
 
 const App = () => {
+  const queryClient = new QueryClient();
+
+  useEffect(() => {
+    LogBox.ignoreAllLogs();
+  }, []);
+
   return (
     <Provider store={store}>
-      <Main />
+      <QueryClientProvider client={queryClient}>
+        <SafeAreaProvider>
+          <Main />
+          <Dialog />
+        </SafeAreaProvider>
+      </QueryClientProvider>
     </Provider>
   );
 };
 
 const Main = () => {
   const colorScheme = useColorScheme();
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(switchTheme(colorScheme ?? ThemeMode.light));
   }, [colorScheme, dispatch]);
 
+  useEffect(() => {
+    dispatch(fetchTokenFromStorage());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <View>
-      <Text>{APP_NAME}</Text>
-    </View>
+    <NavigationContainer>
+      <Navigator />
+    </NavigationContainer>
   );
 };
 
