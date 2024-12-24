@@ -41,8 +41,15 @@ declare global {
   }
 
   interface DetailsMediaHeaderProps extends DetailsThemeStyleProps {
+    isVideo: boolean;
+    setIsVideo: (value: boolean) => void;
     game?: Game;
     movies?: Movies;
+  }
+
+  interface DetailsVideoHeaderProps extends DetailsThemeStyleProps {
+    setIsVideo: (value: boolean) => void;
+    movie: Movie;
   }
 
   interface DetailsMetricsProps extends DetailsThemeStyleProps {

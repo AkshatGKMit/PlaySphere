@@ -25,7 +25,7 @@ const ThemedStyles = (theme: ThemeColors, insets: EdgeInsets) => {
       padding: 4,
       backgroundColor: colorWithOpacity(Colors.black, 0.75),
     },
-    image: {
+    media: {
       width: '100%',
       aspectRatio: 16 / 9,
     },
@@ -38,6 +38,12 @@ const ThemedStyles = (theme: ThemeColors, insets: EdgeInsets) => {
       padding: 6,
       backgroundColor: colorWithOpacity(Colors.black, 0.5),
       borderRadius: 30,
+    },
+    fullScreenButton: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      margin: 10,
     },
     scrollView: {
       paddingBottom: insets.bottom,

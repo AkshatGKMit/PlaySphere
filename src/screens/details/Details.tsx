@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, StyleProp, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -29,6 +29,12 @@ const Details = () => {
 
   const { colors: theme } = useAppSelector((state) => state.theme);
 
+  const scrollViewRef = useRef<ScrollView>(null);
+
+  const [isVideo, setIsVideo] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
+  const [scrollToTopCompleted, setScrollToTopCompleted] = useState(false);
+
   const [yOffset, setYOffset] = useState(0);
   const [showStickyButton, setShowStickyButton] = useState(true);
   const [stickyBackButtonTop, setStickyBackButtonTop] = useState<{ y: number; height: number }>({
@@ -45,26 +51,43 @@ const Details = () => {
 
   const { id: gameId } = params! as { id: number };
 
-  const { game, gameLoading, movies, screenshots, screenshotLoading } = useGameDetailsQuery(gameId);
+  const { game, gameLoading, movies, screenshots } = useGameDetailsQuery(gameId);
+
+  useEffect(() => {
+    if (isVideo) {
+      setIsSticky(true);
+      if (!scrollToTopCompleted) {
+        scrollViewRef.current?.scrollTo({ y: 0, animated: false });
+        setScrollToTopCompleted(true);
+      }
+    } else if (yOffset === 0) {
+      setIsSticky(false);
+      setScrollToTopCompleted(false);
+    }
+  }, [isVideo, scrollToTopCompleted, yOffset]);
 
   useEffect(() => {
     const actualStickyBackButtonTop =
       stickyBackButtonTop.y + stickyBackButtonTop.height - insets.top;
 
-    setShowStickyButton(yOffset <= stickyContainerTop.y - actualStickyBackButtonTop - insets.top);
-  }, [insets.top, stickyBackButtonTop, stickyContainerTop, yOffset]);
+    setShowStickyButton(
+      isVideo || yOffset <= stickyContainerTop.y - actualStickyBackButtonTop - insets.top,
+    );
+  }, [insets.top, isVideo, stickyBackButtonTop, stickyContainerTop, yOffset]);
 
   const isContainerOnTop = useMemo(
-    () => yOffset >= stickyContainerTop.y - insets.top,
-    [insets.top, stickyContainerTop, yOffset],
+    () => (isSticky && yOffset > 0) || yOffset >= stickyContainerTop.y - insets.top,
+    [insets.top, isSticky, stickyContainerTop.y, yOffset],
   );
 
   const topPadding = useMemo(
     () =>
-      isContainerOnTop && yOffset - stickyContainerTop.y < 0
+      isSticky
+        ? 0
+        : isContainerOnTop && yOffset - stickyContainerTop.y < 0
         ? yOffset - stickyContainerTop.y + insets.top + 10
         : insets.top + 10,
-    [insets.top, isContainerOnTop, stickyContainerTop, yOffset],
+    [insets.top, isContainerOnTop, isSticky, stickyContainerTop.y, yOffset],
   );
 
   const stickyContainerStyles: StyleProp<ViewStyle> = useMemo(
@@ -72,12 +95,13 @@ const Details = () => {
       styles.stickyContainer,
       {
         backgroundColor: isContainerOnTop ? theme.all.surfaceContainerLowest : theme.background,
-        paddingTop: isContainerOnTop ? topPadding : 10,
+        paddingTop: isContainerOnTop && !isSticky ? topPadding : 10,
         ...getShadowStyle(Elevation.level2),
       },
     ],
     [
       isContainerOnTop,
+      isSticky,
       styles.stickyContainer,
       theme.all.surfaceContainerLowest,
       theme.background,
@@ -117,38 +141,75 @@ const Details = () => {
         </TouchableOpacity>
       ) : null}
       <ScrollView
+        ref={scrollViewRef}
         onScroll={(e) => setYOffset(e.nativeEvent.contentOffset.y)}
         contentContainerStyle={styles.scrollView}
         showsVerticalScrollIndicator={false}
-        stickyHeaderIndices={[2]}
+        stickyHeaderIndices={[isSticky ? 0 : 2]}
         scrollEnabled={yOffset >= 0 && !gameLoading}
-        directionalLockEnabled
       >
-        <View style={styles.statusBar} />
-        <MediaHeader
-          game={game}
-          movies={movies}
-          styles={styles}
-          theme={theme}
-        />
-        <StickyTitle
-          isPending={!game}
-          goBack={goBack}
-          name={game?.name ?? ''}
-          onLayout={(e) => {
-            setStickyContainerTop({
-              y: e.nativeEvent.layout.y,
-              height: e.nativeEvent.layout.height,
-            });
-          }}
-          rating={game?.rating ?? 0}
-          showAddToCollectionDialog={showAddToCollectionDialog}
-          showStickyButton={showStickyButton}
-          stickyContainerStyles={stickyContainerStyles}
-          styles={styles}
-          theme={theme}
-          systemPlatformNames={systemPlatformNames}
-        />
+        {isSticky ? (
+          <View>
+            <View style={styles.statusBar} />
+            <MediaHeader
+              isVideo={isVideo}
+              setIsVideo={setIsVideo}
+              game={game}
+              movies={movies}
+              styles={styles}
+              theme={theme}
+            />
+            <StickyTitle
+              isPending={!game}
+              goBack={goBack}
+              name={game?.name ?? ''}
+              onLayout={(e) => {
+                setStickyContainerTop({
+                  y: e.nativeEvent.layout.y,
+                  height: e.nativeEvent.layout.height,
+                });
+              }}
+              rating={game?.rating ?? 0}
+              showAddToCollectionDialog={showAddToCollectionDialog}
+              showStickyButton={showStickyButton}
+              stickyContainerStyles={stickyContainerStyles}
+              styles={styles}
+              theme={theme}
+              systemPlatformNames={systemPlatformNames}
+            />
+          </View>
+        ) : null}
+        {!isSticky ? <View style={styles.statusBar} /> : null}
+        {!isSticky ? (
+          <MediaHeader
+            isVideo={isVideo}
+            setIsVideo={setIsVideo}
+            game={game}
+            movies={movies}
+            styles={styles}
+            theme={theme}
+          />
+        ) : null}
+        {!isSticky ? (
+          <StickyTitle
+            isPending={!game}
+            goBack={goBack}
+            name={game?.name ?? ''}
+            onLayout={(e) => {
+              setStickyContainerTop({
+                y: e.nativeEvent.layout.y,
+                height: e.nativeEvent.layout.height,
+              });
+            }}
+            rating={game?.rating ?? 0}
+            showAddToCollectionDialog={showAddToCollectionDialog}
+            showStickyButton={showStickyButton}
+            stickyContainerStyles={stickyContainerStyles}
+            styles={styles}
+            theme={theme}
+            systemPlatformNames={systemPlatformNames}
+          />
+        ) : null}
         {game?.released && game?.metaCritic && ratedFor && game?.playtime ? (
           <Metrics
             isPending={!game}
@@ -169,7 +230,7 @@ const Details = () => {
           styles={styles}
         />
         <Screenshots
-          isPending={!game && screenshotLoading}
+          isPending={!game && !screenshots}
           screenshots={screenshots ?? []}
           styles={styles}
           theme={theme}
