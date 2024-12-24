@@ -1,4 +1,14 @@
-import { StyleProp, TextProps, TextStyle } from 'react-native';
+import { ReactNode } from 'react';
+import {
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  StyleProp,
+  TextInputProps,
+  TextProps,
+  TextStyle,
+  ViewProps,
+  ViewStyle,
+} from 'react-native';
 
 import { IconFamily } from '@constants';
 
@@ -99,6 +109,13 @@ declare global {
   interface GameListListEmptyComponentProps extends GameListStylesProps {
     theme: ThemeColors;
     show?: boolean;
+  }
+
+  interface GameListScreenProps {
+    url: string;
+    header?: ReactNode;
+    params?: ListQueryParams;
+    onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
   }
 
   type IconFamily = (typeof IconFamily)[keyof typeof IconFamily];
