@@ -24,6 +24,7 @@ declare global {
   type CollectionGamesRouteProps = {
     collectionId: number;
     collectionName: string;
+    numGames: number;
   };
 
   type StackScreenNames = (typeof Stack)[keyof typeof Stack];

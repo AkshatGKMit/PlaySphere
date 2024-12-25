@@ -17,8 +17,12 @@ const CollectionCard = ({ collection }: { collection: Collection }) => {
   const { navigate } = useNavigation<StackNavigation>();
 
   const onPressCard = useCallback(() => {
-    navigate(collectionGamesRoute, { collectionId: id, collectionName: name });
-  }, [id, name, navigate]);
+    navigate(collectionGamesRoute, {
+      collectionId: id,
+      collectionName: name,
+      numGames: gamesCount,
+    });
+  }, [gamesCount, id, name, navigate]);
 
   return (
     <FastImage
