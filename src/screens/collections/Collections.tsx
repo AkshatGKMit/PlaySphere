@@ -17,6 +17,7 @@ import { globalStyles } from '@themes';
 import { getShadowStyle } from '@utility/style';
 
 import ThemedStyles from './styles';
+import ActionButton from '@components/actionButton';
 
 const Collections = () => {
   const insets = useSafeAreaInsets();
@@ -29,6 +30,7 @@ const Collections = () => {
   const {
     collections,
     loading,
+    isSuccess,
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
@@ -50,9 +52,11 @@ const Collections = () => {
 
   const styles = useStyles((themeColors) => ThemedStyles(themeColors, insets));
 
+  const collectionNames = useMemo(() => collections.map(({ name }) => name), [collections]);
+
   const showAddNewCollectionDialog = useCallback(() => {
-    Dialog.show({ child: <AddNewCollectionDialog /> });
-  }, []);
+    Dialog.show({ child: <AddNewCollectionDialog collectionNames={collectionNames} /> });
+  }, [collectionNames]);
 
   const headerStyles = useMemo(
     () => [
@@ -61,6 +65,11 @@ const Collections = () => {
       getShadowStyle(yOffset > 0 ? Elevation.level5 : Elevation.level0),
     ],
     [styles.header, theme.all.surface, theme.all.surfaceContainer, yOffset],
+  );
+
+  const showNoCollectionsFound = useMemo(
+    () => !loading && isSuccess && !collections.length,
+    [collections.length, isSuccess, loading],
   );
 
   return (
@@ -77,48 +86,67 @@ const Collections = () => {
         >
           My Collections
         </TextBlock>
-        <IconButton
-          icon={Icons.octicons.diffAdded}
-          onPress={showAddNewCollectionDialog}
-        />
+        {!showNoCollectionsFound ? (
+          <IconButton
+            icon={Icons.octicons.diffAdded}
+            onPress={showAddNewCollectionDialog}
+          />
+        ) : null}
       </View>
-      <FlatList
-        key={collections.length}
-        numColumns={2}
-        style={globalStyles.flex1}
-        contentContainerStyle={styles.listContentStyle}
-        columnWrapperStyle={styles.columnStyles}
-        data={isRefetching || loading ? [] : collections}
-        renderItem={({ item: collection }) => {
-          const { id } = collection;
+      {showNoCollectionsFound ? (
+        <View style={styles.noCollectionContainer}>
+          <TextBlock
+            typography={Typography.titleLarge}
+            fontWeight={FontWeight.bold}
+          >
+            No Collections Found
+          </TextBlock>
+          <ActionButton
+            style={styles.createCollectionButton}
+            label="Create one"
+            fontWeight={FontWeight.bold}
+            onPress={showAddNewCollectionDialog}
+          />
+        </View>
+      ) : (
+        <FlatList
+          key={collections.length}
+          numColumns={2}
+          style={globalStyles.flex1}
+          contentContainerStyle={styles.listContentStyle}
+          columnWrapperStyle={styles.columnStyles}
+          data={isRefetching || loading ? [] : collections}
+          renderItem={({ item: collection }) => {
+            const { id } = collection;
 
-          return (
-            <CollectionCard
-              key={id}
-              collection={collection}
+            return (
+              <CollectionCard
+                key={id}
+                collection={collection}
+              />
+            );
+          }}
+          initialNumToRender={16}
+          keyExtractor={({ id }) => id.toString()}
+          onScroll={onScroll}
+          ListEmptyComponent={
+            <ListEmptyComponent
+              styles={styles}
+              theme={theme}
             />
-          );
-        }}
-        initialNumToRender={16}
-        keyExtractor={({ id }) => id.toString()}
-        onScroll={onScroll}
-        ListEmptyComponent={
-          <ListEmptyComponent
-            styles={styles}
-            theme={theme}
-          />
-        }
-        ListFooterComponent={
-          <ListFooterComponent
-            hasData={collections.length !== 0}
-            hasNextPage={!isRefetching && hasNextPage}
-            showNoConnectionScreenMessage={online.showNoConnectionScreenMessage}
-          />
-        }
-        showsVerticalScrollIndicator={false}
-        onEndReachedThreshold={1}
-        onEndReached={onEndReached}
-      />
+          }
+          ListFooterComponent={
+            <ListFooterComponent
+              hasData={collections.length !== 0}
+              hasNextPage={!isRefetching && hasNextPage}
+              showNoConnectionScreenMessage={online.showNoConnectionScreenMessage}
+            />
+          }
+          showsVerticalScrollIndicator={false}
+          onEndReachedThreshold={1}
+          onEndReached={onEndReached}
+        />
+      )}
     </View>
   );
 };
