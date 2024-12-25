@@ -56,6 +56,20 @@ const ThemedStyles = (theme: ThemeColors, insets: EdgeInsets) => {
       gap: 8,
       flexDirection: 'row',
     },
+    noCollectionContainer: {
+      ...globalStyles.flex1,
+      ...globalStyles.columnCenter,
+      gap: 10,
+      maxWidth: '60%',
+      alignSelf: 'center',
+    },
+    createCollectionButton: {
+      flex: 0,
+      paddingVertical: 8,
+      paddingHorizontal: 5,
+      borderRadius: 20,
+      width: 'auto',
+    },
   });
 };
 
