@@ -36,7 +36,7 @@ const RatingCategoryContainer = ({ rating, styles }: DetailsRatingCategoryContai
         style={styles.ratingTitle}
         fontWeight={FontWeight.semibold}
       >
-        {title}:
+        {title}
       </TextBlock>
       <View
         onLayout={(e) => setBarWidth(e.nativeEvent.layout.width)}

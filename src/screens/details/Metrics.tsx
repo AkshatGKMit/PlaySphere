@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, ScrollView, View } from 'react-native';
+import { Animated, View } from 'react-native';
 
 import TextBlock from '@components/textBlock';
 import useShimmerColor from '@config/useShimmerColor';
@@ -43,11 +43,7 @@ const Metrics = ({
   const ratedStyles = [styles.ratedForValue, { backgroundColor: ratedFor?.color }];
 
   return (
-    <ScrollView
-      horizontal
-      contentContainerStyle={styles.scrollContentSection}
-      showsHorizontalScrollIndicator={false}
-    >
+    <View style={styles.metricsContent}>
       {released ? (
         <View style={styles.metricValueContainer}>
           <TextBlock fontWeight={FontWeight.semibold}>{parseDateString(released)}</TextBlock>
@@ -85,7 +81,7 @@ const Metrics = ({
           <TextBlock typography={Typography.labelSmall}>Avg. Playtime</TextBlock>
         </View>
       ) : null}
-    </ScrollView>
+    </View>
   );
 };
 

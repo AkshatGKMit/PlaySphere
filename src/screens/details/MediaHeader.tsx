@@ -1,5 +1,5 @@
-import React, { useMemo, useRef, useState } from 'react';
-import { Animated, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Animated, StatusBar, TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { LANDSCAPE, OrientationLocker, PORTRAIT } from 'react-native-orientation-locker';
 import Video, { ControlsStyles, VideoRef } from 'react-native-video';
@@ -25,10 +25,16 @@ const controlStyles = (isFullScreen: boolean): ControlsStyles => ({
 });
 
 const VideoHeader = ({ movie, styles, setIsVideo }: DetailsVideoHeaderProps) => {
-  const [controlsVisible, setControlsVisible] = useState(false);
+  const [controlsVisible, setControlsVisible] = useState(true);
   const [fullScreen, setFullScreen] = useState(false);
 
   const videoRef = useRef<VideoRef>(null);
+
+  useEffect(() => {
+    videoRef.current?.setFullScreen(fullScreen);
+    StatusBar.setHidden(fullScreen);
+    StatusBar.setTranslucent(fullScreen);
+  }, [fullScreen]);
 
   const showLandscape = useMemo(() => fullScreen, [fullScreen]);
 
