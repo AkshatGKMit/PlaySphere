@@ -27,6 +27,7 @@ declare global {
     typography?: Typography;
     fontWeight?: FontWeight;
     iconSize?: number;
+    color?: string;
   }
 
   interface AddNewCollectionStyles {
@@ -229,7 +230,7 @@ declare global {
     typography?: Typography;
     fontWeight?: FontWeight;
     color?: string;
-    style?: StyleProp<Omit<TextStyle, 'fontFamily' | 'fontSize' | 'color'>>;
+    style?: StyleProp<Omit<TextStyle, 'fontFamily' | 'fontSize'>>;
   }
 
   interface TextFieldProps extends TextInputProps {
