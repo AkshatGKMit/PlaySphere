@@ -28,6 +28,7 @@ const AddNewCollection = ({
         value={newCollection}
         onChangeText={setNewCollection}
         error={newCollectionFieldError}
+        autoFocus
       />
       <View style={styles.buttonView}>
         <TouchableOpacity

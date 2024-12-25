@@ -18,7 +18,6 @@ import { ListEmptyComponent, ListFooterComponent } from '@components/pageListCom
 import TextBlock from '@components/textBlock';
 import useStyles from '@config/useStyles';
 import { Elevation, FontWeight, Icons, Typography } from '@constants';
-import useCollectionQuery from '@network/hooks/useCollectionQuery';
 import useCollectionFeedsQuery from '@network/hooks/useCollectionFeedsQuery';
 import useCollectionMutation from '@network/hooks/useCollectionMutation';
 import { useAppSelector } from '@store';
@@ -49,13 +48,6 @@ const CollectionGames = () => {
   const { removeCollectionLoading, mutateRemoveCollection, removeCollectionSuccess } =
     useCollectionMutation();
 
-  const { refetch } = useCollectionQuery();
-
-  const closeScreen = useCallback(() => {
-    refetch();
-    goBack();
-  }, [goBack, refetch]);
-
   const onPressDelete = useCallback(() => {
     Alert.alert(
       'Confirm Delete',
@@ -77,10 +69,10 @@ const CollectionGames = () => {
   }, [collectionId, mutateRemoveCollection]);
 
   useEffect(() => {
-    if (removeCollectionSuccess) {
-      closeScreen();
+    if (removeCollectionSuccess && !removeCollectionLoading) {
+      goBack();
     }
-  }, [closeScreen, removeCollectionSuccess]);
+  }, [goBack, removeCollectionLoading, removeCollectionSuccess]);
 
   const onEndReached = () => {
     if (online.isConnected && !isFetchingNextPage) {
@@ -110,7 +102,7 @@ const CollectionGames = () => {
       <View style={headerStyles}>
         <IconButton
           icon={Icons.materialCommunityIcons.arrowLeft}
-          onPress={closeScreen}
+          onPress={goBack}
         />
         <TextBlock
           typography={Typography.headlineLarge}
@@ -168,16 +160,22 @@ const CollectionGames = () => {
         style={styles.deleteButton}
         onPress={onPressDelete}
       >
-        <Icon
-          icon={Icons.materialCommunityIcons.trashCan}
-          size={22}
-        />
-        <TextBlock
-          typography={Typography.bodyLarge}
-          fontWeight={FontWeight.bold}
-        >
-          Delete Collection
-        </TextBlock>
+        {removeCollectionLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <Icon
+              icon={Icons.materialCommunityIcons.trashCan}
+              size={22}
+            />
+            <TextBlock
+              typography={Typography.bodyLarge}
+              fontWeight={FontWeight.bold}
+            >
+              Delete Collection
+            </TextBlock>
+          </>
+        )}
       </TouchableOpacity>
     </View>
   );

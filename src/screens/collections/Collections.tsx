@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { View, FlatList, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -34,13 +34,7 @@ const Collections = () => {
     fetchNextPage,
     online,
     isRefetching,
-    refetch,
   } = useCollectionQuery();
-
-  useEffect(() => {
-    refetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const onScroll = useCallback(({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { y } = nativeEvent.contentOffset;
@@ -57,8 +51,8 @@ const Collections = () => {
   const styles = useStyles((themeColors) => ThemedStyles(themeColors, insets));
 
   const showAddNewCollectionDialog = useCallback(() => {
-    Dialog.show({ child: <AddNewCollectionDialog />, onClose: refetch });
-  }, [refetch]);
+    Dialog.show({ child: <AddNewCollectionDialog /> });
+  }, []);
 
   const headerStyles = useMemo(
     () => [
@@ -89,6 +83,7 @@ const Collections = () => {
         />
       </View>
       <FlatList
+        key={collections.length}
         numColumns={2}
         style={globalStyles.flex1}
         contentContainerStyle={styles.listContentStyle}

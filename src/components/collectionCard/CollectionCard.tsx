@@ -12,20 +12,18 @@ import styles from './styles';
 const { collectionGames: collectionGamesRoute } = Routes.Stack;
 
 const CollectionCard = ({ collection }: { collection: Collection }) => {
-  const { id, gameBackground, name, gamesCount } = collection;
+  const { id, name, gamesCount, backgrounds } = collection;
 
   const { navigate } = useNavigation<StackNavigation>();
 
   const onPressCard = useCallback(() => {
-    if (gamesCount) {
-      navigate(collectionGamesRoute, { collectionId: id, collectionName: name });
-    }
-  }, [gamesCount, id, name, navigate]);
+    navigate(collectionGamesRoute, { collectionId: id, collectionName: name });
+  }, [id, name, navigate]);
 
   return (
     <FastImage
       key={id}
-      source={{ uri: gameBackground?.url }}
+      source={{ uri: backgrounds?.length ? backgrounds[0].url : undefined }}
       defaultSource={IMAGES.COLLECTION_COVER}
       resizeMode="stretch"
       style={styles.image}

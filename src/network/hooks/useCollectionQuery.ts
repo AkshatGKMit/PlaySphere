@@ -45,7 +45,6 @@ const useCollectionQuery = (params?: ListQueryParams) => {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-    refetch,
     isRefetching,
   } = useInfiniteQuery<
     AxiosResponse<PaginatedCollectionDetailsResponse>,
@@ -58,29 +57,17 @@ const useCollectionQuery = (params?: ListQueryParams) => {
     queryFn: queryFunction,
     getNextPageParam,
     initialPageParam: '',
-    staleTime: 1000 * 60,
-    refetchOnMount: true,
+    enabled: !!user?.id,
+    gcTime: Infinity,
+    staleTime: Infinity,
   });
 
   const online = useOnlineStatus(!data);
 
   const collections: Collections = useMemo(() => {
-    const collectionIdSet = new Set();
-
     const allCollections = data?.pages.flatMap((page) => page.data.results) ?? [];
 
-    const formattedCollections = allCollections.reduce<Collections>((acc, collection) => {
-      const { id } = collection;
-
-      if (!collectionIdSet.has(id)) {
-        collectionIdSet.add(id);
-        acc.push(formatCollection(collection));
-      }
-
-      return acc;
-    }, []);
-
-    return formattedCollections;
+    return allCollections.map(formatCollection);
   }, [data]);
 
   return {
@@ -93,7 +80,6 @@ const useCollectionQuery = (params?: ListQueryParams) => {
     fetchNextPage,
     isFetchingNextPage,
     online,
-    refetch,
     isRefetching,
   };
 };

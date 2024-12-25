@@ -1,7 +1,7 @@
 interface GameBackground {
   url: string;
-  dominantColor: string;
-  saturatedColor: string;
+  dominantColor?: string;
+  saturatedColor?: string;
 }
 type GameBackgrounds = GameBackground[];
 
@@ -143,7 +143,7 @@ interface Collection {
   created: string;
   updated: string | null;
   gameBackground: GameBackground | null;
-  backgrounds: GameBackgrounds;
+  backgrounds: GameBackgrounds | null;
   gamesCount: number;
   postsCount: number;
   likesCount: number;
