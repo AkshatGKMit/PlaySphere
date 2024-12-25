@@ -11,6 +11,7 @@ interface AddNewOrUpdateCollectionBody {
   name: string;
   description?: string;
   is_private?: boolean;
+  game?: GAme;
 }
 
 interface AddOrRemoveGameFromCollectionBody {

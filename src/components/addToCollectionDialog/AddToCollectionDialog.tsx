@@ -1,14 +1,15 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { View } from 'react-native';
 
-import Icon from '@components/icon';
+import ActionButton from '@components/actionButton';
+import AddNewCollectionDialog from '@components/addNewCollectionDialog';
+import Dialog from '@components/dialog';
 import TextBlock from '@components/textBlock';
 import useStyles from '@config/useStyles';
 import { FontWeight, Icons, Typography } from '@constants';
 import useGameInCollectionQuery from '@network/hooks/useGameInCollectionQuery';
 import useCollectionMutation from '@network/hooks/useCollectionMutation';
 
-import AddNewCollection from './AddNewCollection';
 import CloseIcon from './CloseIcon';
 import CollectionContainer from './CollectionContainer';
 import ThemedStyles from './styles';
@@ -16,9 +17,6 @@ import ThemedStyles from './styles';
 const AddToCollectionDialog = ({ game }: { game: Game }) => {
   const { id: gameId } = game;
 
-  const [isAddNew, setAddNew] = useState(false);
-  const [newCollection, setNewCollection] = useState('');
-  const [newCollectionFieldError, setNewCollectionFieldError] = useState('');
   const [mutatingId, setMutatingId] = useState<number | null>(null);
 
   const {
@@ -27,49 +25,15 @@ const AddToCollectionDialog = ({ game }: { game: Game }) => {
     isRefetching: gameInCollectionsRefetching,
   } = useGameInCollectionQuery(gameId);
 
-  const {
-    mutateAddNewCollection,
-    addNewCollectionLoading,
-    addNewCollectionSuccess,
-    addNewCollectionError,
-    mutateGameToCollection,
-    updateGameLoading,
-  } = useCollectionMutation();
+  const { mutateGameToCollection, updateGameLoading } = useCollectionMutation();
 
   const styles = useStyles(ThemedStyles);
 
-  const onCreateNewCollection = useCallback(() => {
-    if (!newCollection) {
-      setNewCollectionFieldError('Collection name is required');
-      return;
-    }
-
-    const nameAtIndex = gameInCollections.findIndex(({ name }) => name === newCollection);
-    if (nameAtIndex > -1) {
-      setNewCollectionFieldError('Duplicate Name Not Allowed');
-      return;
-    }
-
-    mutateAddNewCollection({ name: newCollection });
-  }, [gameInCollections, mutateAddNewCollection, newCollection]);
-
   useEffect(() => {
-    setNewCollectionFieldError('');
-  }, [newCollection]);
-
-  useEffect(() => {
-    if (addNewCollectionError) {
-      setNewCollectionFieldError(addNewCollectionError);
+    if (!updateGameLoading) {
+      setMutatingId(null);
     }
-  }, [addNewCollectionError]);
-
-  useEffect(() => {
-    if (addNewCollectionSuccess) {
-      setNewCollection('');
-      setNewCollectionFieldError('');
-      setAddNew(false);
-    }
-  }, [addNewCollectionSuccess]);
+  }, [updateGameLoading]);
 
   const onPressCollection = useCallback(
     ({ id, gameInCollection }: GameInCollection) => {
@@ -79,11 +43,24 @@ const AddToCollectionDialog = ({ game }: { game: Game }) => {
     [game, gameId, mutateGameToCollection],
   );
 
-  useEffect(() => {
-    if (!updateGameLoading) {
-      setMutatingId(null);
-    }
-  }, [updateGameLoading]);
+  const collectionNames = useMemo(
+    () => gameInCollections.map(({ name }) => name),
+    [gameInCollections],
+  );
+
+  const showAddToNewCollectionDialog = useCallback(() => {
+    Dialog.show({
+      child: (
+        <AddNewCollectionDialog
+          collectionNames={collectionNames}
+          game={game}
+        />
+      ),
+      onClose: () => {
+        Dialog.show({ child: <AddToCollectionDialog game={game} /> });
+      },
+    });
+  }, [collectionNames, game]);
 
   return (
     <View style={styles.dialogContainer}>
@@ -104,37 +81,25 @@ const AddToCollectionDialog = ({ game }: { game: Game }) => {
         updateGameLoading={updateGameLoading}
         styles={styles}
       />
-      <View style={styles.separator} />
-      {isAddNew ? (
-        <AddNewCollection
-          newCollection={newCollection}
-          setNewCollection={setNewCollection}
-          newCollectionFieldError={newCollectionFieldError}
-          onCreate={onCreateNewCollection}
-          onClose={() => setAddNew(false)}
-          loading={addNewCollectionLoading}
-          styles={styles}
-        />
-      ) : (
-        <TouchableOpacity
-          activeOpacity={0.8}
-          style={styles.addToCollection}
-          onPress={() => setAddNew(true)}
+      <View style={styles.separatorContainer}>
+        <View style={styles.separator} />
+        <TextBlock
+          typography={Typography.bodySmall}
+          fontWeight={FontWeight.bold}
+          color={styles.separator.backgroundColor}
         >
-          <Icon
-            icon={Icons.materialIcons.add}
-            size={20}
-            color={styles.createButton.color}
-          />
-          <TextBlock
-            typography={Typography.bodyLarge}
-            color={styles.createButton.color}
-            fontWeight={FontWeight.semibold}
-          >
-            Create a new collection
-          </TextBlock>
-        </TouchableOpacity>
-      )}
+          OR
+        </TextBlock>
+        <View style={styles.separator} />
+      </View>
+      <ActionButton
+        label="Add to a new collection"
+        leadingIcon={Icons.materialIcons.add}
+        fontWeight={FontWeight.semibold}
+        iconSize={20}
+        style={styles.addToCollection}
+        onPress={showAddToNewCollectionDialog}
+      />
     </View>
   );
 };

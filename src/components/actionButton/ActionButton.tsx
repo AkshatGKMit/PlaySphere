@@ -18,6 +18,7 @@ const ActionButton = ({
   style,
   fontWeight,
   typography,
+  iconSize,
 }: ActionButtonProps) => {
   const { animatePressIn, pressOut, rippleContainerStyle, rippleStyles } = useRippleEffect();
   const styles = useStyles(ThemedStyles);
@@ -38,6 +39,7 @@ const ActionButton = ({
               <Icon
                 icon={leadingIcon}
                 color={styles.label.color}
+                size={iconSize}
               />
             )}
             <TextBlock
@@ -51,6 +53,7 @@ const ActionButton = ({
               <Icon
                 icon={trailingIcon}
                 color={styles.label.color}
+                size={iconSize}
               />
             )}
           </>
