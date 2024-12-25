@@ -48,10 +48,6 @@ const CollectionGames = () => {
   const { removeCollectionLoading, mutateRemoveCollection, removeCollectionSuccess } =
     useCollectionMutation();
 
-  const closeScreen = useCallback(() => {
-    goBack();
-  }, [goBack]);
-
   const onPressDelete = useCallback(() => {
     Alert.alert(
       'Confirm Delete',
@@ -73,10 +69,10 @@ const CollectionGames = () => {
   }, [collectionId, mutateRemoveCollection]);
 
   useEffect(() => {
-    if (removeCollectionSuccess) {
-      closeScreen();
+    if ((removeCollectionSuccess && !removeCollectionLoading) || !collectionFeeds.length) {
+      goBack();
     }
-  }, [closeScreen, removeCollectionSuccess]);
+  }, [collectionFeeds.length, goBack, removeCollectionLoading, removeCollectionSuccess]);
 
   const onEndReached = () => {
     if (online.isConnected && !isFetchingNextPage) {
@@ -106,7 +102,7 @@ const CollectionGames = () => {
       <View style={headerStyles}>
         <IconButton
           icon={Icons.materialCommunityIcons.arrowLeft}
-          onPress={closeScreen}
+          onPress={goBack}
         />
         <TextBlock
           typography={Typography.headlineLarge}
@@ -164,16 +160,22 @@ const CollectionGames = () => {
         style={styles.deleteButton}
         onPress={onPressDelete}
       >
-        <Icon
-          icon={Icons.materialCommunityIcons.trashCan}
-          size={22}
-        />
-        <TextBlock
-          typography={Typography.bodyLarge}
-          fontWeight={FontWeight.bold}
-        >
-          Delete Collection
-        </TextBlock>
+        {removeCollectionLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <Icon
+              icon={Icons.materialCommunityIcons.trashCan}
+              size={22}
+            />
+            <TextBlock
+              typography={Typography.bodyLarge}
+              fontWeight={FontWeight.bold}
+            >
+              Delete Collection
+            </TextBlock>
+          </>
+        )}
       </TouchableOpacity>
     </View>
   );

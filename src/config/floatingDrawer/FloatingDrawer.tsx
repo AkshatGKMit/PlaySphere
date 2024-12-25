@@ -152,7 +152,7 @@ const FloatingDrawer = () => {
         >
           <BlurView
             style={globalStyles.fullPositionAbsolute}
-            blurAmount={0}
+            blurAmount={1}
           />
           <View style={styles.modalContainer}>
             <View style={[styles.closeIcon, { top: buttonTop, left: buttonLeft }]}>

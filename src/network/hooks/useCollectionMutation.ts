@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AxiosError, AxiosResponse } from 'axios';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { InfiniteData, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { QueryKeys } from '@constants';
 import {
@@ -32,26 +32,23 @@ const useCollectionMutation = () => {
   const [removeCollectionLoading, setRemoveCollectionLoading] = useState(false);
   const [removeGameFromCollectionLoading, setRemoveGameFromCollectionLoading] = useState(false);
 
-  //#region - Update Query Cached Data
-  const updateCollectionInQueryData = useCallback(
+  //#region - Update Game In Collection Query Cached Data
+  const removeCollectionFromGameInCollectionQueryData = useCallback(
     (collectionId: number) => {
       const keys = getKeysContaining(userCollectionsKey);
 
       for (const key of keys) {
-        const response = queryClient.getQueryData<AxiosResponse<GameInCollectionsResponse>>(key);
+        queryClient.setQueryData<AxiosResponse<GameInCollectionsResponse>>(key, (data) => {
+          if (!data) {
+            return undefined;
+          }
 
-        if (!response) {
-          continue;
-        }
+          const duplicateData = { ...data };
 
-        const newCollections = response.data.filter(({ id }) => id !== collectionId);
+          duplicateData.data = duplicateData.data.filter(({ id }) => id !== collectionId);
 
-        const newResponse: AxiosResponse<GameInCollectionsResponse> = {
-          ...response,
-          data: newCollections,
-        };
-
-        queryClient.setQueryData<AxiosResponse<GameInCollectionsResponse>>(key, newResponse);
+          return duplicateData;
+        });
       }
     },
     [getKeysContaining, queryClient],
@@ -59,36 +56,131 @@ const useCollectionMutation = () => {
 
   const updateGameInCollectionQueryData = useCallback(
     ({ collectionId, gameId, isAdding }: AddOrRemoveFromCollectionVariables) => {
-      const response = queryClient.getQueryData<AxiosResponse<GameInCollectionsResponse>>([
-        userCollectionsKey,
-        gameId,
-      ]);
-
-      if (!response) {
-        setUpdateGameLoading(false);
-        return;
-      }
-
-      const newGameInCollections: GameInCollectionsResponse = response.data.map((collection) => {
-        const { id } = collection;
-        if (id !== collectionId) {
-          return collection;
-        }
-
-        return { ...collection, game_in_collection: isAdding };
-      });
-
-      const newResponse: AxiosResponse<GameInCollectionsResponse> = {
-        ...response,
-        data: newGameInCollections,
-      };
-
       queryClient.setQueryData<AxiosResponse<GameInCollectionsResponse>>(
         [userCollectionsKey, gameId],
-        newResponse,
+        (data) => {
+          if (!data) {
+            return undefined;
+          }
+
+          const duplicateData = { ...data };
+
+          duplicateData.data = duplicateData.data.map((collection) => {
+            const { id } = collection;
+            if (id !== collectionId) {
+              return collection;
+            }
+
+            return { ...collection, game_in_collection: isAdding };
+          });
+
+          return duplicateData;
+        },
       );
     },
     [queryClient],
+  );
+
+  const removeGameFromMyCollectionQueryData = useCallback(
+    ({ collectionId }: AddOrRemoveFromCollectionVariables) => {
+      const keys = getKeysContaining(myCollectionsKey);
+
+      for (const key of keys) {
+        queryClient.setQueryData<InfiniteData<AxiosResponse<PaginatedCollectionDetailsResponse>>>(
+          key,
+          (data) => {
+            if (!data) {
+              return undefined;
+            }
+
+            const duplicateData = { ...data };
+
+            duplicateData.pages = duplicateData.pages.map((page) => ({
+              ...page,
+              data: {
+                ...page.data,
+                results: page.data.results.map((result) => {
+                  const newCount = result.games_count - 1;
+
+                  if (result.id !== collectionId) {
+                    return result;
+                  }
+
+                  return {
+                    ...result,
+                    games_count: result.games_count - 1,
+                    game_background: newCount > 0 ? result.game_background : null,
+                  };
+                }),
+              },
+            }));
+
+            return duplicateData;
+          },
+        );
+      }
+    },
+    [getKeysContaining, queryClient],
+  );
+
+  const updateGameInCollectionGamesQueryData = useCallback(
+    ({ collectionId, gameId }: AddOrRemoveFromCollectionVariables) => {
+      queryClient.setQueryData<InfiniteData<AxiosResponse<PaginatedCollectionFeedsResponse>>>(
+        [collectionGamesKey, collectionId],
+        (data) => {
+          if (!data) {
+            return undefined;
+          }
+
+          const duplicateData = { ...data };
+
+          duplicateData.pages = data.pages.map((page) => ({
+            ...page,
+            data: {
+              ...page.data,
+              count: page.data.count - 1,
+              results: page.data.results.filter(({ game }) => game.id !== gameId),
+            },
+          }));
+
+          return duplicateData;
+        },
+      );
+    },
+    [queryClient],
+  );
+  //#endregion
+
+  //#region - Update Collection Query Cached Data
+  const removeCollectionFromCollectionQueryData = useCallback(
+    (collectionId: number) => {
+      const keys = getKeysContaining(myCollectionsKey);
+
+      for (const key of keys) {
+        queryClient.setQueryData<InfiniteData<AxiosResponse<PaginatedCollectionDetailsResponse>>>(
+          key,
+          (data) => {
+            if (!data) {
+              return undefined;
+            }
+
+            const duplicateData = { ...data };
+
+            duplicateData.pages = data.pages.map((page) => ({
+              ...page,
+              data: {
+                ...page.data,
+                count: page.data.count - 1,
+                results: page.data.results.filter(({ id }) => id !== collectionId),
+              },
+            }));
+
+            return duplicateData;
+          },
+        );
+      }
+    },
+    [getKeysContaining, queryClient],
   );
   //#endregion
 
@@ -136,9 +228,13 @@ const useCollectionMutation = () => {
     _: any,
     { collectionId, gameId }: RemoveGameFromCollectionVariables,
   ) => {
-    queryClient.invalidateQueries({ queryKey: [collectionGamesKey, collectionId] });
+    updateGameInCollectionGamesQueryData({ collectionId, gameId, isAdding: false });
 
     updateGameInCollectionQueryData({ collectionId, gameId, isAdding: false });
+
+    removeGameFromMyCollectionQueryData({ collectionId, gameId, isAdding: false });
+
+    setRemoveGameFromCollectionLoading(false);
   };
 
   const removeGameFromCollectionMutationFunction = useCallback(
@@ -151,16 +247,14 @@ const useCollectionMutation = () => {
 
   //#region - Remove Collection Mutation
   const onRemoveCollectionSuccess = (_: unknown, collectionId: number) => {
-    updateCollectionInQueryData(collectionId);
+    removeCollectionFromGameInCollectionQueryData(collectionId);
 
-    queryClient.refetchQueries({ queryKey: [myCollectionsKey, user?.id] });
-    queryClient.invalidateQueries({ queryKey: [removeCollectionKey] });
+    removeCollectionFromCollectionQueryData(collectionId);
 
     setRemoveCollectionLoading(false);
   };
 
   const removeCollectionMutationFunction = useCallback(async (collectionId: number) => {
-    return Promise.resolve();
     return requestDeleteCollection(collectionId);
   }, []);
   //#endregion

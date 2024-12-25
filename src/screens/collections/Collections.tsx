@@ -83,6 +83,7 @@ const Collections = () => {
         />
       </View>
       <FlatList
+        key={collections.length}
         numColumns={2}
         style={globalStyles.flex1}
         contentContainerStyle={styles.listContentStyle}
