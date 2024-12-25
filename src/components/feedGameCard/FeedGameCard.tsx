@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { Alert, TouchableOpacity } from 'react-native';
 
 import GameCard from '@components/gameCard';
 import Icon from '@components/icon';
@@ -17,7 +17,23 @@ const FeedGameCard = ({ feed, collectionId }: FeedGameCardProps) => {
     useCollectionMutation();
 
   const onPressDelete = useCallback(() => {
-    mutateRemoveGameFromCollection({ collectionId, feedId, game, gameId: game.id });
+    Alert.alert(
+      'Confirm Delete',
+      'Are you sure you want to delete this game from collection?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          onPress: () => {
+            mutateRemoveGameFromCollection({ collectionId, feedId, game, gameId: game.id });
+          },
+        },
+      ],
+      { cancelable: true },
+    );
   }, [collectionId, feedId, game, mutateRemoveGameFromCollection]);
 
   return (

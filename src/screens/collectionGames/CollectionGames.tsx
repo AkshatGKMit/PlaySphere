@@ -1,17 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import {
-  Alert,
-  FlatList,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Alert, FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
 import FeedGameCard from '@components/feedGameCard';
-import Icon from '@components/icon';
 import { IconButton } from '@components/iconButton';
 import Loader from '@components/loader';
 import { ListEmptyComponent, ListFooterComponent } from '@components/pageListComponent';
@@ -35,7 +27,7 @@ const CollectionGames = () => {
 
   const [yOffset, setYOffset] = useState(0);
 
-  const { collectionId, collectionName } = params! as CollectionGamesRouteProps;
+  const { collectionId, collectionName, numGames } = params! as CollectionGamesRouteProps;
 
   const {
     collectionFeeds = [],
@@ -43,7 +35,7 @@ const CollectionGames = () => {
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
-  } = useCollectionFeedsQuery(collectionId);
+  } = useCollectionFeedsQuery(collectionId, !!numGames);
 
   const { removeCollectionLoading, mutateRemoveCollection, removeCollectionSuccess } =
     useCollectionMutation();
@@ -74,11 +66,11 @@ const CollectionGames = () => {
     }
   }, [goBack, removeCollectionLoading, removeCollectionSuccess]);
 
-  const onEndReached = () => {
+  const onEndReached = useCallback(() => {
     if (online.isConnected && !isFetchingNextPage) {
       fetchNextPage();
     }
-  };
+  }, [fetchNextPage, isFetchingNextPage, online.isConnected]);
 
   const onScroll = useCallback(({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { y } = nativeEvent.contentOffset;
@@ -121,62 +113,52 @@ const CollectionGames = () => {
           />
         )}
       </View>
-      <FlatList
-        numColumns={2}
-        style={globalStyles.flex1}
-        contentContainerStyle={styles.listContentStyle}
-        columnWrapperStyle={styles.columnStyles}
-        data={collectionFeeds}
-        renderItem={({ item }) => {
-          const { id } = item;
+      {!numGames ? (
+        <View style={[globalStyles.flex1, globalStyles.columnCenter]}>
+          <TextBlock
+            typography={Typography.titleLarge}
+            fontWeight={FontWeight.bold}
+          >
+            No games here yet!
+          </TextBlock>
+        </View>
+      ) : (
+        <FlatList
+          numColumns={2}
+          style={globalStyles.flex1}
+          contentContainerStyle={styles.listContentStyle}
+          columnWrapperStyle={styles.columnStyles}
+          data={collectionFeeds}
+          renderItem={({ item }) => {
+            const { id } = item;
 
-          return (
-            <FeedGameCard
-              key={id}
-              feed={item}
-              collectionId={collectionId}
+            return (
+              <FeedGameCard
+                key={id}
+                feed={item}
+                collectionId={collectionId}
+              />
+            );
+          }}
+          keyExtractor={({ id }) => id.toString()}
+          onScroll={onScroll}
+          ListEmptyComponent={
+            <ListEmptyComponent
+              styles={styles}
+              theme={theme}
             />
-          );
-        }}
-        keyExtractor={({ id }) => id.toString()}
-        onScroll={onScroll}
-        ListEmptyComponent={
-          <ListEmptyComponent
-            styles={styles}
-            theme={theme}
-          />
-        }
-        ListFooterComponent={
-          <ListFooterComponent
-            hasData={collectionFeeds.length !== 0}
-            hasNextPage={hasNextPage}
-            showNoConnectionScreenMessage={online.showNoConnectionScreenMessage}
-          />
-        }
-        showsVerticalScrollIndicator={false}
-        onEndReached={onEndReached}
-      />
-      <TouchableOpacity
-        style={styles.deleteButton}
-        onPress={onPressDelete}
-      >
-        {removeCollectionLoading ? (
-          <Loader />
-        ) : (
-          <>
-            <Icon
-              icon={Icons.materialCommunityIcons.trashCan}
-              size={22}
+          }
+          ListFooterComponent={
+            <ListFooterComponent
+              hasData={collectionFeeds.length !== 0}
+              hasNextPage={hasNextPage}
+              showNoConnectionScreenMessage={online.showNoConnectionScreenMessage}
             />
-            <TextBlock
-              typography={Typography.bodyLarge}
-              fontWeight={FontWeight.bold}
-            >
-              Delete Collection
-            </TextBlock>
-          </>
-        )}
-      </TouchableOpacity>
+          }
+          showsVerticalScrollIndicator={false}
+          onEndReached={onEndReached}
+        />
+      )}
     </View>
   );
 };

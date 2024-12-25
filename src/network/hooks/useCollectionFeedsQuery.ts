@@ -10,7 +10,11 @@ import { parseUrl } from '@utility/helpers';
 
 const { collectionGames: collectionGamesKey } = QueryKeys;
 
-const useCollectionFeedsQuery = (collectionId: number, params?: ListQueryParams) => {
+const useCollectionFeedsQuery = (
+  collectionId: number,
+  enabled: boolean = true,
+  params?: ListQueryParams,
+) => {
   const queryFunction: QueryFunction<
     AxiosResponse<PaginatedCollectionFeedsResponse>,
     QueryKey,
@@ -54,9 +58,7 @@ const useCollectionFeedsQuery = (collectionId: number, params?: ListQueryParams)
     queryFn: queryFunction,
     getNextPageParam,
     initialPageParam: '',
-    retryOnMount: true,
-    refetchOnReconnect: true,
-    refetchOnWindowFocus: true,
+    enabled,
   });
 
   const online = useOnlineStatus(!data);
