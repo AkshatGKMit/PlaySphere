@@ -91,9 +91,13 @@ const ThemedStyles = (theme: ThemeColors, insets: EdgeInsets) => {
     contentSection: {
       paddingHorizontal: 10,
       marginVertical: 5,
-      gap: 5,
+      gap: 10,
     },
-    scrollContentSection: {
+    metricsContent: {
+      width: '100%',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-around',
       paddingHorizontal: 10,
       marginVertical: 15,
       gap: 20,
@@ -104,6 +108,7 @@ const ThemedStyles = (theme: ThemeColors, insets: EdgeInsets) => {
       alignItems: 'flex-end',
     },
     screenshotContainer: {
+      marginTop: 5,
       gap: 10,
     },
     screenshot: {

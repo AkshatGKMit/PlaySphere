@@ -1,5 +1,14 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ScrollView, StyleProp, TouchableOpacity, View, ViewStyle } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  LayoutChangeEvent,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  ScrollView,
+  StyleProp,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
@@ -76,6 +85,18 @@ const Details = () => {
     );
   }, [insets.top, isVideo, stickyBackButtonTop, stickyContainerTop, yOffset]);
 
+  const onLayout = useCallback(({ nativeEvent }: LayoutChangeEvent) => {
+    const { y, height } = nativeEvent.layout;
+
+    setStickyBackButtonTop({ height, y });
+  }, []);
+
+  const onScroll = useCallback(({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { y } = nativeEvent.contentOffset;
+
+    setYOffset(y);
+  }, []);
+
   const isContainerOnTop = useMemo(
     () => (isSticky && yOffset > 0) || yOffset >= stickyContainerTop.y - insets.top,
     [insets.top, isSticky, stickyContainerTop.y, yOffset],
@@ -128,12 +149,7 @@ const Details = () => {
           style={styles.absoluteBackButton}
           onPress={goBack}
           activeOpacity={0.8}
-          onLayout={(e) => {
-            setStickyBackButtonTop({
-              y: e.nativeEvent.layout.y,
-              height: e.nativeEvent.layout.height,
-            });
-          }}
+          onLayout={onLayout}
         >
           <Icon
             icon={Icons.materialCommunityIcons.arrowLeft}
@@ -144,7 +160,7 @@ const Details = () => {
       ) : null}
       <ScrollView
         ref={scrollViewRef}
-        onScroll={(e) => setYOffset(e.nativeEvent.contentOffset.y)}
+        onScroll={onScroll}
         contentContainerStyle={styles.scrollView}
         showsVerticalScrollIndicator={false}
         stickyHeaderIndices={[isSticky ? 0 : 2]}

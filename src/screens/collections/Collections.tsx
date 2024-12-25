@@ -3,6 +3,7 @@ import { View, FlatList, NativeScrollEvent, NativeSyntheticEvent } from 'react-n
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 
+import ActionButton from '@components/actionButton';
 import AddNewCollectionDialog from '@components/addNewCollectionDialog';
 import CollectionCard from '@components/collectionCard';
 import Dialog from '@components/dialog';
@@ -17,7 +18,6 @@ import { globalStyles } from '@themes';
 import { getShadowStyle } from '@utility/style';
 
 import ThemedStyles from './styles';
-import ActionButton from '@components/actionButton';
 
 const Collections = () => {
   const insets = useSafeAreaInsets();
