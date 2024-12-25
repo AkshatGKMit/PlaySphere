@@ -26,19 +26,11 @@ declare global {
     loading?: boolean;
     typography?: Typography;
     fontWeight?: FontWeight;
+    iconSize?: number;
   }
 
   interface AddNewCollectionStyles {
     styles: ReturnType<typeof AddToCollectionDialogThemedStyles>;
-  }
-
-  interface AddNewCollectionProps extends AddNewCollectionStyles {
-    newCollection: string;
-    newCollectionFieldError: string;
-    setNewCollection: (text: string) => void;
-    onClose: () => void;
-    onCreate: () => void;
-    loading: boolean;
   }
 
   interface CollectionContainerProps extends AddNewCollectionStyles {

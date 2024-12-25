@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { ScrollView, TouchableOpacity } from 'react-native';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
 
 import Loader from '@components/loader';
 import TextBlock from '@components/textBlock';
@@ -41,7 +41,11 @@ const ListCollections = ({
             >
               {name}
             </TextBlock>
-            {isLoading(id) ? <Loader /> : null}
+            {isLoading(id) ? (
+              <View style={styles.loaderOverlay}>
+                <Loader />
+              </View>
+            ) : null}
           </TouchableOpacity>
         );
       })}

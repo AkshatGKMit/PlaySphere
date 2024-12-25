@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
 
-import { Opacity } from '@constants';
 import { Colors, globalStyles } from '@themes';
 import { colorWithOpacity } from '@utility/style';
 
@@ -28,9 +27,13 @@ const ThemedStyles = (theme: ThemeColors) => {
       paddingLeft: 5,
       paddingVertical: 5,
     },
+    scrollView: {
+      maxHeight: 100,
+    },
     content: {
       paddingHorizontal: 5,
-      minHeight: 200,
+      maxHeight: 200,
+      minHeight: 100,
     },
     noContentContainer: {
       ...globalStyles.flex1,
@@ -42,7 +45,6 @@ const ThemedStyles = (theme: ThemeColors) => {
       marginTop: 5,
       gap: 3,
       padding: 10,
-      borderRadius: 20,
       backgroundColor: theme.primaryText,
     },
     addNewCollectionContainer: {
@@ -65,18 +67,24 @@ const ThemedStyles = (theme: ThemeColors) => {
       borderRadius: 20,
       borderWidth: 1,
       borderColor: Colors.transparent,
+      overflow: 'hidden',
     },
     selectedCollection: {
-      borderColor: theme.primaryText,
+      borderColor: theme.all.outlineVariant,
     },
     collectionName: {
       textTransform: 'capitalize',
     },
+    separatorContainer: {
+      position: 'relative',
+      ...globalStyles.rowCenter,
+      maxWidth: '100%',
+      gap: 10,
+    },
     separator: {
-      width: '100%',
+      flex: 1,
       height: 0.8,
       backgroundColor: theme.all.outline,
-      opacity: Opacity.level4,
     },
     buttonView: {
       flexDirection: 'row',
@@ -95,6 +103,12 @@ const ThemedStyles = (theme: ThemeColors) => {
     createButton: {
       backgroundColor: theme.primaryText,
       color: theme.inverted.primaryText,
+    },
+    loaderOverlay: {
+      ...globalStyles.fullPositionAbsolute,
+      ...globalStyles.rowCenter,
+      borderRadius: 30,
+      backgroundColor: colorWithOpacity(Colors.black, 0.75),
     },
   });
 };

@@ -269,13 +269,18 @@ const useCollectionMutation = () => {
     responseData:
       | ApiSuccessResponse<CollectionDetailResponse>
       | ApiErrorResponse<AddNewCollectionResponseError>,
+    { game }: AddNewOrUpdateCollectionBody,
   ) => {
     if (!responseData.success) {
       return;
     }
 
     const { data: collectionData } = responseData.result;
-    const { id, slug, name } = collectionData;
+    const { id: collectionId, name, slug } = collectionData;
+
+    if (game) {
+      mutateGameToCollection({ collectionId, game, gameId: game.id, isAdding: true });
+    }
 
     const userCollectionKeys = getKeysContaining(userCollectionsKey);
     const myCollectionsKeys = getKeysContaining(myCollectionsKey);
@@ -288,7 +293,10 @@ const useCollectionMutation = () => {
 
         const duplicateData = { ...data };
 
-        duplicateData.data = [{ id, name, slug, game_in_collection: false }, ...duplicateData.data];
+        duplicateData.data = [
+          { id: collectionId, name, slug, game_in_collection: !!game },
+          ...duplicateData.data,
+        ];
 
         return duplicateData;
       });
@@ -320,8 +328,8 @@ const useCollectionMutation = () => {
   };
 
   const addNewCollectionMutationFunction = useCallback(
-    async (newCollectionName: AddNewOrUpdateCollectionBody) => {
-      return requestAddNewCollection(newCollectionName);
+    async (newCollection: AddNewOrUpdateCollectionBody) => {
+      return requestAddNewCollection(newCollection);
     },
     [],
   );

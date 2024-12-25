@@ -11,7 +11,13 @@ import useCollectionMutation from '@network/hooks/useCollectionMutation';
 
 import ThemedStyles from './styles';
 
-const AddNewCollectionDialog = () => {
+const AddNewCollectionDialog = ({
+  collectionNames,
+  game,
+}: {
+  collectionNames: string[];
+  game?: Game;
+}) => {
   const [newCollection, setNewCollection] = useState('');
   const [newCollectionFieldError, setNewCollectionFieldError] = useState('');
 
@@ -45,8 +51,13 @@ const AddNewCollectionDialog = () => {
       return;
     }
 
-    mutateAddNewCollection({ name: newCollection });
-  }, [mutateAddNewCollection, newCollection]);
+    if (collectionNames?.includes(newCollection)) {
+      setNewCollectionFieldError(`Collection name ${newCollection} already exists`);
+      return;
+    }
+
+    mutateAddNewCollection({ name: newCollection, game });
+  }, [collectionNames, game, mutateAddNewCollection, newCollection]);
 
   useEffect(() => {
     if (addNewCollectionSuccess) {
@@ -63,13 +74,14 @@ const AddNewCollectionDialog = () => {
         typography={Typography.titleLarge}
         fontWeight={FontWeight.bold}
       >
-        Create a new Collection
+        {game ? 'Add to new collection' : 'Create a new Collection'}
       </TextBlock>
       <Textfield
         placeholder="Collection Name"
         value={newCollection}
         onChangeText={setNewCollection}
         error={newCollectionFieldError}
+        autoFocus
       />
       <View style={styles.buttonView}>
         <TouchableOpacity
@@ -93,7 +105,7 @@ const AddNewCollectionDialog = () => {
               color={styles.createButton.color}
               fontWeight={FontWeight.bold}
             >
-              Create
+              {game ? 'Create and Add' : 'Create'}
             </TextBlock>
           )}
         </TouchableOpacity>

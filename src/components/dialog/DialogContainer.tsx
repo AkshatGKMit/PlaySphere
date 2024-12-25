@@ -21,15 +21,15 @@ const DialogContainer = forwardRef<DialogRef>((_, ref) => {
     setVisible(true);
   }
 
-  function hideModal(onClose?: () => void) {
-    onClose?.();
+  function hideModal() {
     setVisible(false);
     setData(null);
+    data?.onClose?.();
   }
 
   useImperativeHandle(ref, () => ({
     show: (params: RefManagerParams) => showModal(params),
-    hide: (onClose?: () => void) => hideModal(onClose),
+    hide: () => hideModal(),
   }));
 
   const styles = useStyles(ThemedStyles);
@@ -80,6 +80,7 @@ const DialogContainer = forwardRef<DialogRef>((_, ref) => {
       statusBarTranslucent
       animationType="fade"
       visible={isVisible}
+      onDismiss={hideModal}
     >
       {data && (
         <View style={[globalStyles.flex1, globalStyles.positionRelative]}>
