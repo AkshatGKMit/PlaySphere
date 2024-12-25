@@ -69,10 +69,10 @@ const CollectionGames = () => {
   }, [collectionId, mutateRemoveCollection]);
 
   useEffect(() => {
-    if ((removeCollectionSuccess && !removeCollectionLoading) || !collectionFeeds.length) {
+    if (removeCollectionSuccess && !removeCollectionLoading) {
       goBack();
     }
-  }, [collectionFeeds.length, goBack, removeCollectionLoading, removeCollectionSuccess]);
+  }, [goBack, removeCollectionLoading, removeCollectionSuccess]);
 
   const onEndReached = () => {
     if (online.isConnected && !isFetchingNextPage) {

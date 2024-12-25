@@ -26,10 +26,24 @@ const useGameInCollectionQuery = (gameId: number) => {
 
   const online = useOnlineStatus(!data);
 
-  const gameInCollections = useMemo(
-    () => (data ? data.data.map(formatGameInCollection) : []),
-    [data],
-  );
+  const gameInCollections = useMemo(() => {
+    if (!data) {
+      return [];
+    }
+
+    const seenIds = new Set();
+
+    return data.data
+      .filter((game) => {
+        if (seenIds.has(game.id)) {
+          return false;
+        }
+
+        seenIds.add(game.id);
+        return true;
+      })
+      .map(formatGameInCollection);
+  }, [data]);
 
   return { gameInCollections, online, isPending, isSuccess, refetch, isRefetching };
 };

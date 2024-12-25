@@ -174,7 +174,7 @@ export async function fetchCollectionFeed(collectionId: number, params?: ListQue
 }
 
 export async function requestAddNewCollection(newCollection: AddNewOrUpdateCollectionBody) {
-  return await _post<AddNewOrUpdateCollectionBody, AddNewCollectionResponseError>(
+  return await _post<CollectionDetailResponse, AddNewCollectionResponseError>(
     addNewCollectionEndpoint,
     newCollection,
   );

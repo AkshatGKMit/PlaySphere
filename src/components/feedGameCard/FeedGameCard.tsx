@@ -17,8 +17,8 @@ const FeedGameCard = ({ feed, collectionId }: FeedGameCardProps) => {
     useCollectionMutation();
 
   const onPressDelete = useCallback(() => {
-    mutateRemoveGameFromCollection({ collectionId, feedId, gameId: game.id });
-  }, [collectionId, feedId, game.id, mutateRemoveGameFromCollection]);
+    mutateRemoveGameFromCollection({ collectionId, feedId, game, gameId: game.id });
+  }, [collectionId, feedId, game, mutateRemoveGameFromCollection]);
 
   return (
     <GameCard

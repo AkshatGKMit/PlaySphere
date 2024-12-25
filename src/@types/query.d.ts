@@ -29,12 +29,14 @@ declare global {
     collectionId: number;
     gameId: number;
     isAdding: boolean;
+    game: Game;
   }
 
   interface RemoveGameFromCollectionVariables {
     collectionId: number;
     feedId: number;
     gameId: number;
+    game: Game;
   }
 
   type AuthQueryKey = [type: string, data: RegisterBody];

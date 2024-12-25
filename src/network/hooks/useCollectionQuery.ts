@@ -59,6 +59,7 @@ const useCollectionQuery = (params?: ListQueryParams) => {
     initialPageParam: '',
     enabled: !!user?.id,
     gcTime: Infinity,
+    staleTime: Infinity,
   });
 
   const online = useOnlineStatus(!data);

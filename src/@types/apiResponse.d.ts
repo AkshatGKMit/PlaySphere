@@ -11,8 +11,8 @@ interface AuthErrorResponse {
 
 interface GameBackgroundResponse {
   url: string;
-  dominant_color: string;
-  saturated_color: string;
+  dominant_color?: string;
+  saturated_color?: string;
 }
 
 interface UserDetailsResponse {
@@ -139,7 +139,7 @@ interface CollectionDetailResponse {
   created: string;
   updated: string | null;
   game_background: GameBackgroundResponse | null;
-  backgrounds: GameBackgroundsResponse;
+  backgrounds: GameBackgroundsResponse | null;
   games_count: number;
   posts_count: number;
   likes_count: number;

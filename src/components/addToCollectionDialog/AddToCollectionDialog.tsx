@@ -24,7 +24,6 @@ const AddToCollectionDialog = ({ game }: { game: Game }) => {
   const {
     gameInCollections,
     isPending: gameInCollectionsLoading,
-    refetch: refetchGameInCollections,
     isRefetching: gameInCollectionsRefetching,
   } = useGameInCollectionQuery(gameId);
 
@@ -69,16 +68,15 @@ const AddToCollectionDialog = ({ game }: { game: Game }) => {
       setNewCollection('');
       setNewCollectionFieldError('');
       setAddNew(false);
-      refetchGameInCollections();
     }
-  }, [addNewCollectionSuccess, refetchGameInCollections]);
+  }, [addNewCollectionSuccess]);
 
   const onPressCollection = useCallback(
     ({ id, gameInCollection }: GameInCollection) => {
       setMutatingId(id);
-      mutateGameToCollection({ collectionId: id, gameId, isAdding: !gameInCollection });
+      mutateGameToCollection({ collectionId: id, gameId, isAdding: !gameInCollection, game });
     },
-    [gameId, mutateGameToCollection],
+    [game, gameId, mutateGameToCollection],
   );
 
   useEffect(() => {

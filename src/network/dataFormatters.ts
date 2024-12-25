@@ -154,7 +154,7 @@ export function formatCollection(collectionResponse: CollectionDetailResponse): 
     likesUsers: likes_users,
     postsCount: posts_count,
     shareImage: share_image,
-    backgrounds: backgrounds.map(formatGameBackground),
+    backgrounds: backgrounds?.map(formatGameBackground) ?? null,
   };
 
   return collection;
