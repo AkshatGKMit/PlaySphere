@@ -1,10 +1,10 @@
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 
-import Icon from '@components/icon';
 import SystemPlatformView from '@components/systemPlatforms';
 import TextBlock from '@components/textBlock';
 import { FontWeight, Icons, Typography } from '@constants';
+import ActionButton from '@components/actionButton';
 
 const Content = ({
   styles,
@@ -45,14 +45,14 @@ const Content = ({
         </TextBlock>
       ) : null}
       {!hideAddButton ? (
-        <TouchableOpacity
-          activeOpacity={0.8}
+        <ActionButton
+          label="Add to Collection"
           onPress={showAddToCollectionDialog}
           style={styles.addToCollection}
-        >
-          <Icon icon={Icons.materialIcons.add} />
-          <TextBlock typography={Typography.labelSmall}>Add to Collection</TextBlock>
-        </TouchableOpacity>
+          leadingIcon={Icons.materialIcons.add}
+          typography={Typography.labelSmall}
+          color={styles.addToCollectionText.color}
+        />
       ) : null}
     </View>
   );

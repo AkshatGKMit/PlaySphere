@@ -61,12 +61,15 @@ const ThemedStyles = (theme: ThemeColors) => {
       color: theme.all.inverseSurface,
     },
     addToCollection: {
-      ...globalStyles.rowCenter,
       marginTop: 5,
       gap: 3,
-      padding: 5,
-      borderRadius: 15,
+      paddingVertical: 5,
+      paddingHorizontal: 5,
+      borderRadius: 4,
       backgroundColor: theme.all.inverseOnSurface,
+    },
+    addToCollectionText: {
+      color: theme.primaryText,
     },
   });
 };
