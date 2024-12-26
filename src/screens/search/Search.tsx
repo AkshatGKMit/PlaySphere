@@ -107,7 +107,10 @@ const Search = () => {
     () => searchText && debouncedSearchText && !isPending,
     [debouncedSearchText, isPending, searchText],
   );
-  const showShimmers = useMemo(() => !!searchText && isPending, [isPending, searchText]);
+  const showShimmers = useMemo(
+    () => !!searchText && (debouncedSearchText !== searchText || !isSuccess),
+    [debouncedSearchText, isSuccess, searchText],
+  );
   const showNoResultFound = useMemo(
     () => searchText && isSuccess && !games.length,
     [games.length, isSuccess, searchText],
@@ -135,7 +138,7 @@ const Search = () => {
           style={styles.textInput}
         />
         {searchText ? (
-          <Pressable onPress={() => setSearchText('')}>
+          <Pressable onPress={() => handleSearchTextChange('')}>
             <Icon
               icon={Icons.materialIcons.close}
               size={22}

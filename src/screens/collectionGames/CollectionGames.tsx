@@ -71,13 +71,13 @@ const CollectionGames = () => {
     Dialog.show({
       child: (
         <AddOrUpdateCollectionDialog
-          collectionName={collectionName}
+          collectionName={collectionDisplayName}
           collectionId={collectionId}
           onSuccess={setCollectionDisplayName}
         />
       ),
     });
-  }, [collectionId, collectionName]);
+  }, [collectionDisplayName, collectionId]);
 
   useEffect(() => {
     if (removeCollectionSuccess && !removeCollectionLoading) {
