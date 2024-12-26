@@ -35,7 +35,6 @@ const CollectionGames = () => {
 
   const {
     collectionFeeds = [],
-    online,
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
@@ -87,10 +86,10 @@ const CollectionGames = () => {
   }, [goBack, removeCollectionLoading, removeCollectionSuccess]);
 
   const onEndReached = useCallback(() => {
-    if (online.isConnected && !isFetchingNextPage) {
+    if (!isFetchingNextPage) {
       fetchNextPage();
     }
-  }, [fetchNextPage, isFetchingNextPage, online.isConnected]);
+  }, [fetchNextPage, isFetchingNextPage]);
 
   const onScroll = useCallback(({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { y } = nativeEvent.contentOffset;
@@ -176,7 +175,6 @@ const CollectionGames = () => {
             <ListFooterComponent
               hasData={collectionFeeds.length !== 0}
               hasNextPage={hasNextPage}
-              showNoConnectionScreenMessage={online.showNoConnectionScreenMessage}
             />
           }
           showsVerticalScrollIndicator={false}

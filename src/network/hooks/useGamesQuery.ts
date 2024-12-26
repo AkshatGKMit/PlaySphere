@@ -2,7 +2,6 @@ import { useEffect, useMemo } from 'react';
 import { AxiosResponse } from 'axios';
 import { InfiniteData, QueryFunction, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 
-import useOnlineStatus from '@config/useOnlineStatus';
 import { fetchGames } from '@network/apiEndpointCalls';
 import { formatGameDetail } from '@network/dataFormatters';
 import { parseUrl } from '@utility/helpers';
@@ -73,8 +72,6 @@ const useGamesQuery = (key: GameQueryKey, config?: GameQueryConfig) => {
     refetchIntervalInBackground,
   });
 
-  const online = useOnlineStatus(!data);
-
   useEffect(() => {
     if (isError) {
       onError?.(error);
@@ -112,7 +109,6 @@ const useGamesQuery = (key: GameQueryKey, config?: GameQueryConfig) => {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-    online,
     isSuccess,
     isPending,
   };

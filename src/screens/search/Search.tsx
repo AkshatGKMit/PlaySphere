@@ -70,11 +70,11 @@ const Search = () => {
 
   const gameQueryKey: GameQueryKey = [mainGameListKey, listEndpoint, gameQueryParams];
 
-  const { games, hasNextPage, fetchNextPage, isFetchingNextPage, online, isPending, isSuccess } =
+  const { games, hasNextPage, fetchNextPage, isFetchingNextPage, isPending, isSuccess } =
     useGamesQuery(gameQueryKey, { enabled: !isDebouncedSearchEmpty });
 
   const onEndReached = () => {
-    if (online.isConnected && !isFetchingNextPage) {
+    if (!isFetchingNextPage) {
       fetchNextPage();
     }
   };
@@ -193,7 +193,6 @@ const Search = () => {
           <ListFooterComponent
             hasData={showFooter}
             hasNextPage={!isDebouncedSearchEmpty && hasNextPage}
-            showNoConnectionScreenMessage={online.showNoConnectionScreenMessage}
           />
         }
         stickyHeaderIndices={[0]}

@@ -49,11 +49,11 @@ const GameListScreen = ({
 
   const gameQueryKey: GameQueryKey = [mainGameListKey, url, gameQueryParams];
 
-  const { games, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage, online } =
+  const { games, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useGamesQuery(gameQueryKey);
 
   const onEndReached = () => {
-    if (online.isConnected && !isFetchingNextPage) {
+    if (!isFetchingNextPage) {
       fetchNextPage();
     }
   };
@@ -112,7 +112,6 @@ const GameListScreen = ({
             <ListFooterComponent
               hasData={games.length !== 0}
               hasNextPage={hasNextPage}
-              showNoConnectionScreenMessage={online.showNoConnectionScreenMessage}
             />
           }
           showsVerticalScrollIndicator={false}

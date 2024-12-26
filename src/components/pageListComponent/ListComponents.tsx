@@ -67,17 +67,9 @@ export const ListHeaderComponent = ({
   );
 };
 
-export const ListFooterComponent = ({
-  hasData,
-  hasNextPage,
-  showNoConnectionScreenMessage,
-}: GameListFooterProps) => {
+export const ListFooterComponent = ({ hasData, hasNextPage }: GameListFooterProps) => {
   if (!hasData) {
     return null;
-  }
-
-  if (showNoConnectionScreenMessage) {
-    return <TextBlock>{Errors.noInternet}</TextBlock>;
   }
 
   if (hasNextPage) {

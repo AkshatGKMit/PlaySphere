@@ -34,7 +34,6 @@ const Collections = () => {
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
-    online,
     isRefetching,
   } = useCollectionQuery();
 
@@ -45,10 +44,10 @@ const Collections = () => {
   }, []);
 
   const onEndReached = useCallback(() => {
-    if (online.isConnected && !isFetchingNextPage) {
+    if (!isFetchingNextPage) {
       fetchNextPage();
     }
-  }, [fetchNextPage, isFetchingNextPage, online.isConnected]);
+  }, [fetchNextPage, isFetchingNextPage]);
 
   const styles = useStyles((themeColors) => ThemedStyles(themeColors, insets));
 
@@ -139,7 +138,6 @@ const Collections = () => {
             <ListFooterComponent
               hasData={collections.length !== 0}
               hasNextPage={!isRefetching && hasNextPage}
-              showNoConnectionScreenMessage={online.showNoConnectionScreenMessage}
             />
           }
           showsVerticalScrollIndicator={false}

@@ -1,8 +1,3 @@
-interface OnlineStatus {
-  isConnected: boolean;
-  showNoConnectionScreenMessage: boolean;
-}
-
 interface RefObject<T> {
   current: T | null;
 }
