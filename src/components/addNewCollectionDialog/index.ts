@@ -1,3 +1,3 @@
-import AddNewCollectionDialog from './AddNewCollectionDialog';
+import AddOrUpdateCollectionDialog from './AddNewCollectionDialog';
 
-export default AddNewCollectionDialog;
+export default AddOrUpdateCollectionDialog;

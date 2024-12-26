@@ -15,7 +15,7 @@ import useQueryKeys from '@config/useQueryKeys';
 import { useAppSelector } from '@store';
 
 const {
-  createNewCollection: createNewCollectionKey,
+  createNewCollection: createOrUpdateCollectionKey,
   removeCollection: removeCollectionKey,
   updateGameInCollection: updateGameInCollectionKey,
   userCollections: userCollectionsKey,
@@ -266,7 +266,7 @@ const useCollectionMutation = () => {
   //#endregion
 
   //#region - Add New Collection Mutation
-  const onAddNewCollectionSuccess = (
+  const onAddOrUpdateCollectionSuccess = (
     responseData:
       | ApiSuccessResponse<CollectionDetailResponse>
       | ApiErrorResponse<AddNewCollectionResponseError>,
@@ -363,7 +363,7 @@ const useCollectionMutation = () => {
     }
   };
 
-  const addNewCollectionMutationFunction = useCallback(
+  const addOrUpdateCollectionMutationFunction = useCallback(
     async (newCollection: AddNewOrUpdateCollectionBody) => {
       const { updateCollectionId } = newCollection;
 
@@ -414,14 +414,14 @@ const useCollectionMutation = () => {
   //#endregion
 
   const {
-    mutate: mutateAddNewCollection,
-    isPending: addNewCollectionLoading,
-    isSuccess: addNewCollectionSuccess,
-    error: addNewCollectionErrorResponse,
+    mutate: mutateAddOrUpdateCollection,
+    isPending: addOrUpdateCollectionLoading,
+    isSuccess: addOrUpdateCollectionSuccess,
+    error: addOrUpdateCollectionErrorResponse,
   } = useMutation({
-    mutationKey: [createNewCollectionKey],
-    mutationFn: addNewCollectionMutationFunction,
-    onSuccess: onAddNewCollectionSuccess,
+    mutationKey: [createOrUpdateCollectionKey],
+    mutationFn: addOrUpdateCollectionMutationFunction,
+    onSuccess: onAddOrUpdateCollectionSuccess,
   });
 
   const {
@@ -472,21 +472,21 @@ const useCollectionMutation = () => {
     }
   }, [removeGameFromCollectionLoadingState]);
 
-  const addNewCollectionError = useMemo(() => {
-    if (addNewCollectionErrorResponse) {
-      const error = addNewCollectionErrorResponse as AxiosError<AddNewCollectionResponseError>;
+  const addOrUpdateCollectionError = useMemo(() => {
+    if (addOrUpdateCollectionErrorResponse) {
+      const error = addOrUpdateCollectionErrorResponse as AxiosError<AddNewCollectionResponseError>;
 
       const { name } = error.response?.data ?? {};
 
       return name?.join(', ');
     }
-  }, [addNewCollectionErrorResponse]);
+  }, [addOrUpdateCollectionErrorResponse]);
 
   return {
-    mutateAddNewCollection,
-    addNewCollectionSuccess,
-    addNewCollectionLoading,
-    addNewCollectionError,
+    mutateAddOrUpdateCollection,
+    addOrUpdateCollectionSuccess,
+    addOrUpdateCollectionLoading,
+    addOrUpdateCollectionError,
     mutateGameToCollection,
     updateGameToCollectionSuccess,
     updateGameLoading,

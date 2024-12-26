@@ -3,6 +3,7 @@ import { Alert, FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from '
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
+import AddOrUpdateCollectionDialog from '@components/addNewCollectionDialog';
 import Dialog from '@components/dialog';
 import FeedGameCard from '@components/feedGameCard';
 import { IconButton } from '@components/iconButton';
@@ -18,7 +19,6 @@ import { Colors, globalStyles } from '@themes';
 import { getShadowStyle } from '@utility/style';
 
 import ThemedStyles from './styles';
-import AddNewCollectionDialog from '@components/addNewCollectionDialog';
 
 const CollectionGames = () => {
   const { goBack } = useNavigation<StackNavigation>();
@@ -71,7 +71,7 @@ const CollectionGames = () => {
   const onPressEdit = useCallback(() => {
     Dialog.show({
       child: (
-        <AddNewCollectionDialog
+        <AddOrUpdateCollectionDialog
           collectionName={collectionName}
           collectionId={collectionId}
           onSuccess={setCollectionDisplayName}
