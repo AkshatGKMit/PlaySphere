@@ -2,8 +2,11 @@ import React, { useEffect } from 'react';
 import { useColorScheme, LogBox } from 'react-native';
 import { Provider } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient } from '@tanstack/react-query';
+import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 
 import Dialog from '@components/dialog';
 import Navigator from '@navigation/Navigator';
@@ -13,7 +16,17 @@ import { switchTheme } from '@store/reducers/theme';
 import { ThemeMode } from '@themes';
 
 const App = () => {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        gcTime: 1000 * 60 * 60 * 24, // 24 hours
+      },
+    },
+  });
+
+  const asyncStoragePersister = createAsyncStoragePersister({
+    storage: AsyncStorage,
+  });
 
   useEffect(() => {
     LogBox.ignoreAllLogs();
@@ -21,12 +34,15 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
+      <PersistQueryClientProvider
+        client={queryClient}
+        persistOptions={{ persister: asyncStoragePersister }}
+      >
         <SafeAreaProvider>
           <Main />
           <Dialog />
         </SafeAreaProvider>
-      </QueryClientProvider>
+      </PersistQueryClientProvider>
     </Provider>
   );
 };

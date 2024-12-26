@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { PropsWithChildren } from 'react';
+import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 
 //#region - Mocking react-native-vector-icons
 jest.mock('react-native-vector-icons/AntDesign', () => 'AntDesign');
@@ -67,3 +67,5 @@ jest.mock('react-native-safe-area-context', () => {
     useSafeAreaInsets: jest.fn().mockImplementation(() => inset),
   };
 });
+
+jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
