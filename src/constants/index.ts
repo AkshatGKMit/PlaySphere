@@ -57,15 +57,15 @@ export const AgeRating = {
 } as const;
 
 export const MainSystemPlatforms = {
-  android: 'android',
-  ios: 'ios',
-  linux: 'linux',
-  macintosh: 'macintosh',
-  macos: 'macos',
-  nintendo: 'nintendo',
-  pc: 'pc',
-  playstation: 'playstation',
-  xbox: 'xbox',
+  android: { id: 21, name: 'android' },
+  ios: { id: 3, name: 'ios' },
+  linux: { id: 6, name: 'linux' },
+  macintosh: { id: 55, name: 'macintosh' },
+  macos: { id: 5, name: 'macos' },
+  nintendo: { id: 7, name: 'nintendo' },
+  pc: { id: 4, name: 'pc' },
+  playstation: { id: 7, name: 'playstation' },
+  xbox: { id: 14, name: 'xbox' },
 } as const;
 
 export const DefaultObjectLayout: ObjectLayout = {
@@ -100,48 +100,48 @@ export const systemPlatformDropdownItems: DropdownItems = [
   },
   {
     id: 1,
-    value: MainSystemPlatforms.android,
-    label: capitalizeWord(MainSystemPlatforms.android),
+    value: MainSystemPlatforms.android.id,
+    label: capitalizeWord(MainSystemPlatforms.android.name),
   },
   {
     id: 2,
-    value: MainSystemPlatforms.ios,
-    label: capitalizeWord(MainSystemPlatforms.ios),
+    value: MainSystemPlatforms.ios.id,
+    label: capitalizeWord(MainSystemPlatforms.ios.name),
   },
   {
     id: 3,
-    value: MainSystemPlatforms.linux,
-    label: capitalizeWord(MainSystemPlatforms.linux),
+    value: MainSystemPlatforms.linux.id,
+    label: capitalizeWord(MainSystemPlatforms.linux.name),
   },
   {
     id: 4,
-    value: MainSystemPlatforms.macintosh,
-    label: capitalizeWord(MainSystemPlatforms.macintosh),
+    value: MainSystemPlatforms.macintosh.id,
+    label: capitalizeWord(MainSystemPlatforms.macintosh.name),
   },
   {
     id: 5,
-    value: MainSystemPlatforms.macos,
-    label: capitalizeWord(MainSystemPlatforms.macos),
+    value: MainSystemPlatforms.macos.id,
+    label: capitalizeWord(MainSystemPlatforms.macos.name),
   },
   {
     id: 6,
-    value: MainSystemPlatforms.nintendo,
-    label: capitalizeWord(MainSystemPlatforms.nintendo),
+    value: MainSystemPlatforms.nintendo.id,
+    label: capitalizeWord(MainSystemPlatforms.nintendo.name),
   },
   {
     id: 7,
-    value: MainSystemPlatforms.pc,
-    label: capitalizeWord(MainSystemPlatforms.pc),
+    value: MainSystemPlatforms.pc.id,
+    label: capitalizeWord(MainSystemPlatforms.pc.name),
   },
   {
     id: 8,
-    value: MainSystemPlatforms.playstation,
-    label: capitalizeWord(MainSystemPlatforms.playstation),
+    value: MainSystemPlatforms.playstation.id,
+    label: capitalizeWord(MainSystemPlatforms.playstation.name),
   },
   {
     id: 9,
-    value: MainSystemPlatforms.xbox,
-    label: capitalizeWord(MainSystemPlatforms.xbox),
+    value: MainSystemPlatforms.xbox.id,
+    label: capitalizeWord(MainSystemPlatforms.xbox.name),
   },
 ];
 

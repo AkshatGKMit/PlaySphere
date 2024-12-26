@@ -44,49 +44,31 @@ const Dropdown = ({ value, items, onSelect, hint, buttonInitials }: DropdownProp
     }
   }, [animate, isFocus]);
 
-  const { top, left, minWidth, maxHeight } = listLayout;
+  const _measureButton = useCallback((e: LayoutChangeEvent) => {
+    e.target.measureInWindow((x, y, width, height) => {
+      const buttonTop = y + height;
+      const buttonLeft = x;
 
-  const listViewStyles = useMemo(
-    () => [styles.listView, { opacity: opacityAnim }],
-    [opacityAnim, styles.listView],
-  );
-
-  const listStyles = useMemo(
-    () => [styles.list, { top, left, minWidth, maxHeight }],
-    [left, maxHeight, minWidth, styles.list, top],
-  );
-
-  const maxDropdownHeight = useMemo(() => windowHeight / 3, [windowHeight]);
-
-  const _measureButton = useCallback(
-    (e: LayoutChangeEvent) => {
-      e.target.measureInWindow((x, y, width, height) => {
-        const buttonTop = y + height;
-        const buttonLeft = x;
-
-        setButtonLayout({
-          width,
-          height,
-          top: buttonTop,
-          left: buttonLeft,
-          bottom: y + height,
-          right: x + width,
-        });
-
-        setListLayout({
-          width: Math.floor(width),
-          height: Math.floor(height),
-          top: Math.floor(buttonTop + 4),
-          bottom: Math.floor(buttonTop + height),
-          left: Math.floor(buttonLeft),
-          right: Math.floor(buttonLeft + width),
-          minWidth: Math.floor(width),
-          maxHeight: maxDropdownHeight,
-        });
+      setButtonLayout({
+        width,
+        height,
+        top: buttonTop,
+        left: buttonLeft,
+        bottom: y + height,
+        right: x + width,
       });
-    },
-    [maxDropdownHeight],
-  );
+
+      setListLayout({
+        width: Math.floor(width),
+        height: Math.floor(height),
+        top: Math.floor(buttonTop + 4),
+        bottom: Math.floor(buttonTop + height),
+        left: Math.floor(buttonLeft),
+        right: Math.floor(buttonLeft + width),
+        minWidth: Math.floor(width),
+      });
+    });
+  }, []);
 
   const _measureList = useCallback(
     (e: LayoutChangeEvent) => {
@@ -118,6 +100,18 @@ const Dropdown = ({ value, items, onSelect, hint, buttonInitials }: DropdownProp
     setListLayout(DefaultObjectLayout);
     setButtonLayout(DefaultObjectLayout);
   }, [isFocus]);
+
+  const { top, left, minWidth, maxHeight } = listLayout;
+
+  const listViewStyles = useMemo(
+    () => [styles.listView, { opacity: opacityAnim }],
+    [opacityAnim, styles.listView],
+  );
+
+  const listStyles = useMemo(
+    () => [styles.list, { top, left, minWidth, maxHeight }],
+    [left, maxHeight, minWidth, styles.list, top],
+  );
 
   return (
     <View style={globalStyles.flex1}>

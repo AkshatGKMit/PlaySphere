@@ -8,28 +8,31 @@ import styles from './styles';
 
 const SystemPlatformView = ({ systemPlatforms, starSize }: GameCardSystemPlatformProps) => {
   const getPlatformIcon = useCallback((name: string) => {
-    if (name.includes(MainSystemPlatforms.android)) {
+    if (name.includes(MainSystemPlatforms.android.name)) {
       return Icons.materialIcons.smartPhone;
     }
-    if (name.includes(MainSystemPlatforms.ios)) {
+    if (name.includes(MainSystemPlatforms.ios.name)) {
       return Icons.materialCommunityIcons.ios;
     }
-    if (name.includes(MainSystemPlatforms.linux)) {
+    if (name.includes(MainSystemPlatforms.linux.name)) {
       return Icons.fontAwesome.linux;
     }
-    if (name.includes(MainSystemPlatforms.macintosh) || name.includes(MainSystemPlatforms.macos)) {
+    if (
+      name.includes(MainSystemPlatforms.macintosh.name) ||
+      name.includes(MainSystemPlatforms.macos.name)
+    ) {
       return Icons.materialIcons.apple;
     }
-    if (name.includes(MainSystemPlatforms.nintendo)) {
+    if (name.includes(MainSystemPlatforms.nintendo.name)) {
       return Icons.materialCommunityIcons.nintendo;
     }
-    if (name.includes(MainSystemPlatforms.pc)) {
+    if (name.includes(MainSystemPlatforms.pc.name)) {
       return Icons.materialCommunityIcons.microsoftWindows;
     }
-    if (name.includes(MainSystemPlatforms.playstation)) {
+    if (name.includes(MainSystemPlatforms.playstation.name)) {
       return Icons.materialCommunityIcons.sonyPlaystation;
     }
-    if (name.includes(MainSystemPlatforms.xbox)) {
+    if (name.includes(MainSystemPlatforms.xbox.name)) {
       return Icons.materialCommunityIcons.xbox;
     }
 
