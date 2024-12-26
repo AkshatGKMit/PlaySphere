@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 
 import ActionButton from '@components/actionButton';
-import AddNewCollectionDialog from '@components/addNewCollectionDialog';
+import AddOrUpdateCollectionDialog from '@components/addOrUpdateCollectionDialog';
 import CollectionCard from '@components/collectionCard';
 import Dialog from '@components/dialog';
 import { IconButton } from '@components/iconButton';
@@ -55,7 +55,7 @@ const Collections = () => {
   const collectionNames = useMemo(() => collections.map(({ name }) => name), [collections]);
 
   const showAddNewCollectionDialog = useCallback(() => {
-    Dialog.show({ child: <AddNewCollectionDialog collectionNames={collectionNames} /> });
+    Dialog.show({ child: <AddOrUpdateCollectionDialog collectionNames={collectionNames} /> });
   }, [collectionNames]);
 
   const headerStyles = useMemo(

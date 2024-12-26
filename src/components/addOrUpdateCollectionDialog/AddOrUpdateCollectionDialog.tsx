@@ -11,60 +11,78 @@ import useCollectionMutation from '@network/hooks/useCollectionMutation';
 
 import ThemedStyles from './styles';
 
-const AddNewCollectionDialog = ({
+const AddOrUpdateCollectionDialog = ({
+  collectionName,
+  collectionId,
   collectionNames,
   game,
+  onSuccess,
 }: {
-  collectionNames: string[];
+  collectionName?: string;
+  collectionId?: number;
+  collectionNames?: string[];
   game?: Game;
+  onSuccess?: (name: string) => void;
 }) => {
-  const [newCollection, setNewCollection] = useState('');
+  const [newOrUpdateCollection, setNewOrUpdateCollection] = useState('');
   const [newCollectionFieldError, setNewCollectionFieldError] = useState('');
 
   const {
-    mutateAddNewCollection,
-    addNewCollectionLoading,
-    addNewCollectionSuccess,
-    addNewCollectionError,
+    mutateAddOrUpdateCollection,
+    addOrUpdateCollectionLoading,
+    addOrUpdateCollectionSuccess,
+    addOrUpdateCollectionError: addOrUpdateCollectionError,
   } = useCollectionMutation();
 
   useEffect(() => {
-    setNewCollectionFieldError('');
-  }, [newCollection]);
-
-  useEffect(() => {
-    if (addNewCollectionError) {
-      setNewCollectionFieldError(addNewCollectionError);
+    if (collectionName) {
+      setNewOrUpdateCollection(collectionName);
     }
-  }, [addNewCollectionError]);
+  }, [collectionName]);
 
   useEffect(() => {
-    if (addNewCollectionSuccess) {
-      setNewCollection('');
+    setNewCollectionFieldError('');
+  }, [newOrUpdateCollection]);
+
+  useEffect(() => {
+    if (addOrUpdateCollectionError) {
+      setNewCollectionFieldError(addOrUpdateCollectionError);
+    }
+  }, [addOrUpdateCollectionError]);
+
+  useEffect(() => {
+    if (addOrUpdateCollectionSuccess) {
+      setNewOrUpdateCollection('');
       setNewCollectionFieldError('');
     }
-  }, [addNewCollectionSuccess]);
+  }, [addOrUpdateCollectionSuccess]);
 
-  const onCreateNewCollection = useCallback(() => {
-    if (!newCollection) {
+  const onPressAction = useCallback(() => {
+    if (!newOrUpdateCollection) {
       setNewCollectionFieldError('Collection name is required');
       return;
     }
 
-    if (collectionNames?.includes(newCollection)) {
-      setNewCollectionFieldError(`Collection name ${newCollection} already exists`);
+    if (collectionNames?.includes(newOrUpdateCollection)) {
+      setNewCollectionFieldError(`Collection name ${newOrUpdateCollection} already exists`);
       return;
     }
 
-    mutateAddNewCollection({ name: newCollection, game });
-  }, [collectionNames, game, mutateAddNewCollection, newCollection]);
+    mutateAddOrUpdateCollection({
+      name: newOrUpdateCollection,
+      game,
+      updateCollectionId: collectionId,
+    });
+  }, [collectionId, collectionNames, game, mutateAddOrUpdateCollection, newOrUpdateCollection]);
 
   useEffect(() => {
-    if (addNewCollectionSuccess) {
-      setNewCollection('');
+    if (addOrUpdateCollectionSuccess) {
+      onSuccess?.(newOrUpdateCollection);
+      setNewOrUpdateCollection('');
+
       Dialog.hide();
     }
-  }, [addNewCollectionSuccess]);
+  }, [addOrUpdateCollectionSuccess, collectionId, newOrUpdateCollection, onSuccess]);
 
   const styles = useStyles(ThemedStyles);
 
@@ -74,12 +92,16 @@ const AddNewCollectionDialog = ({
         typography={Typography.titleLarge}
         fontWeight={FontWeight.bold}
       >
-        {game ? 'Add to new collection' : 'Create a new Collection'}
+        {game
+          ? 'Add to new collection'
+          : collectionName
+          ? 'Update Collection'
+          : 'Create a new Collection'}
       </TextBlock>
       <Textfield
         placeholder="Collection Name"
-        value={newCollection}
-        onChangeText={setNewCollection}
+        value={newOrUpdateCollection}
+        onChangeText={setNewOrUpdateCollection}
         error={newCollectionFieldError}
         autoFocus
       />
@@ -94,10 +116,10 @@ const AddNewCollectionDialog = ({
         <TouchableOpacity
           activeOpacity={0.8}
           style={[styles.buttonButton, styles.createButton]}
-          disabled={addNewCollectionLoading}
-          onPress={onCreateNewCollection}
+          disabled={addOrUpdateCollectionLoading}
+          onPress={onPressAction}
         >
-          {addNewCollectionLoading ? (
+          {addOrUpdateCollectionLoading ? (
             <Loader color={styles.createButton.color} />
           ) : (
             <TextBlock
@@ -105,7 +127,7 @@ const AddNewCollectionDialog = ({
               color={styles.createButton.color}
               fontWeight={FontWeight.bold}
             >
-              {game ? 'Create and Add' : 'Create'}
+              {game ? 'Create and Add' : collectionName ? 'Update' : 'Create'}
             </TextBlock>
           )}
         </TouchableOpacity>
@@ -114,4 +136,4 @@ const AddNewCollectionDialog = ({
   );
 };
 
-export default AddNewCollectionDialog;
+export default AddOrUpdateCollectionDialog;

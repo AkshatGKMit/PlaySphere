@@ -22,14 +22,18 @@ async function _post<Success, Error, Body = {}, Params = {}>(
   }
 }
 
-async function _patch<T, Body = {}, Params = {}>(
+async function _patch<Success, Error, Body = {}, Params = {}>(
   url: string,
   data: Body,
   config?: ApiCallConfig<Params>,
-) {
-  const response = instance.patch<T>(url, data, config);
+): ApiResponse<Success, Error> {
+  try {
+    const result = await instance.patch<Success>(url, data, config);
 
-  return response;
+    return { success: true, result };
+  } catch (error) {
+    throw error as AxiosResponse<Error>;
+  }
 }
 
 async function _delete<Success, Error, Body = {}, Params = {}>(

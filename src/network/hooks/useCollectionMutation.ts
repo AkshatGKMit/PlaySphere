@@ -9,12 +9,13 @@ import {
   requestDeleteCollection,
   requestRemoveGameFromCollection,
   requestRemoveGameFromCollectionFeed,
+  requestUpdateCollection,
 } from '@network/apiEndpointCalls';
 import useQueryKeys from '@config/useQueryKeys';
 import { useAppSelector } from '@store';
 
 const {
-  createNewCollection: createNewCollectionKey,
+  createNewCollection: createOrUpdateCollectionKey,
   removeCollection: removeCollectionKey,
   updateGameInCollection: updateGameInCollectionKey,
   userCollections: userCollectionsKey,
@@ -66,7 +67,7 @@ const useCollectionMutation = () => {
 
           const duplicateData = { ...data };
 
-          duplicateData.data = duplicateData.data.map((collection) => {
+          duplicateData.data = data.data.map((collection) => {
             const { id } = collection;
             if (id !== collectionId) {
               return collection;
@@ -265,11 +266,11 @@ const useCollectionMutation = () => {
   //#endregion
 
   //#region - Add New Collection Mutation
-  const onAddNewCollectionSuccess = (
+  const onAddOrUpdateCollectionSuccess = (
     responseData:
       | ApiSuccessResponse<CollectionDetailResponse>
       | ApiErrorResponse<AddNewCollectionResponseError>,
-    { game }: AddNewOrUpdateCollectionBody,
+    { game, updateCollectionId }: AddNewOrUpdateCollectionBody,
   ) => {
     if (!responseData.success) {
       return;
@@ -293,10 +294,25 @@ const useCollectionMutation = () => {
 
         const duplicateData = { ...data };
 
-        duplicateData.data = [
-          { id: collectionId, name, slug, game_in_collection: !!game },
-          ...duplicateData.data,
-        ];
+        if (updateCollectionId) {
+          duplicateData.data = duplicateData.data.map((collection) => {
+            const { id } = collection;
+
+            if (id !== updateCollectionId) {
+              return collection;
+            }
+
+            return {
+              ...collection,
+              name: collectionData.name,
+            };
+          });
+        } else {
+          duplicateData.data = [
+            { id: collectionId, name, slug, game_in_collection: !!game },
+            ...duplicateData.data,
+          ];
+        }
 
         return duplicateData;
       });
@@ -312,23 +328,49 @@ const useCollectionMutation = () => {
 
           const duplicateData = { ...data };
 
-          duplicateData.pages = data.pages.map((page) => ({
-            ...page,
-            data: {
-              ...page.data,
-              count: page.data.count + 1,
-              results: [collectionData, ...page.data.results],
-            },
-          }));
+          if (updateCollectionId) {
+            duplicateData.pages = data.pages.map((page) => ({
+              ...page,
+              data: {
+                ...page.data,
+                results: page.data.results.map((collection) => {
+                  const { id } = collection;
 
+                  if (id !== updateCollectionId) {
+                    return collection;
+                  }
+
+                  return {
+                    ...collection,
+                    name: collectionData.name,
+                  };
+                }),
+              },
+            }));
+          } else {
+            duplicateData.pages = data.pages.map((page) => ({
+              ...page,
+              data: {
+                ...page.data,
+                count: page.data.count + 1,
+                results: [collectionData, ...page.data.results],
+              },
+            }));
+          }
           return duplicateData;
         },
       );
     }
   };
 
-  const addNewCollectionMutationFunction = useCallback(
+  const addOrUpdateCollectionMutationFunction = useCallback(
     async (newCollection: AddNewOrUpdateCollectionBody) => {
+      const { updateCollectionId } = newCollection;
+
+      if (updateCollectionId) {
+        return requestUpdateCollection(updateCollectionId, newCollection);
+      }
+
       return requestAddNewCollection(newCollection);
     },
     [],
@@ -372,14 +414,14 @@ const useCollectionMutation = () => {
   //#endregion
 
   const {
-    mutate: mutateAddNewCollection,
-    isPending: addNewCollectionLoading,
-    isSuccess: addNewCollectionSuccess,
-    error: addNewCollectionErrorResponse,
+    mutate: mutateAddOrUpdateCollection,
+    isPending: addOrUpdateCollectionLoading,
+    isSuccess: addOrUpdateCollectionSuccess,
+    error: addOrUpdateCollectionErrorResponse,
   } = useMutation({
-    mutationKey: [createNewCollectionKey],
-    mutationFn: addNewCollectionMutationFunction,
-    onSuccess: onAddNewCollectionSuccess,
+    mutationKey: [createOrUpdateCollectionKey],
+    mutationFn: addOrUpdateCollectionMutationFunction,
+    onSuccess: onAddOrUpdateCollectionSuccess,
   });
 
   const {
@@ -430,21 +472,21 @@ const useCollectionMutation = () => {
     }
   }, [removeGameFromCollectionLoadingState]);
 
-  const addNewCollectionError = useMemo(() => {
-    if (addNewCollectionErrorResponse) {
-      const error = addNewCollectionErrorResponse as AxiosError<AddNewCollectionResponseError>;
+  const addOrUpdateCollectionError = useMemo(() => {
+    if (addOrUpdateCollectionErrorResponse) {
+      const error = addOrUpdateCollectionErrorResponse as AxiosError<AddNewCollectionResponseError>;
 
       const { name } = error.response?.data ?? {};
 
       return name?.join(', ');
     }
-  }, [addNewCollectionErrorResponse]);
+  }, [addOrUpdateCollectionErrorResponse]);
 
   return {
-    mutateAddNewCollection,
-    addNewCollectionSuccess,
-    addNewCollectionLoading,
-    addNewCollectionError,
+    mutateAddOrUpdateCollection,
+    addOrUpdateCollectionSuccess,
+    addOrUpdateCollectionLoading,
+    addOrUpdateCollectionError,
     mutateGameToCollection,
     updateGameToCollectionSuccess,
     updateGameLoading,

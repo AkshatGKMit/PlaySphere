@@ -3,6 +3,8 @@ import { Alert, FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from '
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
+import AddOrUpdateCollectionDialog from '@components/addOrUpdateCollectionDialog';
+import Dialog from '@components/dialog';
 import FeedGameCard from '@components/feedGameCard';
 import { IconButton } from '@components/iconButton';
 import Loader from '@components/loader';
@@ -29,6 +31,8 @@ const CollectionGames = () => {
 
   const { collectionId, collectionName, numGames } = params! as CollectionGamesRouteProps;
 
+  const [collectionDisplayName, setCollectionDisplayName] = useState('');
+
   const {
     collectionFeeds = [],
     online,
@@ -39,6 +43,10 @@ const CollectionGames = () => {
 
   const { removeCollectionLoading, mutateRemoveCollection, removeCollectionSuccess } =
     useCollectionMutation();
+
+  useEffect(() => {
+    setCollectionDisplayName(collectionName);
+  }, [collectionName]);
 
   const onPressDelete = useCallback(() => {
     Alert.alert(
@@ -59,6 +67,18 @@ const CollectionGames = () => {
       { cancelable: true },
     );
   }, [collectionId, mutateRemoveCollection]);
+
+  const onPressEdit = useCallback(() => {
+    Dialog.show({
+      child: (
+        <AddOrUpdateCollectionDialog
+          collectionName={collectionName}
+          collectionId={collectionId}
+          onSuccess={setCollectionDisplayName}
+        />
+      ),
+    });
+  }, [collectionId, collectionName]);
 
   useEffect(() => {
     if (removeCollectionSuccess && !removeCollectionLoading) {
@@ -101,8 +121,12 @@ const CollectionGames = () => {
           fontWeight={FontWeight.heavy}
           style={globalStyles.flex1}
         >
-          {collectionName}
+          {collectionDisplayName}
         </TextBlock>
+        <IconButton
+          icon={Icons.materialIcons.edit}
+          onPress={onPressEdit}
+        />
         {removeCollectionLoading ? (
           <Loader size={'small'} />
         ) : (
