@@ -18,6 +18,7 @@ interface GameBackgroundResponse {
 interface UserDetailsResponse {
   id: number;
   username: string;
+  email: string;
   slug: string;
   full_name: string;
   avatar: string | null;

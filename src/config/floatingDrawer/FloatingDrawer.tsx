@@ -199,7 +199,7 @@ const FloatingDrawer = () => {
                       fontWeight={FontWeight.semibold}
                       style={styles.collectionCount}
                     >
-                      {user.collectionsCount} Collections
+                      {user.email}
                     </TextBlock>
                   </View>
                 </View>
