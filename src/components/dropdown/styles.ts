@@ -26,6 +26,8 @@ const ThemedStyles = (theme: ThemeColors, focus: boolean) => {
       backgroundColor: theme.all.surfaceContainerHigh,
       paddingVertical: 4,
       borderRadius: 4,
+      borderWidth: 0.8,
+      borderColor: theme.primaryText,
     },
     listView: {
       ...getShadowStyle(Elevation.level2),
