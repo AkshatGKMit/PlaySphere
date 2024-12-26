@@ -7,13 +7,13 @@ import BannerImageView from '@components/bannerImageView';
 import { TestIds } from '@constants';
 
 const {
-  mainComponentWrapper: mainComponentWrapperTestId,
+  root: mainComponentWrapperTestId,
   imagePrefix: imagePrefixTestId,
   image: imageTestId,
 } = TestIds.unit.bannerImageView;
 
 describe('<BannerImageView />', () => {
-  it('renders banner images', () => {
+  it('Renders Banner Images', () => {
     render(<BannerImageView />);
 
     const container = screen.getByTestId(mainComponentWrapperTestId);

@@ -5,5 +5,6 @@ export const TestIds = {
       imagePrefix: 'banner-images',
       image: (index: number) => `banner-images${index}`,
     },
+    loader: 'loader',
   },
 };

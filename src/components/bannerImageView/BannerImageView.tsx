@@ -5,8 +5,7 @@ import { IMAGES, TestIds } from '@constants';
 
 import styles from './styles';
 
-const { mainComponentWrapper: mainComponentWrapperTestId, image: imageTestId } =
-  TestIds.unit.bannerImageView;
+const { root: mainComponentWrapperTestId, image: imageTestId } = TestIds.unit.bannerImageView;
 
 const BannerImageView = () => {
   return (
