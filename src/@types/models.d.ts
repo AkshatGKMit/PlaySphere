@@ -29,6 +29,7 @@ interface User {
   id: number;
   username: string;
   slug: string;
+  email: string;
   fullName: string;
   avatar: string | null;
   gamesCount: number;

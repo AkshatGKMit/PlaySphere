@@ -1,11 +1,13 @@
 import React from 'react';
-import { Animated, Image, StyleSheet } from 'react-native';
+import { Animated, Image } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import TextBlock from '@components/textBlock';
 import { IMAGES, Typography, FontWeight, APP_NAME } from '@constants';
-import { Colors, globalStyles } from '@themes';
+import { Colors } from '@themes';
 import { colorWithOpacity } from '@utility/style';
+
+import styles from './styles';
 
 const AppIntro = (opacity?: Animated.Value) => {
   const introStyles = [styles.gradientContainer, { opacity: opacity ?? 1 }];
@@ -40,17 +42,3 @@ const AppIntro = (opacity?: Animated.Value) => {
 };
 
 export default AppIntro;
-
-const styles = StyleSheet.create({
-  gradientContainer: {
-    ...globalStyles.flex1,
-    ...globalStyles.columnCenter,
-    height: '100%',
-    gap: 10,
-  },
-  appLogo: {
-    height: 70,
-    aspectRatio: 1,
-    borderRadius: 12,
-  },
-});
