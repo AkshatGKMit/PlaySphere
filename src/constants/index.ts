@@ -152,3 +152,4 @@ export * from './images';
 export * from './query';
 export * from './store';
 export * from './style';
+export * from './testIds';

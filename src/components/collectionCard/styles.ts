@@ -15,10 +15,11 @@ const styles = StyleSheet.create({
     ...globalStyles.columnCenter,
     gap: 4,
     backgroundColor: colorWithOpacity(Colors.black, 0.5),
-    padding: 4,
+    padding: 8,
   },
   title: {
     textTransform: 'capitalize',
+    textAlign: 'center',
   },
   deleteContainer: {
     position: 'absolute',
