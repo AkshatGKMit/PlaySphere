@@ -7,7 +7,7 @@ import BannerImageView from '@components/bannerImageView';
 import { TestIds } from '@constants';
 
 const {
-  root: mainComponentWrapperTestId,
+  root: wrapperTestId,
   imagePrefix: imagePrefixTestId,
   image: imageTestId,
 } = TestIds.unit.bannerImageView;
@@ -16,7 +16,7 @@ describe('<BannerImageView />', () => {
   it('Renders Banner Images', () => {
     render(<BannerImageView />);
 
-    const container = screen.getByTestId(mainComponentWrapperTestId);
+    const container = screen.getByTestId(wrapperTestId);
 
     expect(container).toBeTruthy();
 

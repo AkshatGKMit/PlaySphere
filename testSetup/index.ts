@@ -1,4 +1,5 @@
 import { jest } from '@jest/globals';
+import { PropsWithChildren } from 'react';
 
 //#region - Mocking react-native-vector-icons
 jest.mock('react-native-vector-icons/AntDesign', () => 'AntDesign');
@@ -20,12 +21,30 @@ jest.mock('react-native-vector-icons/SimpleLineIcons', () => 'SimpleLineIcons');
 jest.mock('react-native-vector-icons/Zocial', () => 'Zocial');
 //#endregion
 
+jest.mock('@react-native-community/blur', () => {
+  return {
+    BlurView: jest.fn(({ children }) => {
+      children;
+    }),
+  };
+});
+
 jest.mock('@react-navigation/native-stack', () => ({
   createNativeStackNavigator: jest.fn().mockImplementation(() => ({
     Navigator: jest.fn(({ children }) => children),
     Screen: jest.fn(({ children }) => children),
   })),
 }));
+
+jest.mock('@react-navigation/native', () => {
+  return {
+    NavigationContainer: jest.fn(({ children }) => children),
+    useNavigation: jest.fn(() => ({
+      navigate: jest.fn(),
+      goBack: jest.fn(),
+    })),
+  };
+});
 
 jest.mock('react-native-linear-gradient', () => 'LinearGradient');
 
@@ -37,5 +56,14 @@ jest.mock('react-native-orientation-locker', () => {
     lockToLandscapeLeft: jest.fn(),
     lockToLandscapeRight: jest.fn(),
     unlockAllOrientations: jest.fn(),
+  };
+});
+
+jest.mock('react-native-safe-area-context', () => {
+  const inset = { top: 0, right: 0, bottom: 0, left: 0 };
+
+  return {
+    SafeAreaProvider: jest.fn().mockImplementation(({ children }) => children),
+    useSafeAreaInsets: jest.fn().mockImplementation(() => inset),
   };
 });

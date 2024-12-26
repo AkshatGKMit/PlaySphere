@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { RenderOptions } from '@testing-library/react-native';
 
 declare global {
-  interface ProviderWrapper {
+  interface ChildrenWrapper {
     children: ReactNode;
   }
 

@@ -6,9 +6,11 @@ import Loader from '@components/loader';
 import TextBlock from '@components/textBlock';
 import useRippleEffect from '@config/useRippleEffect';
 import useStyles from '@config/useStyles';
-import { Typography } from '@constants';
+import { TestIds, Typography } from '@constants';
 
 import ThemedStyles from './styles';
+
+const { root: rootTestId } = TestIds.unit.actionButton;
 
 const ActionButton = ({
   label,
@@ -31,6 +33,7 @@ const ActionButton = ({
       onPressIn={animatePressIn}
       onPressOut={pressOut}
       style={rippleContainerStyle}
+      testID={rootTestId}
     >
       <View style={[styles.buttonContainer, style]}>
         {loading ? (
