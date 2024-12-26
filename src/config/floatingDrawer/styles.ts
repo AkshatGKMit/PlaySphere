@@ -15,11 +15,39 @@ const ThemedStyles = (theme: ThemeColors) => {
       ...globalStyles.fullPositionAbsolute,
       backgroundColor: colorWithOpacity(Colors.black, 0.5),
     },
+    headerContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 20,
+    },
     closeIcon: {
       maxWidth: 36,
       backgroundColor: theme.all.surfaceContainerHighest,
       padding: 8,
       borderRadius: 20,
+    },
+    profileContainer: {
+      flexDirection: 'row',
+      gap: 15,
+      paddingVertical: 5,
+      paddingHorizontal: 10,
+      backgroundColor: theme.all.surfaceContainerHighest,
+      borderRadius: 6,
+    },
+    profileImage: {
+      height: 40,
+      aspectRatio: 1,
+      borderRadius: 30,
+    },
+    userDetails: {
+      flexDirection: 'column',
+      gap: 5,
+    },
+    username: {
+      color: theme.primaryText,
+    },
+    collectionCount: {
+      color: theme.all.outline,
     },
     buttonList: {
       flexDirection: 'column',

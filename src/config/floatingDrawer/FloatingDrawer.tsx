@@ -2,20 +2,31 @@ import React, { memo, useCallback, useState } from 'react';
 import { LayoutChangeEvent, Modal, Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 import { BlurView } from '@react-native-community/blur';
 import { useQueryClient } from '@tanstack/react-query';
 
 import Icon from '@components/icon';
-import { DefaultObjectLayout, Icons, isIos, QueryKeys, Routes } from '@constants';
+import {
+  DefaultObjectLayout,
+  FontWeight,
+  Icons,
+  IMAGES,
+  isIos,
+  QueryKeys,
+  Routes,
+  Typography,
+} from '@constants';
 import useStyles from '@config/useStyles';
 import ApiConstants from '@network/apiConstants';
-import { useAppDispatch } from '@store';
+import { useAppDispatch, useAppSelector } from '@store';
 import { logout } from '@store/reducers/auth';
 import { removeUser } from '@store/reducers/user';
 import { Colors, globalStyles } from '@themes';
 
 import AnimatedFloatingButton from './AnimatedFloatingButton';
 import ThemedStyles from './styles';
+import TextBlock from '@components/textBlock';
 
 const {
   list: listGamesEndpoints,
@@ -32,9 +43,10 @@ const { home: homeRoute, collections: collectionsRoute } = Routes.Stack;
 const FloatingDrawer = () => {
   const { navigate, dispatch } = useNavigation<StackNavigation>();
   const { top: topInsets } = useSafeAreaInsets();
-
   const queryClient = useQueryClient();
+
   const appDispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.user);
 
   const [visible, setVisible] = useState(false);
   const [buttonLayout, setButtonLayout] = useState(DefaultObjectLayout);
@@ -155,11 +167,43 @@ const FloatingDrawer = () => {
             blurAmount={1}
           />
           <View style={styles.modalContainer}>
-            <View style={[styles.closeIcon, { top: buttonTop, left: buttonLeft }]}>
-              <Icon
-                icon={Icons.materialIcons.close}
-                size={20}
-              />
+            <View
+              style={[
+                styles.headerContainer,
+                { top: buttonTop - (user ? 15 : 0), left: buttonLeft },
+              ]}
+            >
+              <View style={styles.closeIcon}>
+                <Icon
+                  icon={Icons.materialIcons.close}
+                  size={20}
+                />
+              </View>
+              {user ? (
+                <View style={styles.profileContainer}>
+                  <FastImage
+                    defaultSource={IMAGES.PROFILE_COVER}
+                    source={{ uri: user.avatar ?? '' }}
+                    style={styles.profileImage}
+                  />
+                  <View style={styles.userDetails}>
+                    <TextBlock
+                      typography={Typography.bodyLarge}
+                      fontWeight={FontWeight.bold}
+                      style={styles.username}
+                    >
+                      @{user.username}
+                    </TextBlock>
+                    <TextBlock
+                      typography={Typography.bodySmall}
+                      fontWeight={FontWeight.semibold}
+                      style={styles.collectionCount}
+                    >
+                      {user.collectionsCount} Collections
+                    </TextBlock>
+                  </View>
+                </View>
+              ) : null}
             </View>
             <View style={[styles.buttonList, { top: listTop, left: listLeft }]}>
               <AnimatedFloatingButton
