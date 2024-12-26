@@ -31,7 +31,6 @@ const VideoHeader = ({ movie, styles, setIsVideo }: DetailsVideoHeaderProps) => 
   const videoRef = useRef<VideoRef>(null);
 
   useEffect(() => {
-    videoRef.current?.setFullScreen(fullScreen);
     StatusBar.setHidden(fullScreen);
     StatusBar.setTranslucent(fullScreen);
   }, [fullScreen]);

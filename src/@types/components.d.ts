@@ -137,7 +137,6 @@ declare global {
   }
 
   interface GameListFooterProps {
-    showNoConnectionScreenMessage: boolean;
     hasNextPage: boolean;
     hasData: boolean;
   }

@@ -70,11 +70,11 @@ const Search = () => {
 
   const gameQueryKey: GameQueryKey = [mainGameListKey, listEndpoint, gameQueryParams];
 
-  const { games, hasNextPage, fetchNextPage, isFetchingNextPage, online, isPending, isSuccess } =
+  const { games, hasNextPage, fetchNextPage, isFetchingNextPage, isPending, isSuccess } =
     useGamesQuery(gameQueryKey, { enabled: !isDebouncedSearchEmpty });
 
   const onEndReached = () => {
-    if (online.isConnected && !isFetchingNextPage) {
+    if (!isFetchingNextPage) {
       fetchNextPage();
     }
   };
@@ -107,7 +107,10 @@ const Search = () => {
     () => searchText && debouncedSearchText && !isPending,
     [debouncedSearchText, isPending, searchText],
   );
-  const showShimmers = useMemo(() => !!searchText && isPending, [isPending, searchText]);
+  const showShimmers = useMemo(
+    () => !!searchText && (debouncedSearchText !== searchText || !isSuccess),
+    [debouncedSearchText, isSuccess, searchText],
+  );
   const showNoResultFound = useMemo(
     () => searchText && isSuccess && !games.length,
     [games.length, isSuccess, searchText],
@@ -135,7 +138,7 @@ const Search = () => {
           style={styles.textInput}
         />
         {searchText ? (
-          <Pressable onPress={() => setSearchText('')}>
+          <Pressable onPress={() => handleSearchTextChange('')}>
             <Icon
               icon={Icons.materialIcons.close}
               size={22}
@@ -193,7 +196,6 @@ const Search = () => {
           <ListFooterComponent
             hasData={showFooter}
             hasNextPage={!isDebouncedSearchEmpty && hasNextPage}
-            showNoConnectionScreenMessage={online.showNoConnectionScreenMessage}
           />
         }
         stickyHeaderIndices={[0]}

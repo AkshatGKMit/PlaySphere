@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 
 import { Errors } from '@constants';
 
-import useOnlineStatus from './useOnlineStatus';
-
 export const useForm = <T extends Record<keyof T, any> = {}>({
   initialData,
   validations,
@@ -12,13 +10,11 @@ export const useForm = <T extends Record<keyof T, any> = {}>({
   const [fieldErrors, setFieldErrors] = useState<ErrorRecord<T>>({});
   const [nonFieldError, setNonFieldError] = useState('');
 
-  const { isConnected } = useOnlineStatus();
-
   useEffect(() => {
-    if (isConnected && nonFieldError === Errors.noInternet) {
+    if (nonFieldError === Errors.noInternet) {
       setNonFieldError('');
     }
-  }, [isConnected, nonFieldError]);
+  }, [nonFieldError]);
 
   const handleChangeText = (key: keyof T, value: string) => {
     setData((prevData) => ({
@@ -81,7 +77,7 @@ export const useForm = <T extends Record<keyof T, any> = {}>({
   };
 
   const handleSubmit = (callback?: (data: T) => void) => {
-    if (!isConnected && Object.keys(fieldErrors).length === 0) {
+    if (Object.keys(fieldErrors).length === 0) {
       setNonFieldError(Errors.noInternet);
       return;
     }

@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { AxiosResponse } from 'axios';
 import { QueryFunction, QueryKey, useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
 
-import useOnlineStatus from '@config/useOnlineStatus';
 import { QueryKeys } from '@constants';
 import { fetchCollectionFeed } from '@network/apiEndpointCalls';
 import { formatCollectionFeed } from '@network/dataFormatters';
@@ -61,8 +60,6 @@ const useCollectionFeedsQuery = (
     enabled,
   });
 
-  const online = useOnlineStatus(!data);
-
   const collectionFeeds: CollectionFeeds = useMemo(() => {
     const collectionIdSet = new Set();
 
@@ -90,7 +87,6 @@ const useCollectionFeedsQuery = (
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-    online,
     refetch,
     isRefetching,
   };

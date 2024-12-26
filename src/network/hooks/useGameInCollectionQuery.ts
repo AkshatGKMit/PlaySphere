@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { AxiosResponse } from 'axios';
 import { QueryFunction, QueryKey, useQuery } from '@tanstack/react-query';
 
-import useOnlineStatus from '@config/useOnlineStatus';
 import { QueryKeys } from '@constants';
 import { fetchGameInCollection } from '@network/apiEndpointCalls';
 import { formatGameInCollection } from '@network/dataFormatters';
@@ -24,8 +23,6 @@ const useGameInCollectionQuery = (gameId: number) => {
     staleTime: 10 * 60 * 1000,
   });
 
-  const online = useOnlineStatus(!data);
-
   const gameInCollections = useMemo(() => {
     if (!data) {
       return [];
@@ -45,7 +42,7 @@ const useGameInCollectionQuery = (gameId: number) => {
       .map(formatGameInCollection);
   }, [data]);
 
-  return { gameInCollections, online, isPending, isSuccess, refetch, isRefetching };
+  return { gameInCollections, isPending, isSuccess, refetch, isRefetching };
 };
 
 export default useGameInCollectionQuery;

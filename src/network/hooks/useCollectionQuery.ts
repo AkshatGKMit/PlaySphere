@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { AxiosResponse } from 'axios';
 import { QueryFunction, QueryKey, useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
 
-import useOnlineStatus from '@config/useOnlineStatus';
 import { QueryKeys } from '@constants';
 import { fetchUserCollections } from '@network/apiEndpointCalls';
 import { formatCollection } from '@network/dataFormatters';
@@ -62,8 +61,6 @@ const useCollectionQuery = (params?: ListQueryParams) => {
     staleTime: Infinity,
   });
 
-  const online = useOnlineStatus(!data);
-
   const collections: Collections = useMemo(() => {
     const allCollections = data?.pages.flatMap((page) => page.data.results) ?? [];
 
@@ -79,7 +76,6 @@ const useCollectionQuery = (params?: ListQueryParams) => {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-    online,
     isRefetching,
   };
 };

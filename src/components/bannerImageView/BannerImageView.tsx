@@ -1,17 +1,24 @@
 import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image } from 'react-native';
 
-import { IMAGES } from '@constants';
-import { globalStyles } from '@themes';
+import { IMAGES, TestIds } from '@constants';
+
+import styles from './styles';
+
+const { root: mainComponentWrapperTestId, image: imageTestId } = TestIds.unit.bannerImageView;
 
 const BannerImageView = () => {
   return (
-    <View style={styles.bannerImageContainer}>
+    <View
+      style={styles.bannerImageContainer}
+      testID={mainComponentWrapperTestId}
+    >
       {Array.from({ length: 5 }).map((_, index) => (
         <Image
           key={index}
           source={IMAGES.PHOTO_COLLAGE}
           style={styles.bannerImage}
+          testID={imageTestId(index)}
         />
       ))}
     </View>
@@ -19,19 +26,3 @@ const BannerImageView = () => {
 };
 
 export default BannerImageView;
-
-const styles = StyleSheet.create({
-  bannerImageContainer: {
-    ...globalStyles.fullPositionAbsolute,
-    zIndex: -1,
-    transform: [
-      { rotateZ: '-20deg' },
-      { rotateX: '50deg' },
-      { rotateY: '10deg' },
-      { translateX: '-60%' },
-      { translateY: '-65%' },
-      { scale: 0.55 },
-    ],
-  },
-  bannerImage: { width: '100%', aspectRatio: 16 / 9 },
-});

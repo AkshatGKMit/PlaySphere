@@ -53,7 +53,7 @@ const CollectionCard = ({ collection }: { collection: Collection }) => {
             color={Colors.white}
             style={styles.title}
           >
-            {gamesCount} Games
+            {gamesCount} {gamesCount === 1 ? 'Game' : 'Games'}
           </TextBlock>
         </View>
       </Pressable>
