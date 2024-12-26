@@ -3,7 +3,7 @@ import { Alert, FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from '
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
-import AddOrUpdateCollectionDialog from '@components/addNewCollectionDialog';
+import AddOrUpdateCollectionDialog from '@components/addOrUpdateCollectionDialog';
 import Dialog from '@components/dialog';
 import FeedGameCard from '@components/feedGameCard';
 import { IconButton } from '@components/iconButton';

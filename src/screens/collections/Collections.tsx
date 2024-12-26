@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 
 import ActionButton from '@components/actionButton';
-import AddOrUpdateCollectionDialog from '@components/addNewCollectionDialog';
+import AddOrUpdateCollectionDialog from '@components/addOrUpdateCollectionDialog';
 import CollectionCard from '@components/collectionCard';
 import Dialog from '@components/dialog';
 import { IconButton } from '@components/iconButton';

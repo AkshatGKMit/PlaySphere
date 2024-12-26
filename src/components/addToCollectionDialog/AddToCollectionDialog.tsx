@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import ActionButton from '@components/actionButton';
-import AddOrUpdateCollectionDialog from '@components/addNewCollectionDialog';
+import AddOrUpdateCollectionDialog from '@components/addOrUpdateCollectionDialog';
 import Dialog from '@components/dialog';
 import TextBlock from '@components/textBlock';
 import useStyles from '@config/useStyles';
