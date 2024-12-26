@@ -62,6 +62,7 @@ export const Icons = {
     arrowDropDown: { family: IconFamily.MATERIAL_ICONS, name: 'arrow-drop-down' },
     close: { family: IconFamily.MATERIAL_ICONS, name: 'close' },
     collections: { family: IconFamily.MATERIAL_ICONS, name: 'collections' },
+    edit: { family: IconFamily.MATERIAL_ICONS, name: 'edit' },
     fullscreen: { family: IconFamily.MATERIAL_ICONS, name: 'fullscreen' },
     fullscreenExit: { family: IconFamily.MATERIAL_ICONS, name: 'fullscreen-exit' },
     games: { family: IconFamily.MATERIAL_ICONS, name: 'games' },

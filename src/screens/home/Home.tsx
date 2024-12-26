@@ -1,7 +1,7 @@
 import { Alert, BackHandler, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
 import GameListScreen from '@components/gameListScreen';
 import TextBlock from '@components/textBlock';
@@ -15,6 +15,7 @@ import ThemedStyles from './styles';
 
 const Home = () => {
   const insets = useSafeAreaInsets();
+  const { getState } = useNavigation<StackNavigation>();
   const { params } = useRoute<RouteProp<RootStackParamList>>();
 
   const { colors: theme } = useAppSelector((state) => state.theme);
@@ -24,6 +25,7 @@ const Home = () => {
   const styles = useStyles((themeColors) => ThemedStyles(themeColors, insets));
 
   const onBackPress = useCallback(() => {
+    // const { } = getState()
     Alert.alert('Confirm Exit', 'Are you sure you want to exit?', [
       {
         text: 'Cancel',

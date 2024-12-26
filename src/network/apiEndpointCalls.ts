@@ -32,7 +32,6 @@ const {
   collections: gameCollectionsEndpoint,
   addToLibrary: addToLibraryEndpoint,
   removeFromLibrary: removeFromLibraryEndpoint,
-  updateLibraryStatus: updateLibraryStatusEndpoint,
   addOrRemoveFromCollection: addOrRemoveGameFromCollectionEndpoint,
   removeFromCollection: removeGameFromCollectionEndpoint,
 } = gamesEndpoint;
@@ -137,10 +136,6 @@ export async function requestRemoveGameFromLibrary(gameId: number) {
   return await _delete(removeFromLibraryEndpoint(gameId));
 }
 
-export async function requestUpdateGameLibrary(gameId: number, body: UpdateGameLibraryStatus) {
-  return await _patch<UpdateLibraryResponseSuccess>(updateLibraryStatusEndpoint(gameId), body);
-}
-
 export async function requestAddGameToCollection(
   collectionId: number,
   body: AddOrRemoveGameFromCollectionBody,
@@ -184,7 +179,7 @@ export async function requestUpdateCollection(
   collectionId: number,
   updatedCollection: Partial<AddNewOrUpdateCollectionBody>,
 ) {
-  return await _post<CollectionDetailResponse, AddNewCollectionResponseError>(
+  return await _patch<CollectionDetailResponse, AddNewCollectionResponseError>(
     updateDeleteCollectionEndpoint(collectionId),
     updatedCollection,
   );

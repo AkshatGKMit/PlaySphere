@@ -9,6 +9,7 @@ import {
   requestDeleteCollection,
   requestRemoveGameFromCollection,
   requestRemoveGameFromCollectionFeed,
+  requestUpdateCollection,
 } from '@network/apiEndpointCalls';
 import useQueryKeys from '@config/useQueryKeys';
 import { useAppSelector } from '@store';
@@ -66,7 +67,7 @@ const useCollectionMutation = () => {
 
           const duplicateData = { ...data };
 
-          duplicateData.data = duplicateData.data.map((collection) => {
+          duplicateData.data = data.data.map((collection) => {
             const { id } = collection;
             if (id !== collectionId) {
               return collection;
@@ -269,7 +270,7 @@ const useCollectionMutation = () => {
     responseData:
       | ApiSuccessResponse<CollectionDetailResponse>
       | ApiErrorResponse<AddNewCollectionResponseError>,
-    { game }: AddNewOrUpdateCollectionBody,
+    { game, updateCollectionId }: AddNewOrUpdateCollectionBody,
   ) => {
     if (!responseData.success) {
       return;
@@ -293,10 +294,25 @@ const useCollectionMutation = () => {
 
         const duplicateData = { ...data };
 
-        duplicateData.data = [
-          { id: collectionId, name, slug, game_in_collection: !!game },
-          ...duplicateData.data,
-        ];
+        if (updateCollectionId) {
+          duplicateData.data = duplicateData.data.map((collection) => {
+            const { id } = collection;
+
+            if (id !== updateCollectionId) {
+              return collection;
+            }
+
+            return {
+              ...collection,
+              name: collectionData.name,
+            };
+          });
+        } else {
+          duplicateData.data = [
+            { id: collectionId, name, slug, game_in_collection: !!game },
+            ...duplicateData.data,
+          ];
+        }
 
         return duplicateData;
       });
@@ -312,15 +328,35 @@ const useCollectionMutation = () => {
 
           const duplicateData = { ...data };
 
-          duplicateData.pages = data.pages.map((page) => ({
-            ...page,
-            data: {
-              ...page.data,
-              count: page.data.count + 1,
-              results: [collectionData, ...page.data.results],
-            },
-          }));
+          if (updateCollectionId) {
+            duplicateData.pages = data.pages.map((page) => ({
+              ...page,
+              data: {
+                ...page.data,
+                results: page.data.results.map((collection) => {
+                  const { id } = collection;
 
+                  if (id !== updateCollectionId) {
+                    return collection;
+                  }
+
+                  return {
+                    ...collection,
+                    name: collectionData.name,
+                  };
+                }),
+              },
+            }));
+          } else {
+            duplicateData.pages = data.pages.map((page) => ({
+              ...page,
+              data: {
+                ...page.data,
+                count: page.data.count + 1,
+                results: [collectionData, ...page.data.results],
+              },
+            }));
+          }
           return duplicateData;
         },
       );
@@ -329,6 +365,12 @@ const useCollectionMutation = () => {
 
   const addNewCollectionMutationFunction = useCallback(
     async (newCollection: AddNewOrUpdateCollectionBody) => {
+      const { updateCollectionId } = newCollection;
+
+      if (updateCollectionId) {
+        return requestUpdateCollection(updateCollectionId, newCollection);
+      }
+
       return requestAddNewCollection(newCollection);
     },
     [],
