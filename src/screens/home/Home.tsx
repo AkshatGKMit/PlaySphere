@@ -6,12 +6,14 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import GameListScreen from '@components/gameListScreen';
 import TextBlock from '@components/textBlock';
 import useStyles from '@config/useStyles';
-import { Elevation, FontWeight, Typography } from '@constants';
+import { Elevation, FontWeight, Routes, Typography } from '@constants';
 import { useAppSelector } from '@store';
 import { getShadowStyle } from '@utility/style';
 
 import Header from './Header';
 import ThemedStyles from './styles';
+
+const { home: homeRoute } = Routes.Stack;
 
 const Home = () => {
   const insets = useSafeAreaInsets();
@@ -25,16 +27,21 @@ const Home = () => {
   const styles = useStyles((themeColors) => ThemedStyles(themeColors, insets));
 
   const onBackPress = useCallback(() => {
-    // const { } = getState()
-    Alert.alert('Confirm Exit', 'Are you sure you want to exit?', [
-      {
-        text: 'Cancel',
-        style: 'cancel',
-      },
-      { text: 'Exit', onPress: () => BackHandler.exitApp() },
-    ]);
-    return true;
-  }, []);
+    const { index, routeNames } = getState();
+
+    if (routeNames.at(index) === homeRoute) {
+      Alert.alert('Confirm Exit', 'Are you sure you want to exit?', [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        { text: 'Exit', onPress: () => BackHandler.exitApp() },
+      ]);
+      return true;
+    }
+
+    return false;
+  }, [getState]);
 
   useEffect(() => {
     const hardwareBackPress = BackHandler.addEventListener('hardwareBackPress', onBackPress);
