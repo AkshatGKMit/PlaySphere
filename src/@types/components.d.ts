@@ -133,7 +133,7 @@ declare global {
   }
 
   interface GameListStylesProps {
-    styles: ReturnType<typeof GameListThemedStyles>;
+    styles: any;
   }
 
   interface GameListFooterProps {

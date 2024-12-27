@@ -4,8 +4,7 @@ import { View } from 'react-native';
 import Dropdown from '@components/dropdown';
 import { GameCardShimmer } from '@components/gameCard';
 import Loader from '@components/loader';
-import TextBlock from '@components/textBlock';
-import { Errors, orderByDropdownItems, systemPlatformDropdownItems } from '@constants';
+import { orderByDropdownItems, systemPlatformDropdownItems } from '@constants';
 import { generateRandomString } from '@utility/helpers';
 
 export const ListEmptyComponent = memo(

@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useState } from 'react';
-import { LayoutChangeEvent, Modal, Pressable, View } from 'react-native';
+import { Image, LayoutChangeEvent, Modal, Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
@@ -97,7 +97,7 @@ const FloatingDrawer = () => {
   );
 
   const onPressLogout = useCallback(() => {
-    queryClient.invalidateQueries({ queryKey: [currentUserKey] });
+    queryClient.clear();
     appDispatch(removeUser());
     appDispatch(logout());
   }, [appDispatch, queryClient]);
@@ -181,27 +181,25 @@ const FloatingDrawer = () => {
               </View>
               {user ? (
                 <View style={styles.profileContainer}>
-                  <FastImage
-                    defaultSource={IMAGES.PROFILE_COVER}
-                    source={{ uri: user.avatar ?? '' }}
-                    style={styles.profileImage}
-                  />
-                  <View style={styles.userDetails}>
-                    <TextBlock
-                      typography={Typography.bodyLarge}
-                      fontWeight={FontWeight.bold}
-                      style={styles.username}
-                    >
-                      @{user.username}
-                    </TextBlock>
-                    <TextBlock
-                      typography={Typography.bodySmall}
-                      fontWeight={FontWeight.semibold}
-                      style={styles.collectionCount}
-                    >
-                      {user.email}
-                    </TextBlock>
-                  </View>
+                  {user.avatar ? (
+                    <FastImage
+                      defaultSource={IMAGES.PROFILE_COVER}
+                      source={{ uri: user.avatar ?? '' }}
+                      style={styles.profileImage}
+                    />
+                  ) : (
+                    <Image
+                      source={IMAGES.PROFILE_COVER}
+                      style={styles.profileImage}
+                    />
+                  )}
+                  <TextBlock
+                    typography={Typography.bodyLarge}
+                    fontWeight={FontWeight.bold}
+                    style={styles.username}
+                  >
+                    @{user.username}
+                  </TextBlock>
                 </View>
               ) : null}
             </View>

@@ -28,6 +28,7 @@ const ThemedStyles = (theme: ThemeColors) => {
     },
     profileContainer: {
       flexDirection: 'row',
+      alignItems: 'center',
       gap: 15,
       paddingVertical: 5,
       paddingHorizontal: 10,
@@ -38,6 +39,8 @@ const ThemedStyles = (theme: ThemeColors) => {
       height: 40,
       aspectRatio: 1,
       borderRadius: 30,
+      resizeMode: 'contain',
+      width: 40,
     },
     userDetails: {
       flexDirection: 'column',
