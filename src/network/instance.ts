@@ -11,9 +11,4 @@ const instance = axios.create({
   },
 });
 
-instance.interceptors.request.use((requestConfig) => {
-  console.log(requestConfig.method + ' : ' + requestConfig.url);
-  return requestConfig;
-});
-
 export default instance;

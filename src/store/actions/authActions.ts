@@ -22,8 +22,7 @@ export const login: CaseReducer<AuthState, PayloadAction<string>> = (state, acti
 
   storage.set(StorageKey.token, payload);
 
-  const isTokenAvailable = storage.getAllKeys().includes(StorageKey.token);
-  state.isAuthorized = isTokenAvailable;
+  state.isAuthorized = true;
 };
 
 export const logout: CaseReducer<AuthState> = (state) => {

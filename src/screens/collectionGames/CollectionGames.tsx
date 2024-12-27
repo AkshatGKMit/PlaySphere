@@ -119,6 +119,7 @@ const CollectionGames = () => {
           typography={Typography.headlineLarge}
           fontWeight={FontWeight.heavy}
           style={globalStyles.flex1}
+          numberOfLines={2}
         >
           {collectionDisplayName}
         </TextBlock>

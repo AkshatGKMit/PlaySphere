@@ -73,6 +73,7 @@ const Splash = ({ onReady }: { onReady: (value: boolean) => void }) => {
           onReady(isAuthorized);
         }, 1500);
       }
+      onReady(isAuthorized);
     }
   }, [isAuthorized, onReady, prefetchUserQueries]);
 
