@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { Routes } from '@constants';
 import ApiConstants from '@network/apiConstants';
-import useUserQuery from '@network/hooks/useUserQuery';
 import Collections from '@screens/collections/Collections';
 import CollectionGames from '@screens/collectionGames/CollectionGames';
 import Details from '@screens/details/Details';
@@ -21,34 +20,30 @@ const {
 } = Routes.Stack;
 const { list: listGamesEndpoint } = ApiConstants.endpoints.games;
 
-const StackNavigator = () => {
-  useUserQuery();
-
-  return (
-    <Stack.Navigator screenOptions={{ animation: 'fade', headerShown: false }}>
-      <Stack.Screen
-        name={homeRoute}
-        component={Home}
-        initialParams={{ url: listGamesEndpoint, title: 'Popular Games' }}
-      />
-      <Stack.Screen
-        name={searchRoute}
-        component={Search}
-      />
-      <Stack.Screen
-        name={collectionsRoute}
-        component={Collections}
-      />
-      <Stack.Screen
-        name={collectionGamesRoute}
-        component={CollectionGames}
-      />
-      <Stack.Screen
-        name={detailsRoute}
-        component={Details}
-      />
-    </Stack.Navigator>
-  );
-};
+const StackNavigator = () => (
+  <Stack.Navigator screenOptions={{ animation: 'fade', headerShown: false }}>
+    <Stack.Screen
+      name={homeRoute}
+      component={Home}
+      initialParams={{ url: listGamesEndpoint, title: 'Popular Games' }}
+    />
+    <Stack.Screen
+      name={searchRoute}
+      component={Search}
+    />
+    <Stack.Screen
+      name={collectionsRoute}
+      component={Collections}
+    />
+    <Stack.Screen
+      name={collectionGamesRoute}
+      component={CollectionGames}
+    />
+    <Stack.Screen
+      name={detailsRoute}
+      component={Details}
+    />
+  </Stack.Navigator>
+);
 
 export default StackNavigator;

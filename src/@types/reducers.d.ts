@@ -24,7 +24,6 @@ interface UserCollection {
 
 interface UserState {
   user: User | null;
-  collections: UserCollections | null;
 }
 
 type UserCollections = UserCollection[];

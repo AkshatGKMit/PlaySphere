@@ -1,58 +1,20 @@
 import { CaseReducer, PayloadAction } from '@reduxjs/toolkit';
 
+import { StorageKey } from '@constants';
+import instance from '@network/instance';
+
+import { storage } from 'index';
+
 export const setUserAction: CaseReducer<UserState, PayloadAction<User>> = (state, { payload }) => {
   state.user = payload;
 };
 
 export const removeUserAction: CaseReducer<UserState> = (state) => {
+  storage.delete(StorageKey.token);
+  instance.interceptors.request.use((requestConfig) => {
+    requestConfig.headers.delete('token');
+    return requestConfig;
+  });
+
   state.user = null;
-};
-
-export const setCollectionsAction: CaseReducer<UserState, PayloadAction<UserCollections>> = (
-  state,
-  { payload },
-) => {
-  state.collections = payload;
-};
-
-export const removeCollectionAction: CaseReducer<UserState, PayloadAction<number>> = (
-  state,
-  { payload },
-) => {
-  state.collections = state.collections!.filter(({ id }) => id !== payload);
-};
-
-export const addGameToCollectionAction: CaseReducer<
-  UserState,
-  PayloadAction<{ collectionId: number; gameId: number }>
-> = (state, { payload }) => {
-  const { collectionId, gameId } = payload;
-
-  state.collections = state.collections!.map((collection) => {
-    const { id, gameIds } = collection;
-    if (id !== collectionId) {
-      return collection;
-    }
-
-    return { ...collection, gameIds: [...gameIds, gameId] };
-  });
-};
-
-export const removeGameFromCollectionAction: CaseReducer<
-  UserState,
-  PayloadAction<{ collectionId: number; gameId: number }>
-> = (state, { payload }) => {
-  const { collectionId, gameId } = payload;
-
-  state.collections = state.collections!.map((collection) => {
-    const { id, gameIds } = collection;
-    if (id !== collectionId) {
-      return collection;
-    }
-
-    return {
-      ...collection,
-      gameIds: gameIds.filter((savedGameId) => savedGameId !== gameId),
-    };
-  });
 };
