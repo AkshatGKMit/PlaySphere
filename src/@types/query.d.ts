@@ -1,4 +1,4 @@
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError } from 'axios';
 import { InfiniteData, UseMutateFunction } from '@tanstack/react-query';
 
 declare global {
@@ -18,7 +18,7 @@ declare global {
 
   interface UseInfiniteQueryConfigProps<T> {
     enabled?: boolean;
-    onSuccess?: (data: InfiniteData<AxiosResponse<T>>) => void;
+    onSuccess?: (data: InfiniteData<T>) => void;
     onError?: (error: Error) => void;
     refetchInterval?: number;
     refetchIntervalInBackground?: boolean;

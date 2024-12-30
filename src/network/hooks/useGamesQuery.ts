@@ -1,6 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import { AxiosResponse } from 'axios';
-import { InfiniteData, QueryFunction, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
+import { QueryFunction, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 
 import { fetchGames } from '@network/apiEndpointCalls';
 import { formatGameDetail } from '@network/dataFormatters';
@@ -8,37 +7,25 @@ import { parseUrl } from '@utility/helpers';
 
 const useGamesQuery = (key: GameQueryKey, config?: GameQueryConfig) => {
   const [_, url, params] = key;
-  const {
-    enabled = true,
-    onError,
-    onSuccess,
-    refetchInterval,
-    refetchIntervalInBackground,
-  } = config ?? {};
+  const { enabled = true, onError, onSuccess } = config ?? {};
 
-  const queryFunction: QueryFunction<
-    AxiosResponse<PaginatedGamesResponse>,
-    QueryKey,
-    string
-  > = async ({ pageParam }) => {
+  const queryFunction: QueryFunction<PaginatedGamesResponse, QueryKey, string> = async ({
+    pageParam,
+  }) => {
     const paramsPage = params?.page;
     const { page: searchParamsPage } = parseUrl<ListQueryParams>(pageParam).searchParams;
 
     return fetchGames(url, { ...params, page: searchParamsPage ?? paramsPage ?? 1 });
   };
 
-  function getNextPageParam(
-    lastPage: AxiosResponse<PaginatedGamesResponse, any>,
-  ): string | null | undefined {
-    const { next: nextPageParam } = lastPage.data;
+  function getNextPageParam(lastPage: PaginatedGamesResponse): string | null | undefined {
+    const { next: nextPageParam } = lastPage;
 
     return nextPageParam;
   }
 
-  function getPreviousPageParam(
-    firstPage: AxiosResponse<PaginatedGamesResponse, any>,
-  ): string | null | undefined {
-    const { previous } = firstPage.data;
+  function getPreviousPageParam(firstPage: PaginatedGamesResponse): string | null | undefined {
+    const { previous } = firstPage;
 
     return previous;
   }
@@ -53,13 +40,7 @@ const useGamesQuery = (key: GameQueryKey, config?: GameQueryConfig) => {
     fetchNextPage,
     isFetchingNextPage,
     isPending,
-  } = useInfiniteQuery<
-    AxiosResponse<PaginatedGamesResponse>,
-    Error,
-    InfiniteData<AxiosResponse<PaginatedGamesResponse>>,
-    QueryKey,
-    string
-  >({
+  } = useInfiniteQuery({
     queryKey: key,
     queryFn: queryFunction,
     getNextPageParam,
@@ -68,8 +49,6 @@ const useGamesQuery = (key: GameQueryKey, config?: GameQueryConfig) => {
     networkMode: 'offlineFirst',
     staleTime: Infinity,
     enabled,
-    refetchInterval,
-    refetchIntervalInBackground,
   });
 
   useEffect(() => {
@@ -87,7 +66,7 @@ const useGamesQuery = (key: GameQueryKey, config?: GameQueryConfig) => {
   const games: Games = useMemo(() => {
     const gameIdSet = new Set();
 
-    const allGames = data?.pages.flatMap((page) => page.data.results) ?? [];
+    const allGames = data?.pages.flatMap((page) => page.results) ?? [];
 
     const formattedGames = allGames.reduce<Games>((acc, game) => {
       const { id } = game;
