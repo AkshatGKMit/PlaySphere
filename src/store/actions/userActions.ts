@@ -1,9 +1,12 @@
-import { CaseReducer, PayloadAction } from '@reduxjs/toolkit';
+import { CaseReducer, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
-import { StorageKey } from '@constants';
+import { StorageKey, STORE_CONSTANTS } from '@constants';
+import { fetchCurrentUser } from '@network/apiEndpointCalls';
 import instance from '@network/instance';
 
 import { storage } from 'index';
+
+const { THUNK } = STORE_CONSTANTS.USER;
 
 export const setUserAction: CaseReducer<UserState, PayloadAction<User>> = (state, { payload }) => {
   state.user = payload;
@@ -11,10 +14,13 @@ export const setUserAction: CaseReducer<UserState, PayloadAction<User>> = (state
 
 export const removeUserAction: CaseReducer<UserState> = (state) => {
   storage.delete(StorageKey.token);
-  instance.interceptors.request.use((requestConfig) => {
-    requestConfig.headers.delete('token');
-    return requestConfig;
-  });
+  instance.interceptors.request.clear();
 
   state.user = null;
 };
+
+export const fetchCurrentUserAction = createAsyncThunk(THUNK.FETCH_CURRENT_USER, async () => {
+  const response = await fetchCurrentUser();
+
+  return response;
+});

@@ -7,5 +7,8 @@ export const STORE_CONSTANTS = {
   },
   USER: {
     NAME: 'USER',
+    THUNK: {
+      FETCH_CURRENT_USER: 'FETCH CURRENT USER',
+    },
   },
 } as const;

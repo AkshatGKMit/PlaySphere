@@ -5,6 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import { requestLogin, requestSignUp } from '@network/apiEndpointCalls';
 import instance from '@network/instance';
 import { useAppDispatch } from '@store';
+import { fetchCurrentUserAction } from '@store/actions/userActions';
 import { login } from '@store/reducers/auth';
 
 const useAuthMutation = (mutationKey: AuthQueryKey, config: AuthQueryConfig): UseAuthQuery => {
@@ -31,9 +32,12 @@ const useAuthMutation = (mutationKey: AuthQueryKey, config: AuthQueryConfig): Us
       });
 
       dispatch(login(token));
-    }
+      setLoading(false);
 
-    setLoading(false);
+      dispatch(fetchCurrentUserAction());
+    } else {
+      setLoading(false);
+    }
   };
 
   const { mutate, error } = useMutation<

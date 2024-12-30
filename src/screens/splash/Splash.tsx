@@ -1,33 +1,24 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { AxiosResponse } from 'axios';
-import {
-  QueryFunction,
-  QueryKey,
-  usePrefetchInfiniteQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { QueryFunction, QueryKey, usePrefetchInfiniteQuery } from '@tanstack/react-query';
 
 import AppIntro from '@components/appIntro';
 import BannerImageView from '@components/bannerImageView';
 import useStyles from '@config/useStyles';
 import { orderByDropdownItems, QueryKeys } from '@constants';
 import ApiConstants from '@network/apiConstants';
-import { fetchCurrentUser, fetchGames, fetchUserOverview } from '@network/apiEndpointCalls';
-import { useAppSelector } from '@store';
+import { fetchGames } from '@network/apiEndpointCalls';
+import { useAppDispatch, useAppSelector } from '@store';
+import { fetchCurrentUserAction } from '@store/actions/userActions';
 
 import ThemedStyles from './styles';
 
 const { list: listGamesEndpoint } = ApiConstants.endpoints.games;
-const {
-  mainGameList: mainGameListKey,
-  currentUser: currentUserKey,
-  userDetails: userDetailsKey,
-} = QueryKeys;
+const { mainGameList: mainGameListKey } = QueryKeys;
 
 const Splash = ({ onReady }: { onReady: (value: boolean) => void }) => {
-  const queryClient = useQueryClient();
-
+  const dispatch = useAppDispatch();
   const { isAuthorized } = useAppSelector((state) => state.auth);
 
   const gameQueryParams: ListQueryParams = {
@@ -50,24 +41,9 @@ const Splash = ({ onReady }: { onReady: (value: boolean) => void }) => {
     initialPageParam: listGamesEndpoint,
   });
 
-  const prefetchUserQueries = useCallback(async () => {
-    const { data } = await queryClient.fetchQuery({
-      queryKey: [currentUserKey],
-      queryFn: () => fetchCurrentUser(),
-    });
-
-    const { id } = data;
-
-    await queryClient.prefetchQuery({
-      queryKey: [userDetailsKey, id],
-      queryFn: () => fetchUserOverview(id!),
-    });
-  }, [queryClient]);
-
   useEffect(() => {
     if (isAuthorized !== null) {
-      prefetchUserQueries();
-
+      dispatch(fetchCurrentUserAction());
       if (isAuthorized) {
         setTimeout(() => {
           onReady(isAuthorized);
@@ -75,7 +51,7 @@ const Splash = ({ onReady }: { onReady: (value: boolean) => void }) => {
       }
       onReady(isAuthorized);
     }
-  }, [isAuthorized, onReady, prefetchUserQueries]);
+  }, [dispatch, isAuthorized, onReady]);
 
   const styles = useStyles(ThemedStyles);
 

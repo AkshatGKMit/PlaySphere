@@ -4,7 +4,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import { BlurView } from '@react-native-community/blur';
-import { useQueryClient } from '@tanstack/react-query';
 
 import Icon from '@components/icon';
 import {
@@ -13,7 +12,6 @@ import {
   Icons,
   IMAGES,
   isIos,
-  // QueryKeys,
   Routes,
   Typography,
 } from '@constants';
@@ -43,7 +41,6 @@ const { home: homeRoute, collections: collectionsRoute } = Routes.Stack;
 const FloatingDrawer = () => {
   const { navigate, dispatch } = useNavigation<StackNavigation>();
   const { top: topInsets } = useSafeAreaInsets();
-  const queryClient = useQueryClient();
 
   const appDispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
@@ -97,10 +94,9 @@ const FloatingDrawer = () => {
   );
 
   const onPressLogout = useCallback(() => {
-    queryClient.clear();
     appDispatch(removeUser());
     appDispatch(logout());
-  }, [appDispatch, queryClient]);
+  }, [appDispatch]);
 
   const onPressButton = useCallback(
     (index: number) => {

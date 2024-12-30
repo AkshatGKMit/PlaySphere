@@ -1,12 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { ActionReducerMapBuilder, createSlice } from '@reduxjs/toolkit';
 
 import { STORE_CONSTANTS } from '@constants';
-import { removeUserAction, setUserAction } from '@store/actions/userActions';
+import {
+  fetchCurrentUserAction,
+  removeUserAction,
+  setUserAction,
+} from '@store/actions/userActions';
+import { formatUserDetails } from '@network/dataFormatters';
 
 const { NAME: name } = STORE_CONSTANTS.USER;
 
 const initialState: UserState = {
   user: null,
+};
+
+const extraReducerBuilder = ({ addCase }: ActionReducerMapBuilder<UserState>) => {
+  addCase(fetchCurrentUserAction.fulfilled, (state, { payload }) => {
+    state.user = formatUserDetails(payload.data);
+  });
 };
 
 const userSlice = createSlice({
@@ -16,6 +27,7 @@ const userSlice = createSlice({
     setUser: setUserAction,
     removeUser: removeUserAction,
   },
+  extraReducers: extraReducerBuilder,
 });
 
 const userReducer = userSlice.reducer;
