@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { AxiosResponse } from 'axios';
 import { QueryFunction, QueryKey, useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
 
 import { QueryKeys } from '@constants';
@@ -14,11 +13,9 @@ const useCollectionGamesQuery = (
   enabled: boolean = true,
   params?: ListQueryParams,
 ) => {
-  const queryFunction: QueryFunction<
-    AxiosResponse<PaginatedGamesResponse>,
-    QueryKey,
-    string
-  > = async ({ pageParam }) => {
+  const queryFunction: QueryFunction<PaginatedGamesResponse, QueryKey, string> = async ({
+    pageParam,
+  }) => {
     const paramsPage = params?.page;
     const { page: searchParamsPage } = parseUrl<ListQueryParams>(pageParam).searchParams;
 
@@ -28,10 +25,8 @@ const useCollectionGamesQuery = (
     });
   };
 
-  function getNextPageParam(
-    lastPage: AxiosResponse<PaginatedGamesResponse, any>,
-  ): string | null | undefined {
-    const { next: nextPageParam } = lastPage.data;
+  function getNextPageParam(lastPage: PaginatedGamesResponse): string | null | undefined {
+    const { next: nextPageParam } = lastPage;
 
     return nextPageParam;
   }
@@ -47,9 +42,9 @@ const useCollectionGamesQuery = (
     refetch,
     isRefetching,
   } = useInfiniteQuery<
-    AxiosResponse<PaginatedGamesResponse>,
+    PaginatedGamesResponse,
     Error,
-    InfiniteData<AxiosResponse<PaginatedGamesResponse>>,
+    InfiniteData<PaginatedGamesResponse>,
     QueryKey,
     string
   >({
@@ -63,7 +58,7 @@ const useCollectionGamesQuery = (
   const collectionGames: Games = useMemo(() => {
     const collectionIdSet = new Set();
 
-    const allCollections = data?.pages.flatMap((page) => page.data.results) ?? [];
+    const allCollections = data?.pages.flatMap((page) => page.results) ?? [];
 
     const formattedCollections = allCollections.reduce<Games>((acc, game) => {
       const { id } = game;

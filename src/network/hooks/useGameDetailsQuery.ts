@@ -35,12 +35,12 @@ const useGameDetailsQuery = (gameId: number) => {
       return undefined;
     }
 
-    return formatGameDetail(gameResponse.data);
+    return formatGameDetail(gameResponse);
   }, [gameResponse]);
 
   const screenshots: Screenshots | undefined = useMemo(
-    () => screenshotResponse?.data.results,
-    [screenshotResponse?.data.results],
+    () => screenshotResponse?.results,
+    [screenshotResponse?.results],
   );
 
   const movies: Movies | undefined = useMemo(() => {
@@ -48,7 +48,7 @@ const useGameDetailsQuery = (gameId: number) => {
       return undefined;
     }
 
-    return moviesResponse.data.results.map(formatGameMovie);
+    return moviesResponse.results.map(formatGameMovie);
   }, [moviesResponse]);
 
   return { game, gameLoading, screenshots, screenshotLoading, movies, moviesLoading };

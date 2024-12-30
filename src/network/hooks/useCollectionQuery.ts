@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { AxiosResponse } from 'axios';
 import { QueryFunction, QueryKey, useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
 
 import { QueryKeys } from '@constants';
@@ -14,7 +13,7 @@ const useCollectionQuery = (params?: ListQueryParams) => {
   const { user } = useAppSelector((state) => state.user);
 
   const queryFunction: QueryFunction<
-    AxiosResponse<PaginatedCollectionDetailsResponse>,
+    PaginatedCollectionDetailsResponse,
     QueryKey,
     string
   > = async ({ pageParam }) => {
@@ -28,9 +27,9 @@ const useCollectionQuery = (params?: ListQueryParams) => {
   };
 
   function getNextPageParam(
-    lastPage: AxiosResponse<PaginatedCollectionDetailsResponse, any>,
+    lastPage: PaginatedCollectionDetailsResponse,
   ): string | null | undefined {
-    const { next: nextPageParam } = lastPage.data;
+    const { next: nextPageParam } = lastPage;
 
     return nextPageParam;
   }
@@ -46,9 +45,9 @@ const useCollectionQuery = (params?: ListQueryParams) => {
     isFetchingNextPage,
     isRefetching,
   } = useInfiniteQuery<
-    AxiosResponse<PaginatedCollectionDetailsResponse>,
+    PaginatedCollectionDetailsResponse,
     Error,
-    InfiniteData<AxiosResponse<PaginatedCollectionDetailsResponse>>,
+    InfiniteData<PaginatedCollectionDetailsResponse>,
     QueryKey,
     string
   >({
@@ -62,7 +61,7 @@ const useCollectionQuery = (params?: ListQueryParams) => {
   });
 
   const collections: Collections = useMemo(() => {
-    const allCollections = data?.pages.flatMap((page) => page.data.results) ?? [];
+    const allCollections = data?.pages.flatMap((page) => page.results) ?? [];
 
     return allCollections.map(formatCollection);
   }, [data]);

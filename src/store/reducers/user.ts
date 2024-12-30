@@ -16,7 +16,7 @@ const initialState: UserState = {
 
 const extraReducerBuilder = ({ addCase }: ActionReducerMapBuilder<UserState>) => {
   addCase(fetchCurrentUserAction.fulfilled, (state, { payload }) => {
-    state.user = formatUserDetails(payload.data);
+    state.user = formatUserDetails(payload);
   });
 };
 

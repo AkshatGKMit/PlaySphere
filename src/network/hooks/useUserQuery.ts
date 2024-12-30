@@ -29,13 +29,13 @@ const useUserQuery = () => {
 
   useEffect(() => {
     if (userResponse) {
-      setId(userResponse.data.id);
+      setId(userResponse.id);
     }
   }, [userResponse]);
 
   useEffect(() => {
     if (userDetailsResponse) {
-      dispatch(setUser(formatUserDetails(userDetailsResponse.data)));
+      dispatch(setUser(formatUserDetails(userDetailsResponse)));
     }
   }, [dispatch, userDetailsResponse]);
 };

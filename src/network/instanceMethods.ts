@@ -3,9 +3,9 @@ import { AxiosResponse } from 'axios';
 import instance from './instance';
 
 async function _get<T, Params = {}>(url: string, config?: ApiCallConfig<Params>) {
-  const response = instance.get<T>(url, config);
+  const response = await instance.get<T>(url, config);
 
-  return response;
+  return response.data;
 }
 
 async function _post<Success, Error, Body = {}, Params = {}>(

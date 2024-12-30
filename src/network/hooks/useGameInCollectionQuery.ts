@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { AxiosResponse } from 'axios';
 import { QueryFunction, QueryKey, useQuery } from '@tanstack/react-query';
 
 import { QueryKeys } from '@constants';
@@ -9,11 +8,7 @@ import { formatGameInCollection } from '@network/dataFormatters';
 const { userCollections: userCollectionsKey } = QueryKeys;
 
 const useGameInCollectionQuery = (gameId: number) => {
-  const queryFunction: QueryFunction<
-    AxiosResponse<GameInCollectionsResponse>,
-    QueryKey,
-    number
-  > = async () => {
+  const queryFunction: QueryFunction<GameInCollectionsResponse, QueryKey, number> = async () => {
     return fetchGameInCollection(gameId);
   };
 
@@ -30,7 +25,7 @@ const useGameInCollectionQuery = (gameId: number) => {
 
     const seenIds = new Set();
 
-    return data.data
+    return data
       .filter((game) => {
         if (seenIds.has(game.id)) {
           return false;
