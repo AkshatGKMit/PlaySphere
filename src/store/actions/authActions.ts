@@ -14,6 +14,9 @@ export const fetchTokenFromStorage: CaseReducer<AuthState> = (state) => {
       requestConfig.headers.set('token', token);
       return requestConfig;
     });
+
+    state.isAuthorized = true;
+    state.isLogin = true;
   }
 };
 
@@ -23,9 +26,11 @@ export const login: CaseReducer<AuthState, PayloadAction<string>> = (state, acti
   storage.set(StorageKey.token, payload);
 
   state.isAuthorized = true;
+  state.isLogin = true;
 };
 
 export const logout: CaseReducer<AuthState> = (state) => {
   storage.delete(StorageKey.token);
   state.isAuthorized = false;
+  state.isLogin = false;
 };

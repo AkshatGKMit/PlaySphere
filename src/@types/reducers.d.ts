@@ -6,6 +6,7 @@ interface ThemeState {
 
 interface AuthState {
   isAuthorized: boolean | null;
+  isLogin: boolean;
 }
 
 interface HomeScreenState {

@@ -7,14 +7,14 @@ import StackNavigator from './StackNavigator';
 import { useAppSelector } from '@store';
 
 const Navigator = () => {
-  const { isAuthorized: isTokenAvailable } = useAppSelector((state) => state.auth);
+  const { isLogin: login } = useAppSelector((state) => state.auth);
   const [isAuthorized, setAuthorized] = useState<boolean | null>(null);
 
-  if (isAuthorized === null && !isTokenAvailable) {
+  if (isAuthorized === null) {
     return <Splash onReady={(isAuthorize) => setAuthorized(isAuthorize)} />;
   }
 
-  return isTokenAvailable ? <StackNavigator /> : <Auth />;
+  return login ? <StackNavigator /> : <Auth />;
 };
 
 export default Navigator;

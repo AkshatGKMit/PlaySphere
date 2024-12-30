@@ -11,6 +11,7 @@ const { NAME: name } = STORE_CONSTANTS.AUTH;
 
 const initialState: AuthState = {
   isAuthorized: null,
+  isLogin: false,
 };
 
 const authSlice = createSlice({
