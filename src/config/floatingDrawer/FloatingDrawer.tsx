@@ -13,7 +13,7 @@ import {
   Icons,
   IMAGES,
   isIos,
-  QueryKeys,
+  // QueryKeys,
   Routes,
   Typography,
 } from '@constants';
@@ -36,7 +36,7 @@ const {
   mostPopular: top250GamesEndpoint,
 } = ApiConstants.endpoints.games;
 
-const { currentUser: currentUserKey } = QueryKeys;
+// const { currentUser: currentUserKey } = QueryKeys;
 
 const { home: homeRoute, collections: collectionsRoute } = Routes.Stack;
 

@@ -46,6 +46,7 @@ const Textfield = forwardRef<Partial<TextInput>, TextFieldProps>((props, ref) =>
           onBlur={() => setFocus(false)}
           style={[styles.input, style]}
           autoCorrect={false}
+          selectionColor={styles.content.color}
         />
         {trailingIcon ? (
           <Pressable onPress={onPressTrailingIcon}>

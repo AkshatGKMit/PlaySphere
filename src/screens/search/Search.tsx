@@ -136,6 +136,7 @@ const Search = () => {
           placeholderTextColor={styles.placeholder.color}
           autoCorrect={false}
           style={styles.textInput}
+          selectionColor={styles.textInput.color}
         />
         {searchText ? (
           <Pressable onPress={() => handleSearchTextChange('')}>
