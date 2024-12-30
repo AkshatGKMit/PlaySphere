@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
 
 import { Elevation } from '@constants';
-import { globalStyles } from '@themes';
-import { getShadowStyle } from '@utility/style';
+import { Colors, globalStyles } from '@themes';
+import { colorWithOpacity, getShadowStyle } from '@utility/style';
 
 const ThemedStyles = (theme: ThemeColors) => {
   return StyleSheet.create({
@@ -70,6 +70,15 @@ const ThemedStyles = (theme: ThemeColors) => {
     },
     addToCollectionText: {
       color: theme.primaryText,
+    },
+    deleteContainer: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      margin: 5,
+      padding: 3,
+      backgroundColor: colorWithOpacity(Colors.black, 0.5),
+      borderRadius: 15,
     },
   });
 };

@@ -5,14 +5,14 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
 import AddOrUpdateCollectionDialog from '@components/addOrUpdateCollectionDialog';
 import Dialog from '@components/dialog';
-import FeedGameCard from '@components/feedGameCard';
+import GameCard from '@components/gameCard';
 import { IconButton } from '@components/iconButton';
 import Loader from '@components/loader';
 import { ListEmptyComponent, ListFooterComponent } from '@components/pageListComponent';
 import TextBlock from '@components/textBlock';
 import useStyles from '@config/useStyles';
 import { Elevation, FontWeight, Icons, Typography } from '@constants';
-import useCollectionFeedsQuery from '@network/hooks/useCollectionFeedsQuery';
+import useCollectionGamesQuery from '@network/hooks/useCollectionGamesQuery';
 import useCollectionMutation from '@network/hooks/useCollectionMutation';
 import { useAppSelector } from '@store';
 import { Colors, globalStyles } from '@themes';
@@ -34,11 +34,11 @@ const CollectionGames = () => {
   const [collectionDisplayName, setCollectionDisplayName] = useState('');
 
   const {
-    collectionFeeds = [],
+    collectionGames = [],
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
-  } = useCollectionFeedsQuery(collectionId, !!numGames);
+  } = useCollectionGamesQuery(collectionId, !!numGames);
 
   const { removeCollectionLoading, mutateRemoveCollection, removeCollectionSuccess } =
     useCollectionMutation();
@@ -152,14 +152,14 @@ const CollectionGames = () => {
           style={globalStyles.flex1}
           contentContainerStyle={styles.listContentStyle}
           columnWrapperStyle={styles.columnStyles}
-          data={collectionFeeds}
-          renderItem={({ item }) => {
-            const { id } = item;
+          data={collectionGames}
+          renderItem={({ item: game }) => {
+            const { id } = game;
 
             return (
-              <FeedGameCard
+              <GameCard
                 key={id}
-                feed={item}
+                game={game}
                 collectionId={collectionId}
               />
             );
@@ -174,7 +174,7 @@ const CollectionGames = () => {
           }
           ListFooterComponent={
             <ListFooterComponent
-              hasData={collectionFeeds.length !== 0}
+              hasData={collectionGames.length !== 0}
               hasNextPage={hasNextPage}
             />
           }

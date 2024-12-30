@@ -13,7 +13,6 @@ import {
 import { AddToCollectionDialogThemedStyles } from '@components/addToCollectionDialog';
 import { ThemedStyles as DropdownStyles } from '@components/dropdown';
 import { ThemedStyles as GameCardStyles } from '@components/gameCard';
-import { ThemedStyles as GameListThemedStyles } from '@components/gameListScreen';
 import FloatingDrawerThemedStyles from '@config/floatingDrawer/styles';
 import { IconFamily } from '@constants';
 
@@ -99,11 +98,6 @@ declare global {
     color?: string;
   }
 
-  interface FeedGameCardProps {
-    feed: CollectionFeed;
-    collectionId: number;
-  }
-
   interface GameCardStyleProps {
     styles: ReturnType<typeof GameCardStyles>;
   }
@@ -130,6 +124,7 @@ declare global {
     game: Game;
     hideAddButton?: boolean;
     children?: ReactNode;
+    collectionId?: number;
   }
 
   interface GameListStylesProps {

@@ -156,15 +156,6 @@ interface Collection {
   gameCovers: GameBackgrounds;
 }
 
-interface CollectionFeed {
-  id: number;
-  created: string;
-  text: string;
-  game: Game;
-  user: UserDetailsResponse | null;
-}
-type CollectionFeeds = CollectionFeed[];
-
 interface GameStatusStats {
   status: string;
   count: number;

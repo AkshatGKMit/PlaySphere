@@ -33,11 +33,10 @@ const {
   addToLibrary: addToLibraryEndpoint,
   removeFromLibrary: removeFromLibraryEndpoint,
   addOrRemoveFromCollection: addOrRemoveGameFromCollectionEndpoint,
-  removeFromCollection: removeGameFromCollectionEndpoint,
 } = gamesEndpoint;
 
 const {
-  collectionFeed: collectionFeedEndpoint,
+  collectionGames: collectionGamesEndpoint,
   addNewCollection: addNewCollectionEndpoint,
   updateDeleteCollection: updateDeleteCollectionEndpoint,
 } = collectionsEndpoint;
@@ -155,15 +154,11 @@ export async function requestRemoveGameFromCollection(
     AddOrRemoveGameFromCollectionResponseError
   >(addOrRemoveGameFromCollectionEndpoint(collectionId), body);
 }
-
-export async function requestRemoveGameFromCollectionFeed(collectionId: number, feedId: number) {
-  return await _delete(removeGameFromCollectionEndpoint(collectionId, feedId));
-}
 // #endregion
 
 // #region - Collection Calls
-export async function fetchCollectionFeed(collectionId: number, params?: ListQueryParams) {
-  return await _get<PaginatedCollectionFeedsResponse>(collectionFeedEndpoint(collectionId), {
+export async function fetchCollectionGames(collectionId: number, params?: ListQueryParams) {
+  return await _get<PaginatedGamesResponse>(collectionGamesEndpoint(collectionId), {
     params,
   });
 }

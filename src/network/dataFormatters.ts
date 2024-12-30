@@ -160,19 +160,6 @@ export function formatCollection(collectionResponse: CollectionDetailResponse): 
   return collection;
 }
 
-export function formatCollectionFeed(
-  collectionFeedResponse: CollectionFeedResponse,
-): CollectionFeed {
-  const { game } = collectionFeedResponse;
-
-  const collectionFeed: CollectionFeed = {
-    ...collectionFeedResponse,
-    game: formatGameDetail(game),
-  };
-
-  return collectionFeed;
-}
-
 export function formatLeaderboard(leaderboardResponse: LeaderboardUserResponse): LeaderboardUser {
   const { user } = leaderboardResponse;
 

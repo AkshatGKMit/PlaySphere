@@ -3,33 +3,33 @@ import { AxiosResponse } from 'axios';
 import { QueryFunction, QueryKey, useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
 
 import { QueryKeys } from '@constants';
-import { fetchCollectionFeed } from '@network/apiEndpointCalls';
-import { formatCollectionFeed } from '@network/dataFormatters';
+import { fetchCollectionGames } from '@network/apiEndpointCalls';
 import { parseUrl } from '@utility/helpers';
+import { formatGameDetail } from '@network/dataFormatters';
 
 const { collectionGames: collectionGamesKey } = QueryKeys;
 
-const useCollectionFeedsQuery = (
+const useCollectionGamesQuery = (
   collectionId: number,
   enabled: boolean = true,
   params?: ListQueryParams,
 ) => {
   const queryFunction: QueryFunction<
-    AxiosResponse<PaginatedCollectionFeedsResponse>,
+    AxiosResponse<PaginatedGamesResponse>,
     QueryKey,
     string
   > = async ({ pageParam }) => {
     const paramsPage = params?.page;
     const { page: searchParamsPage } = parseUrl<ListQueryParams>(pageParam).searchParams;
 
-    return fetchCollectionFeed(collectionId, {
+    return fetchCollectionGames(collectionId, {
       ...params,
       page: searchParamsPage ?? paramsPage ?? 1,
     });
   };
 
   function getNextPageParam(
-    lastPage: AxiosResponse<PaginatedCollectionFeedsResponse, any>,
+    lastPage: AxiosResponse<PaginatedGamesResponse, any>,
   ): string | null | undefined {
     const { next: nextPageParam } = lastPage.data;
 
@@ -47,9 +47,9 @@ const useCollectionFeedsQuery = (
     refetch,
     isRefetching,
   } = useInfiniteQuery<
-    AxiosResponse<PaginatedCollectionFeedsResponse>,
+    AxiosResponse<PaginatedGamesResponse>,
     Error,
-    InfiniteData<AxiosResponse<PaginatedCollectionFeedsResponse>>,
+    InfiniteData<AxiosResponse<PaginatedGamesResponse>>,
     QueryKey,
     string
   >({
@@ -60,17 +60,17 @@ const useCollectionFeedsQuery = (
     enabled,
   });
 
-  const collectionFeeds: CollectionFeeds = useMemo(() => {
+  const collectionGames: Games = useMemo(() => {
     const collectionIdSet = new Set();
 
     const allCollections = data?.pages.flatMap((page) => page.data.results) ?? [];
 
-    const formattedCollections = allCollections.reduce<CollectionFeeds>((acc, collection) => {
-      const { id } = collection;
+    const formattedCollections = allCollections.reduce<Games>((acc, game) => {
+      const { id } = game;
 
       if (!collectionIdSet.has(id)) {
         collectionIdSet.add(id);
-        acc.push(formatCollectionFeed(collection));
+        acc.push(formatGameDetail(game));
       }
 
       return acc;
@@ -80,7 +80,7 @@ const useCollectionFeedsQuery = (
   }, [data]);
 
   return {
-    collectionFeeds,
+    collectionGames,
     isSuccess,
     isError,
     error,
@@ -92,4 +92,4 @@ const useCollectionFeedsQuery = (
   };
 };
 
-export default useCollectionFeedsQuery;
+export default useCollectionGamesQuery;

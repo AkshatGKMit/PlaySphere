@@ -152,18 +152,6 @@ interface CollectionDetailResponse {
   game_covers: GameBackgroundsResponse;
 }
 
-interface CollectionFeedResponse {
-  id: number;
-  created: string;
-  text: string;
-  text_preview: string;
-  text_previews: string[];
-  text_attachments: number;
-  type: string;
-  game: GameDetailResponse;
-  user: UserDetailsResponse | null;
-}
-
 interface AddGameToFavoriteErrorResponse {
   game: string[];
   position: string[];
@@ -231,8 +219,6 @@ type GameMoviesResponse = GameMovieResponse[];
 type PaginatedGameMoviesResponse = PaginatedData<GameMovieResponse>;
 type CollectionDetailsResponse = CollectionDetailResponse[];
 type PaginatedCollectionDetailsResponse = PaginatedData<CollectionDetailResponse>;
-type CollectionFeedsResponse = CollectionFeedResponse[];
 type UserGenreStatsResponse = UserGenreStatResponse[];
-type PaginatedCollectionFeedsResponse = PaginatedData<CollectionFeedResponse>;
 type LeaderboardUsersResponse = LeaderboardUserResponse[];
 type PaginatedLeaderboardUsersResponse = PaginatedData<LeaderboardUserResponse>;

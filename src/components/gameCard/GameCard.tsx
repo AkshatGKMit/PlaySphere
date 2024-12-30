@@ -1,11 +1,15 @@
-import { TouchableOpacity } from 'react-native';
-import React, { memo, useMemo } from 'react';
+import { Alert, TouchableOpacity } from 'react-native';
+import React, { memo, useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import { AddToCollectionDialog } from '@components/addToCollectionDialog';
+import Icon from '@components/icon';
+import Loader from '@components/loader';
 import Dialog from '@components/dialog';
 import useStyles from '@config/useStyles';
-import { Emoji, RatingCategory, Routes } from '@constants';
+import { Emoji, Icons, RatingCategory, Routes } from '@constants';
+import useCollectionMutation from '@network/hooks/useCollectionMutation';
+import { Colors } from '@themes';
 import { formatAgeRatingToAge, parseDateString } from '@utility/helpers';
 
 import Content from './Content';
@@ -14,7 +18,7 @@ import ThemedStyles from './styles';
 
 const { details: detailsRoute } = Routes.Stack;
 
-const GameCard = ({ game, hideAddButton, children }: GameCardProps) => {
+const GameCard = ({ game, hideAddButton, collectionId }: GameCardProps) => {
   const {
     id,
     backgroundImage,
@@ -29,11 +33,36 @@ const GameCard = ({ game, hideAddButton, children }: GameCardProps) => {
 
   const { navigate } = useNavigation<StackNavigation>();
 
+  const { removeGameFromCollectionLoading, mutateRemoveGameFromCollection } =
+    useCollectionMutation();
+
   const styles = useStyles(ThemedStyles);
 
   const onCardPress = () => {
     navigate(detailsRoute, { id });
   };
+
+  const onPressDelete = useCallback(() => {
+    if (collectionId) {
+      Alert.alert(
+        'Confirm Delete',
+        'Are you sure you want to delete this game from collection?',
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+          {
+            text: 'Delete',
+            onPress: () => {
+              mutateRemoveGameFromCollection({ collectionId, game, gameId: game.id });
+            },
+          },
+        ],
+        { cancelable: true },
+      );
+    }
+  }, [collectionId, game, mutateRemoveGameFromCollection]);
 
   const systemPlatformNames = useMemo(
     () => systemPlatforms?.map((platform) => platform.systemPlatform.name),
@@ -116,7 +145,24 @@ const GameCard = ({ game, hideAddButton, children }: GameCardProps) => {
         showAddToCollectionDialog={showAddToCollectionDialog}
         hideAddButton={hideAddButton}
       />
-      {children}
+      {collectionId ? (
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={onPressDelete}
+          disabled={removeGameFromCollectionLoading}
+          style={styles.deleteContainer}
+        >
+          {removeGameFromCollectionLoading ? (
+            <Loader size={'small'} />
+          ) : (
+            <Icon
+              icon={Icons.materialIcons.close}
+              color={Colors.white}
+              size={16}
+            />
+          )}
+        </TouchableOpacity>
+      ) : null}
     </TouchableOpacity>
   );
 };

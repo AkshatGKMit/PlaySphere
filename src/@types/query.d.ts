@@ -34,7 +34,6 @@ declare global {
 
   interface RemoveGameFromCollectionVariables {
     collectionId: number;
-    feedId: number;
     gameId: number;
     game: Game;
   }

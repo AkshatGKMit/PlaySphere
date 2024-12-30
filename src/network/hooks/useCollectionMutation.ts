@@ -8,7 +8,6 @@ import {
   requestAddNewCollection,
   requestDeleteCollection,
   requestRemoveGameFromCollection,
-  requestRemoveGameFromCollectionFeed,
   requestUpdateCollection,
 } from '@network/apiEndpointCalls';
 import useQueryKeys from '@config/useQueryKeys';
@@ -130,7 +129,7 @@ const useCollectionMutation = () => {
       if (isAdding) {
         queryClient.refetchQueries({ queryKey: [collectionGamesKey, collectionId] });
       } else {
-        queryClient.setQueryData<InfiniteData<AxiosResponse<PaginatedCollectionFeedsResponse>>>(
+        queryClient.setQueryData<InfiniteData<AxiosResponse<PaginatedGames>>>(
           [collectionGamesKey, collectionId],
           (data) => {
             if (!data) {
@@ -144,7 +143,7 @@ const useCollectionMutation = () => {
               data: {
                 ...page.data,
                 count: page.data.count - 1,
-                results: page.data.results.filter(({ game }) => game.id !== gameId),
+                results: page.data.results.filter(({ id }) => id !== gameId),
               },
             }));
 
@@ -392,8 +391,8 @@ const useCollectionMutation = () => {
   };
 
   const removeGameFromCollectionMutationFunction = useCallback(
-    async ({ collectionId, feedId }: RemoveGameFromCollectionVariables) => {
-      return requestRemoveGameFromCollectionFeed(collectionId, feedId);
+    async ({ collectionId, gameId }: RemoveGameFromCollectionVariables) => {
+      return requestRemoveGameFromCollection(collectionId, { games: [gameId] });
     },
     [],
   );

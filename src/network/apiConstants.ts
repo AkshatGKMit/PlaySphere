@@ -22,7 +22,7 @@ const ApiConstants = {
       myCollections: (userId: number) => `/users/${userId}/collections`,
     },
     collections: {
-      collectionFeed: (collectionId: number) => `/collections/${collectionId}/feed`,
+      collectionGames: (collectionId: number) => `/collections/${collectionId}/games`,
       addNewCollection: '/collections',
       updateDeleteCollection: (collectionId: number) => `/collections/${collectionId}`,
     },
@@ -44,8 +44,6 @@ const ApiConstants = {
       removeFromLibrary: (gameId: number) => `/users/current/games/${gameId}`,
       updateLibraryStatus: (gameId: number) => `/users/current/games/${gameId}`,
       addOrRemoveFromCollection: (collectionId: number) => `/collections/${collectionId}/games`,
-      removeFromCollection: (collectionId: number, feedId: number) =>
-        `/collections/${collectionId}/feed/${feedId}`,
     },
     leaderboards: {
       top30: '/leaderboard',
