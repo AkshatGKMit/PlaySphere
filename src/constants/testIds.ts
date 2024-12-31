@@ -9,5 +9,11 @@ export const TestIds = {
     actionButton: {
       root: 'action-button-container',
     },
+    appIntro: {
+      root: 'app-intro-container',
+      appLogo: 'app-intro-logo',
+      appName: 'app-intro-name',
+      appTagLine: 'app-intro-tag-line',
+    },
   },
 };
