@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { QueryKey, useQuery } from '@tanstack/react-query';
 
 import { QueryKeys } from '@constants';
 import { fetchCurrentUser, fetchUserOverview } from '@network/apiEndpointCalls';
@@ -20,7 +20,12 @@ const useUserQuery = () => {
     staleTime: Infinity,
   });
 
-  const { data: userDetailsResponse } = useQuery({
+  const { data: userDetailsResponse } = useQuery<
+    UserDetailsResponse,
+    Error,
+    UserDetailsResponse,
+    QueryKey
+  >({
     queryKey: [userDetailsKey, id],
     queryFn: () => fetchUserOverview(id!),
     staleTime: Infinity,

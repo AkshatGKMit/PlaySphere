@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import { QueryFunction, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
+import { InfiniteData, QueryFunction, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 
 import { fetchGames } from '@network/apiEndpointCalls';
 import { formatGameDetail } from '@network/dataFormatters';
@@ -40,7 +40,13 @@ const useGamesQuery = (key: GameQueryKey, config?: GameQueryConfig) => {
     fetchNextPage,
     isFetchingNextPage,
     isPending,
-  } = useInfiniteQuery({
+  } = useInfiniteQuery<
+    PaginatedGamesResponse,
+    Error,
+    InfiniteData<PaginatedGamesResponse>,
+    QueryKey,
+    string
+  >({
     queryKey: key,
     queryFn: queryFunction,
     getNextPageParam,
