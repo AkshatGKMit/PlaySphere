@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError } from 'axios';
 import { InfiniteData, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { QueryKeys } from '@constants';
@@ -39,14 +39,12 @@ const useCollectionMutation = () => {
       const keys = getKeysContaining(userCollectionsKey);
 
       for (const key of keys) {
-        queryClient.setQueryData<AxiosResponse<GameInCollectionsResponse>>(key, (data) => {
+        queryClient.setQueryData<GameInCollectionsResponse>(key, (data) => {
           if (!data) {
             return undefined;
           }
 
-          const duplicateData = { ...data };
-
-          duplicateData.data = duplicateData.data.filter(({ id }) => id !== collectionId);
+          const duplicateData = data.filter(({ id }) => id !== collectionId);
 
           return duplicateData;
         });
@@ -57,27 +55,22 @@ const useCollectionMutation = () => {
 
   const updateGameInCollectionQueryData = useCallback(
     ({ collectionId, gameId, isAdding }: AddOrRemoveFromCollectionVariables) => {
-      queryClient.setQueryData<AxiosResponse<GameInCollectionsResponse>>(
-        [userCollectionsKey, gameId],
-        (data) => {
-          if (!data) {
-            return undefined;
+      queryClient.setQueryData<GameInCollectionsResponse>([userCollectionsKey, gameId], (data) => {
+        if (!data) {
+          return undefined;
+        }
+
+        const duplicateData = data.map((collection) => {
+          const { id } = collection;
+          if (id !== collectionId) {
+            return collection;
           }
 
-          const duplicateData = { ...data };
+          return { ...collection, game_in_collection: isAdding };
+        });
 
-          duplicateData.data = data.data.map((collection) => {
-            const { id } = collection;
-            if (id !== collectionId) {
-              return collection;
-            }
-
-            return { ...collection, game_in_collection: isAdding };
-          });
-
-          return duplicateData;
-        },
-      );
+        return duplicateData;
+      });
     },
     [queryClient],
   );
@@ -87,70 +80,62 @@ const useCollectionMutation = () => {
       const keys = getKeysContaining(myCollectionsKey);
 
       for (const key of keys) {
-        queryClient.setQueryData<InfiniteData<AxiosResponse<PaginatedCollectionDetailsResponse>>>(
-          key,
-          (data) => {
-            if (!data) {
-              return undefined;
-            }
+        queryClient.setQueryData<InfiniteData<PaginatedCollectionDetailsResponse>>(key, (data) => {
+          if (!data) {
+            return undefined;
+          }
 
-            const duplicateData = { ...data };
+          const duplicateData = { ...data };
+          duplicateData.pages = data.pages.map((page) => ({
+            ...page,
+            results: page.results.map((result) => {
+              const { id, games_count, backgrounds } = result;
 
-            duplicateData.pages = duplicateData.pages.map((page) => ({
-              ...page,
-              data: {
-                ...page.data,
-                results: page.data.results.map((result) => {
-                  const newCount = result.games_count - 1;
+              if (id !== collectionId) {
+                return result;
+              }
 
-                  if (result.id !== collectionId) {
-                    return result;
-                  }
+              const newCount = games_count - 1;
+              const newBackgrounds =
+                backgrounds && newCount > 0 ? backgrounds?.filter((_, index) => index !== 0) : null;
 
-                  return {
-                    ...result,
-                    games_count: result.games_count - 1,
-                    game_background: newCount > 0 ? result.game_background : null,
-                  };
-                }),
-              },
-            }));
+              return {
+                ...result,
+                games_count: newCount,
+                backgrounds: newBackgrounds,
+              };
+            }),
+          }));
 
-            return duplicateData;
-          },
-        );
+          return duplicateData;
+        });
       }
     },
     [getKeysContaining, queryClient],
   );
 
   const updateGameInCollectionGamesQueryData = useCallback(
-    ({ collectionId, gameId, isAdding }: AddOrRemoveFromCollectionVariables) => {
-      if (isAdding) {
-        queryClient.refetchQueries({ queryKey: [collectionGamesKey, collectionId] });
-      } else {
-        queryClient.setQueryData<InfiniteData<AxiosResponse<PaginatedGames>>>(
-          [collectionGamesKey, collectionId],
-          (data) => {
-            if (!data) {
-              return undefined;
-            }
+    ({ collectionId, gameId, isAdding, game }: AddOrRemoveFromCollectionVariables) => {
+      queryClient.setQueryData<InfiniteData<PaginatedGames>>(
+        [collectionGamesKey, collectionId],
+        (data) => {
+          if (!data) {
+            return undefined;
+          }
 
-            const duplicateData = { ...data };
+          const duplicateData = { ...data };
 
-            duplicateData.pages = data.pages.map((page) => ({
-              ...page,
-              data: {
-                ...page.data,
-                count: page.data.count - 1,
-                results: page.data.results.filter(({ id }) => id !== gameId),
-              },
-            }));
+          duplicateData.pages = data.pages.map((page) => ({
+            ...page,
+            count: page.count - 1,
+            results: isAdding
+              ? [game, ...page.results]
+              : page.results.filter(({ id }) => id !== gameId),
+          }));
 
-            return duplicateData;
-          },
-        );
-      }
+          return duplicateData;
+        },
+      );
     },
     [queryClient],
   );
@@ -162,27 +147,21 @@ const useCollectionMutation = () => {
       const keys = getKeysContaining(myCollectionsKey);
 
       for (const key of keys) {
-        queryClient.setQueryData<InfiniteData<AxiosResponse<PaginatedCollectionDetailsResponse>>>(
-          key,
-          (data) => {
-            if (!data) {
-              return undefined;
-            }
+        queryClient.setQueryData<InfiniteData<PaginatedCollectionDetailsResponse>>(key, (data) => {
+          if (!data) {
+            return undefined;
+          }
 
-            const duplicateData = { ...data };
+          const duplicateData = { ...data };
 
-            duplicateData.pages = data.pages.map((page) => ({
-              ...page,
-              data: {
-                ...page.data,
-                count: page.data.count - 1,
-                results: page.data.results.filter(({ id }) => id !== collectionId),
-              },
-            }));
+          duplicateData.pages = data.pages.map((page) => ({
+            ...page,
+            count: page.count - 1,
+            results: page.results.filter(({ id }) => id !== collectionId),
+          }));
 
-            return duplicateData;
-          },
-        );
+          return duplicateData;
+        });
       }
     },
     [getKeysContaining, queryClient],
@@ -190,7 +169,7 @@ const useCollectionMutation = () => {
 
   const updateGameCountInCollectionQueryData = useCallback(
     ({ collectionId, isAdding, game }: AddOrRemoveFromCollectionVariables) => {
-      queryClient.setQueryData<InfiniteData<AxiosResponse<PaginatedCollectionDetailsResponse>>>(
+      queryClient.setQueryData<InfiniteData<PaginatedCollectionDetailsResponse>>(
         [myCollectionsKey, user?.id],
         (data) => {
           if (!data) {
@@ -201,31 +180,23 @@ const useCollectionMutation = () => {
 
           duplicateData.pages = data.pages.map((page) => ({
             ...page,
-            data: {
-              ...page.data,
-              results: page.data.results.map((result) => {
-                const { id, games_count, backgrounds } = result;
+            results: page.results.map((result) => {
+              const { id, games_count, backgrounds } = result;
 
-                if (id !== collectionId) {
-                  return result;
-                }
+              if (id !== collectionId) {
+                return result;
+              }
 
-                return {
-                  ...result,
-                  games_count: isAdding ? games_count + 1 : games_count - 1,
-                  backgrounds: backgrounds
-                    ? isAdding
-                      ? [
-                          {
-                            url: game.backgroundImage,
-                          },
-                          ...backgrounds,
-                        ]
-                      : backgrounds.filter((_, index) => index !== 0)
-                    : [],
-                };
-              }),
-            },
+              return {
+                ...result,
+                games_count: isAdding ? games_count + 1 : games_count - 1,
+                backgrounds: backgrounds
+                  ? isAdding
+                    ? [{ url: game.backgroundImage }, ...backgrounds]
+                    : backgrounds.filter((_, index) => index !== 0)
+                  : [],
+              };
+            }),
           }));
 
           return duplicateData;
@@ -275,7 +246,7 @@ const useCollectionMutation = () => {
       return;
     }
 
-    const { data: collectionData } = responseData.result;
+    const { result: collectionData } = responseData;
     const { id: collectionId, name, slug } = collectionData;
 
     if (game) {
@@ -286,15 +257,15 @@ const useCollectionMutation = () => {
     const myCollectionsKeys = getKeysContaining(myCollectionsKey);
 
     for (const key of userCollectionKeys) {
-      queryClient.setQueryData<AxiosResponse<GameInCollectionsResponse>>(key, (data) => {
+      queryClient.setQueryData<GameInCollectionsResponse>(key, (data) => {
         if (!data) {
           return data;
         }
 
-        const duplicateData = { ...data };
+        let duplicateData = data;
 
         if (updateCollectionId) {
-          duplicateData.data = duplicateData.data.map((collection) => {
+          duplicateData = duplicateData.map((collection) => {
             const { id } = collection;
 
             if (id !== updateCollectionId) {
@@ -307,9 +278,9 @@ const useCollectionMutation = () => {
             };
           });
         } else {
-          duplicateData.data = [
+          duplicateData = [
             { id: collectionId, name, slug, game_in_collection: !!game },
-            ...duplicateData.data,
+            ...duplicateData,
           ];
         }
 
@@ -318,47 +289,39 @@ const useCollectionMutation = () => {
     }
 
     for (const key of myCollectionsKeys) {
-      queryClient.setQueryData<InfiniteData<AxiosResponse<PaginatedCollectionDetailsResponse>>>(
-        key,
-        (data) => {
-          if (!data) {
-            return data;
-          }
+      queryClient.setQueryData<InfiniteData<PaginatedCollectionDetailsResponse>>(key, (data) => {
+        if (!data) {
+          return data;
+        }
 
-          const duplicateData = { ...data };
+        const duplicateData = { ...data };
 
-          if (updateCollectionId) {
-            duplicateData.pages = data.pages.map((page) => ({
-              ...page,
-              data: {
-                ...page.data,
-                results: page.data.results.map((collection) => {
-                  const { id } = collection;
+        if (updateCollectionId) {
+          duplicateData.pages = data.pages.map((page) => ({
+            ...page,
+            results: page.results.map((collection) => {
+              const { id } = collection;
 
-                  if (id !== updateCollectionId) {
-                    return collection;
-                  }
+              if (id !== updateCollectionId) {
+                return collection;
+              }
 
-                  return {
-                    ...collection,
-                    name: collectionData.name,
-                  };
-                }),
-              },
-            }));
-          } else {
-            duplicateData.pages = data.pages.map((page) => ({
-              ...page,
-              data: {
-                ...page.data,
-                count: page.data.count + 1,
-                results: [collectionData, ...page.data.results],
-              },
-            }));
-          }
-          return duplicateData;
-        },
-      );
+              return {
+                ...collection,
+                name: collectionData.name,
+              };
+            }),
+          }));
+        } else {
+          duplicateData.pages = data.pages.map((page) => ({
+            ...page,
+            count: page.count + 1,
+            results: [collectionData, ...page.results],
+          }));
+        }
+
+        return duplicateData;
+      });
     }
   };
 
@@ -379,13 +342,15 @@ const useCollectionMutation = () => {
   //#region - Remove Game from collection Mutation
   const onRemoveGameFromCollectionSuccess = (
     _: any,
-    { collectionId, gameId, game }: RemoveGameFromCollectionVariables,
+    variables: RemoveGameFromCollectionVariables,
   ) => {
-    updateGameInCollectionGamesQueryData({ collectionId, gameId, game, isAdding: false });
+    const params = { ...variables, isAdding: false };
 
-    updateGameInCollectionQueryData({ collectionId, gameId, game, isAdding: false });
+    updateGameInCollectionGamesQueryData(params);
 
-    removeGameFromMyCollectionQueryData({ collectionId, gameId, game, isAdding: false });
+    updateGameInCollectionQueryData(params);
+
+    removeGameFromMyCollectionQueryData(params);
 
     setRemoveGameFromCollectionLoading(false);
   };

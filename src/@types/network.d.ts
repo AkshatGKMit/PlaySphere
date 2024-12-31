@@ -1,9 +1,9 @@
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosError, AxiosRequestConfig } from 'axios';
 
 declare global {
   interface ApiSuccessResponse<T> {
     success: true;
-    result: AxiosResponse<T>;
+    result: T;
   }
 
   interface ApiErrorResponse<T> {
