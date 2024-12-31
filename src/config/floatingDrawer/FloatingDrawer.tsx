@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useState } from 'react';
-import { Image, LayoutChangeEvent, Modal, Pressable, View } from 'react-native';
+import { LayoutChangeEvent, Modal, Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
@@ -177,18 +177,11 @@ const FloatingDrawer = () => {
               </View>
               {user ? (
                 <View style={styles.profileContainer}>
-                  {user.avatar ? (
-                    <FastImage
-                      defaultSource={IMAGES.PROFILE_COVER}
-                      source={{ uri: user.avatar ?? '' }}
-                      style={styles.profileImage}
-                    />
-                  ) : (
-                    <Image
-                      source={IMAGES.PROFILE_COVER}
-                      style={styles.profileImage}
-                    />
-                  )}
+                  <FastImage
+                    defaultSource={IMAGES.PROFILE_COVER}
+                    source={user.avatar ? { uri: user.avatar } : IMAGES.PROFILE_COVER}
+                    style={styles.profileImage}
+                  />
                   <TextBlock
                     typography={Typography.bodyLarge}
                     fontWeight={FontWeight.bold}

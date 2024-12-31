@@ -27,8 +27,7 @@ const CollectionCard = ({ collection }: { collection: Collection }) => {
   return (
     <FastImage
       key={id}
-      source={{ uri: backgrounds?.length ? backgrounds[0].url : undefined }}
-      defaultSource={IMAGES.COLLECTION_COVER}
+      source={backgrounds?.length ? { uri: backgrounds[0].url } : IMAGES.COLLECTION_COVER}
       resizeMode="stretch"
       style={styles.image}
     >
