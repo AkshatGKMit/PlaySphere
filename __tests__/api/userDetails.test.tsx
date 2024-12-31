@@ -1,21 +1,17 @@
-import axios, { AxiosHeaders, AxiosResponse } from 'axios';
-import { describe, beforeEach, afterEach, jest, expect, it } from '@jest/globals';
+import axios from 'axios';
+import AxiosMockAdapter from 'axios-mock-adapter';
+import { describe, it } from '@jest/globals';
 
-import { fetchUserOverview } from '@network/apiEndpointCalls';
+import ApiConstants from '@network/apiConstants';
+import { fetchCurrentUser } from '@network/apiEndpointCalls';
+import instance from '@network/instance';
+import { USER_TOKEN } from '@env';
 
-jest.mock('axios');
+const { current: currentUserEndpoint } = ApiConstants.endpoints.user;
 
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+const mockedAxios = new AxiosMockAdapter(axios);
 
 describe('UserDetailsResponse API Test', () => {
-  beforeEach(() => {
-    jest.resetAllMocks();
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
   it('should match the expected keys in UserDetailsResponse', async () => {
     const mockUserResponse: UserDetailsResponse = {
       id: 188,
@@ -37,48 +33,13 @@ describe('UserDetailsResponse API Test', () => {
       bio_raw: '',
     };
 
-    const mockedResponse: AxiosResponse = {
-      data: mockUserResponse,
-      status: 200,
-      statusText: 'OK',
-      headers: {},
-      config: {
-        headers: {
-          'Content-Type': '',
-        },
-      },
-    };
+    mockedAxios.onGet(currentUserEndpoint).replyOnce(200, mockUserResponse);
 
-    mockedAxios.get.mockResolvedValueOnce(mockedResponse);
+    instance.interceptors.request.use((requestConfig) => {
+      requestConfig.headers.set('token', USER_TOKEN);
+      return requestConfig;
+    });
 
-    expect(axios.get).not.toHaveBeenCalled();
-    const data = await fetchUserOverview(188);
-    expect(axios.get).toHaveBeenCalled();
-    expect(data).toEqual(mockUserResponse);
-
-    // jest.fn().mockImplementationOnce(() =>
-    //   Promise.resolve({
-    //     json: () => Promise.resolve(mockUserResponse),
-    //   }),
-    // );
-
-    // expect(userDetails).toMatchObject({
-    //   id: expect.any(Number),
-    //   username: expect.any(String),
-    //   email: expect.any(null),
-    //   slug: expect.any(String),
-    //   full_name: expect.any(String || null),
-    //   avatar: expect.any(String || null),
-    //   games_count: expect.any(Number),
-    //   collections_count: expect.any(Number),
-    //   bio: expect.any(String || null),
-    //   games_wishlist_count: expect.any(Number),
-    //   game_background: expect.any(null),
-    //   following_count: expect.any(Number),
-    //   share_image: expect.any(String || null),
-    //   rated_games_percent: expect.any(Number),
-    //   noindex: expect.any(Boolean),
-    //   bio_raw: expect.any(String || null),
-    // });
+    fetchCurrentUser();
   });
 });

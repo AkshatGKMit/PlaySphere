@@ -6,6 +6,7 @@ import FastImage from 'react-native-fast-image';
 import { BlurView } from '@react-native-community/blur';
 
 import Icon from '@components/icon';
+import TextBlock from '@components/textBlock';
 import {
   DefaultObjectLayout,
   FontWeight,
@@ -24,7 +25,6 @@ import { Colors, globalStyles } from '@themes';
 
 import AnimatedFloatingButton from './AnimatedFloatingButton';
 import ThemedStyles from './styles';
-import TextBlock from '@components/textBlock';
 
 const {
   list: listGamesEndpoints,
