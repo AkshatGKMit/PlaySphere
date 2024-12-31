@@ -16,4 +16,9 @@ export const TestIds = {
       appTagLine: 'app-intro-tag-line',
     },
   },
+  integration: {
+    splash: {
+      root: 'splash-screen',
+    },
+  },
 };

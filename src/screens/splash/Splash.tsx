@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
-import { AxiosResponse } from 'axios';
 import { QueryFunction, QueryKey, usePrefetchInfiniteQuery } from '@tanstack/react-query';
 
 import AppIntro from '@components/appIntro';
 import BannerImageView from '@components/bannerImageView';
 import useStyles from '@config/useStyles';
-import { orderByDropdownItems, QueryKeys } from '@constants';
+import { orderByDropdownItems, QueryKeys, TestIds } from '@constants';
 import ApiConstants from '@network/apiConstants';
 import { fetchGames } from '@network/apiEndpointCalls';
 import { useAppDispatch, useAppSelector } from '@store';
@@ -16,6 +15,7 @@ import ThemedStyles from './styles';
 
 const { list: listGamesEndpoint } = ApiConstants.endpoints.games;
 const { mainGameList: mainGameListKey } = QueryKeys;
+const { root: rootTestId } = TestIds.integration.splash;
 
 const Splash = ({ onReady }: { onReady: (value: boolean) => void }) => {
   const dispatch = useAppDispatch();
@@ -26,11 +26,7 @@ const Splash = ({ onReady }: { onReady: (value: boolean) => void }) => {
     platforms: undefined,
   };
 
-  const queryFunction: QueryFunction<
-    AxiosResponse<PaginatedGamesResponse>,
-    QueryKey,
-    string
-  > = async () => {
+  const queryFunction: QueryFunction<PaginatedGamesResponse, QueryKey, string> = async () => {
     return fetchGames(listGamesEndpoint, { ...gameQueryParams, page: 1 });
   };
 
@@ -56,7 +52,10 @@ const Splash = ({ onReady }: { onReady: (value: boolean) => void }) => {
   const styles = useStyles(ThemedStyles);
 
   return (
-    <View style={styles.backgroundContainer}>
+    <View
+      style={styles.backgroundContainer}
+      testID={rootTestId}
+    >
       <BannerImageView />
       {AppIntro()}
     </View>
