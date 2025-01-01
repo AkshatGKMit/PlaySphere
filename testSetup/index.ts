@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
+import { useRoute } from '@react-navigation/native';
 
 //#region - Mocking react-native-vector-icons
 jest.mock('react-native-vector-icons/AntDesign', () => 'AntDesign');
@@ -43,6 +44,9 @@ jest.mock('@react-navigation/native', () => {
       navigate: jest.fn(),
       goBack: jest.fn(),
     })),
+    useRoute: jest.fn().mockImplementation(() => ({
+      params: {},
+    })),
   };
 });
 
@@ -77,8 +81,12 @@ jest.mock('@tanstack/react-query', () => ({
     getQueryData: jest.fn(),
     setQueryData: jest.fn(),
   })),
-  useQuery: jest.fn(),
-  useInfiniteQuery: jest.fn(),
+  useQuery: jest.fn().mockImplementation(() => ({
+    data: undefined,
+  })),
+  useInfiniteQuery: jest.fn().mockImplementation(() => ({
+    data: undefined,
+  })),
   usePrefetchInfiniteQuery: jest.fn(),
   useMutation: jest.fn().mockImplementation(() => ({
     mutate: jest.fn(),

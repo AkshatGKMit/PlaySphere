@@ -12,6 +12,7 @@ const AnimatedFloatingButton = ({
   index,
   styles,
   color,
+  testID,
 }: FloatingDrawerButtonProps) => {
   const translateXValue = useAnimatedValue(0);
 
@@ -37,6 +38,7 @@ const AnimatedFloatingButton = ({
     <Pressable
       style={styles.pressable}
       onPress={onPress}
+      testID={testID}
     >
       <Animated.View style={[styles.button, { transform: [{ translateX }] }]}>
         <Icon

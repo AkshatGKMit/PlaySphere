@@ -14,7 +14,7 @@ import Header from './Header';
 import ThemedStyles from './styles';
 
 const { home: homeRoute } = Routes.Stack;
-const { root: rootTestId } = TestIds.integration.home;
+const { root: rootTestId, title: titleTestId } = TestIds.integration.home;
 
 const Home = () => {
   const insets = useSafeAreaInsets();
@@ -90,6 +90,7 @@ const Home = () => {
           <TextBlock
             typography={Typography.headlineLarge}
             fontWeight={FontWeight.heavy}
+            testID={titleTestId}
           >
             {title}
           </TextBlock>

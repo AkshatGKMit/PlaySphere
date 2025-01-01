@@ -20,6 +20,15 @@ export const TestIds = {
       gameTitle: 'game-title',
       gameReleaseDate: 'game-release-date',
     },
+    floatingDrawer: {
+      root: 'floating-drawer',
+      rootButton: 'drawer-button',
+      popular: 'home-screen-with-popular-games',
+      thisWeek: 'home-screen-with-this-week-games',
+      bestOfTheYear: 'home-screen-with-best-of-the-year-games',
+      popular2023: 'home-screen-with-popular-in-2023-games',
+      top250: 'home-screen-with-top-250-games',
+    },
   },
   integration: {
     splash: {
@@ -33,6 +42,7 @@ export const TestIds = {
     },
     home: {
       root: 'home-screen',
+      title: 'home-screen-title',
     },
   },
 };

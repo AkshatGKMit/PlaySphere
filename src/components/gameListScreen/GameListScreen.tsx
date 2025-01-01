@@ -106,6 +106,7 @@ const GameListScreen = ({
           initialNumToRender={12}
           keyExtractor={({ id }) => id.toString()}
           onScroll={onScroll}
+          scrollEventThrottle={16}
           ListEmptyComponent={
             <ListEmptyComponent
               styles={styles}

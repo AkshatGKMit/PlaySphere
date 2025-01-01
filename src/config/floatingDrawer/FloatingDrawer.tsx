@@ -14,6 +14,7 @@ import {
   IMAGES,
   isIos,
   Routes,
+  TestIds,
   Typography,
 } from '@constants';
 import useStyles from '@config/useStyles';
@@ -35,6 +36,16 @@ const {
 } = ApiConstants.endpoints.games;
 
 const { home: homeRoute, collections: collectionsRoute } = Routes.Stack;
+
+const {
+  root: rootTestId,
+  rootButton: rootButtonTestId,
+  popular: popularTestId,
+  thisWeek: thisWeekTestId,
+  bestOfTheYear: bestOfTheYearTestId,
+  popular2023: popular2023TestId,
+  top250: top250TestId,
+} = TestIds.unit.floatingDrawer;
 
 const FloatingDrawer = () => {
   const { navigate, dispatch } = useNavigation<StackNavigation>();
@@ -149,7 +160,10 @@ const FloatingDrawer = () => {
   const { top: listTop, left: listLeft } = listLayout;
   return (
     <>
-      <Pressable onPress={() => setVisible(true)}>
+      <Pressable
+        onPress={() => setVisible(true)}
+        testID={rootButtonTestId}
+      >
         <View
           style={globalStyles.positionRelative}
           onLayout={_measureButton}
@@ -167,6 +181,7 @@ const FloatingDrawer = () => {
         onRequestClose={() => setVisible(false)}
         style={globalStyles.flexGrow1}
         animationType="fade"
+        testID={rootTestId}
       >
         <Pressable
           style={globalStyles.flex1}
@@ -213,6 +228,7 @@ const FloatingDrawer = () => {
                 name="Popular"
                 onPress={() => onPressButton(0)}
                 styles={styles}
+                testID={popularTestId}
               />
               <AnimatedFloatingButton
                 icon={Icons.materialIcons.localFireDepartment}
@@ -220,6 +236,7 @@ const FloatingDrawer = () => {
                 name="This Week"
                 onPress={() => onPressButton(1)}
                 styles={styles}
+                testID={thisWeekTestId}
               />
               <AnimatedFloatingButton
                 icon={Icons.fontAwesome.trophy}
@@ -227,6 +244,7 @@ const FloatingDrawer = () => {
                 name="Best Of the Year"
                 onPress={() => onPressButton(2)}
                 styles={styles}
+                testID={bestOfTheYearTestId}
               />
               <AnimatedFloatingButton
                 icon={Icons.materialCommunityIcons.chartBox}
@@ -234,6 +252,7 @@ const FloatingDrawer = () => {
                 name="Popular in 2023"
                 onPress={() => onPressButton(3)}
                 styles={styles}
+                testID={popular2023TestId}
               />
               <AnimatedFloatingButton
                 icon={Icons.materialCommunityIcons.crown}
@@ -241,6 +260,7 @@ const FloatingDrawer = () => {
                 name="Top 250"
                 onPress={() => onPressButton(4)}
                 styles={styles}
+                testID={top250TestId}
               />
               <AnimatedFloatingButton
                 icon={Icons.materialIcons.games}

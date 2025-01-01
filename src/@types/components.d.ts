@@ -96,6 +96,7 @@ declare global {
     index: number;
     styles: ReturnType<typeof FloatingDrawerThemedStyles>;
     color?: string;
+    testID?: string;
   }
 
   interface GameCardStyleProps {

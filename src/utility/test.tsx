@@ -8,6 +8,7 @@ import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client
 import { render as renderFunction } from '@testing-library/react-native';
 
 import { setupStore } from '@store';
+import { NavigationContainer } from '@react-navigation/native';
 
 const asyncStoragePersister = createAsyncStoragePersister({
   storage: AsyncStorage,
@@ -32,7 +33,7 @@ export const render = (ui: ReactElement, extendedOptions: ExtendedRenderOptions 
             client={queryClient}
             persistOptions={{ persister: asyncStoragePersister }}
           >
-            {children}
+            <NavigationContainer>{children}</NavigationContainer>
           </PersistQueryClientProvider>
         </Provider>
       </SafeAreaProvider>

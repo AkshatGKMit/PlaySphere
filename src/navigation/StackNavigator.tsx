@@ -20,6 +20,7 @@ const {
   collections: collectionsRoute,
   collectionGames: collectionGamesRoute,
 } = Routes.Stack;
+
 const { list: listGamesEndpoint } = ApiConstants.endpoints.games;
 
 const { root: rootTestId } = TestIds.integration.stackNavigator;
