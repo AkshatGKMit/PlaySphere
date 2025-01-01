@@ -39,8 +39,8 @@ const Splash = ({ onReady }: { onReady: (value: boolean) => void }) => {
 
   useEffect(() => {
     if (isAuthorized !== null) {
-      dispatch(fetchCurrentUserAction());
       if (isAuthorized) {
+        dispatch(fetchCurrentUserAction());
         setTimeout(() => {
           onReady(isAuthorized);
         }, 1500);

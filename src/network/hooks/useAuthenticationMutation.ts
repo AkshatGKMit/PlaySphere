@@ -23,7 +23,7 @@ const useAuthMutation = (mutationKey: AuthQueryKey, config: AuthQueryConfig): Us
     data: ApiSuccessResponse<AuthSuccessResponse> | ApiErrorResponse<AuthErrorResponse>,
   ) => {
     if (data.success) {
-      const { key } = data.result.data;
+      const { key } = data.result;
       const token = `Token ${key}`;
 
       instance.interceptors.request.use((requestConfig) => {
