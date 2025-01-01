@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useState } from 'react';
-import { LayoutChangeEvent, Modal, Pressable, View } from 'react-native';
+import { Alert, LayoutChangeEvent, Modal, Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
@@ -33,8 +33,6 @@ const {
   popularIn2023: popularIn2023Endpoint,
   mostPopular: top250GamesEndpoint,
 } = ApiConstants.endpoints.games;
-
-// const { currentUser: currentUserKey } = QueryKeys;
 
 const { home: homeRoute, collections: collectionsRoute } = Routes.Stack;
 
@@ -94,8 +92,24 @@ const FloatingDrawer = () => {
   );
 
   const onPressLogout = useCallback(() => {
-    appDispatch(removeUser());
-    appDispatch(logout());
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to logout?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Confirm',
+          onPress: () => {
+            appDispatch(removeUser());
+            appDispatch(logout());
+          },
+        },
+      ],
+      { cancelable: false },
+    );
   }, [appDispatch]);
 
   const onPressButton = useCallback(

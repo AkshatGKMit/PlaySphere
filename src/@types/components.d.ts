@@ -156,6 +156,7 @@ declare global {
     header?: ReactNode;
     params?: ListQueryParams;
     onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+    testID?: string;
   }
 
   type IconFamily = (typeof IconFamily)[keyof typeof IconFamily];

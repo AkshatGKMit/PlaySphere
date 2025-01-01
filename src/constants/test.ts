@@ -25,6 +25,15 @@ export const TestIds = {
     splash: {
       root: 'splash-screen',
     },
+    auth: {
+      root: 'auth-screen',
+    },
+    stackNavigator: {
+      root: 'stack-navigator',
+    },
+    home: {
+      root: 'home-screen',
+    },
   },
 };
 

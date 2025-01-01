@@ -31,6 +31,7 @@ const GameListScreen = ({
   params,
   header,
   listHeaderBackgroundColor,
+  testID,
 }: GameListScreenProps) => {
   const insets = useSafeAreaInsets();
   const { colors: theme } = useAppSelector((state) => state.theme);
@@ -63,7 +64,10 @@ const GameListScreen = ({
   const showNoResultsFound = useMemo(() => isSuccess && !games.length, [games.length, isSuccess]);
 
   return (
-    <View style={styles.screen}>
+    <View
+      style={styles.screen}
+      testID={testID}
+    >
       {header}
       <ListHeaderComponent
         orderBy={orderBy}

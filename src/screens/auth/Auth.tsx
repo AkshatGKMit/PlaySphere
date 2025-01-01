@@ -5,7 +5,7 @@ import AppIntro from '@components/appIntro';
 import BannerImageView from '@components/bannerImageView';
 import { useForm } from '@config/useForm';
 import useStyles from '@config/useStyles';
-import { QueryKeys } from '@constants';
+import { QueryKeys, TestIds } from '@constants';
 import useAuthMutation from '@network/hooks/useAuthenticationMutation';
 import { globalStyles } from '@themes';
 import { authValidations } from '@utility/validations';
@@ -15,6 +15,8 @@ import Form from './Form';
 import Animation from './Animation';
 
 const { authentication: authKey } = QueryKeys;
+
+const { root: rootTestId } = TestIds.integration.auth;
 
 const initialData: RegisterBody = {
   username: '',
@@ -90,7 +92,10 @@ const Auth = () => {
   );
 
   return (
-    <View style={styles.screen}>
+    <View
+      style={styles.screen}
+      testID={rootTestId}
+    >
       <View style={styles.backgroundContainer}>
         <BannerImageView />
         <Animated.View style={backdropStyles}>{AppIntro(appIntroOpacity)}</Animated.View>

@@ -1,12 +1,12 @@
-import { Alert, BackHandler, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { Alert, BackHandler, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
 import GameListScreen from '@components/gameListScreen';
 import TextBlock from '@components/textBlock';
 import useStyles from '@config/useStyles';
-import { Elevation, FontWeight, Routes, Typography } from '@constants';
+import { Elevation, FontWeight, Routes, TestIds, Typography } from '@constants';
 import { useAppSelector } from '@store';
 import { getShadowStyle } from '@utility/style';
 
@@ -14,6 +14,7 @@ import Header from './Header';
 import ThemedStyles from './styles';
 
 const { home: homeRoute } = Routes.Stack;
+const { root: rootTestId } = TestIds.integration.home;
 
 const Home = () => {
   const insets = useSafeAreaInsets();
@@ -79,6 +80,7 @@ const Home = () => {
       params={queryParams}
       onScroll={onScroll}
       listHeaderBackgroundColor={backgroundColor}
+      testID={rootTestId}
       header={
         <Header
           headerStyles={headerStyles}
