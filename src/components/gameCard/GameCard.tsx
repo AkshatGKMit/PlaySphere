@@ -7,7 +7,7 @@ import Icon from '@components/icon';
 import Loader from '@components/loader';
 import Dialog from '@components/dialog';
 import useStyles from '@config/useStyles';
-import { Emoji, Icons, RatingCategory, Routes } from '@constants';
+import { Emoji, Icons, RatingCategory, Routes, TestIds } from '@constants';
 import useCollectionMutation from '@network/hooks/useCollectionMutation';
 import { Colors } from '@themes';
 import { formatAgeRatingToAge, parseDateString } from '@utility/helpers';
@@ -17,6 +17,8 @@ import GameImage from './GameImage';
 import ThemedStyles from './styles';
 
 const { details: detailsRoute } = Routes.Stack;
+
+const { root: rootTestId } = TestIds.unit.gameCard;
 
 const GameCard = ({ game, hideAddButton, collectionId }: GameCardProps) => {
   const {
@@ -126,6 +128,7 @@ const GameCard = ({ game, hideAddButton, collectionId }: GameCardProps) => {
       activeOpacity={0.9}
       onPress={onCardPress}
       style={styles.container}
+      testID={rootTestId}
     >
       <GameImage
         ageRating={getAgeRating}

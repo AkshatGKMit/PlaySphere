@@ -31,14 +31,14 @@ jest.mock('@react-native-community/blur', () => {
 
 jest.mock('@react-navigation/native-stack', () => ({
   createNativeStackNavigator: jest.fn().mockImplementation(() => ({
-    Navigator: jest.fn(({ children }) => children),
-    Screen: jest.fn(({ children }) => children),
+    Navigator: jest.fn<MockChildrenFn>().mockImplementation(({ children }) => children),
+    Screen: jest.fn<MockChildrenFn>().mockImplementation(({ children }) => children),
   })),
 }));
 
 jest.mock('@react-navigation/native', () => {
   return {
-    NavigationContainer: jest.fn(({ children }) => children),
+    NavigationContainer: jest.fn<MockChildrenFn>().mockImplementation(({ children }) => children),
     useNavigation: jest.fn(() => ({
       navigate: jest.fn(),
       goBack: jest.fn(),
@@ -63,7 +63,7 @@ jest.mock('react-native-safe-area-context', () => {
   const inset = { top: 0, right: 0, bottom: 0, left: 0 };
 
   return {
-    SafeAreaProvider: jest.fn().mockImplementation(({ children }) => children),
+    SafeAreaProvider: jest.fn<MockChildrenFn>().mockImplementation(({ children }) => children),
     useSafeAreaInsets: jest.fn().mockImplementation(() => inset),
   };
 });
@@ -72,7 +72,7 @@ jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
 //#region - Mocking react-query
 jest.mock('@tanstack/react-query', () => ({
-  QueryClientProvider: jest.fn().mockImplementation(({ children }) => children),
+  QueryClientProvider: jest.fn<MockChildrenFn>().mockImplementation(({ children }) => children),
   QueryClient: jest.fn().mockImplementation(() => ({
     getQueryData: jest.fn(),
     setQueryData: jest.fn(),
@@ -80,10 +80,19 @@ jest.mock('@tanstack/react-query', () => ({
   useQuery: jest.fn(),
   useInfiniteQuery: jest.fn(),
   usePrefetchInfiniteQuery: jest.fn(),
-  useMutation: jest.fn(),
+  useMutation: jest.fn().mockImplementation(() => ({
+    mutate: jest.fn(),
+  })),
+  useQueryClient: jest.fn().mockImplementation(() => ({
+    getQueryCache: jest.fn().mockImplementation(() => ({
+      getAll: jest.fn().mockImplementation(() => []),
+    })),
+  })),
 }));
 
 jest.mock('@tanstack/react-query-persist-client', () => ({
-  PersistQueryClientProvider: jest.fn().mockImplementation(({ children }) => children),
+  PersistQueryClientProvider: jest
+    .fn<MockChildrenFn>()
+    .mockImplementation(({ children }) => children),
 }));
 //#endregion

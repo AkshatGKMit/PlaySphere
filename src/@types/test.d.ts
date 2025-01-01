@@ -6,6 +6,8 @@ declare global {
     children: ReactNode;
   }
 
+  type MockChildrenFn = (props: PropsWithChildren) => ReactNode;
+
   interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
     preloadedState?: Partial<RootState>;
     store?: AppStore;

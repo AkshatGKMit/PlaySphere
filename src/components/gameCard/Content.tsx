@@ -3,8 +3,11 @@ import { View } from 'react-native';
 
 import SystemPlatformView from '@components/systemPlatforms';
 import TextBlock from '@components/textBlock';
-import { FontWeight, Icons, Typography } from '@constants';
+import { FontWeight, Icons, TestIds, Typography } from '@constants';
 import ActionButton from '@components/actionButton';
+
+const { gameTitle: gameTitleTestId, gameReleaseDate: gameReleaseDateTestId } =
+  TestIds.unit.gameCard;
 
 const Content = ({
   styles,
@@ -23,6 +26,7 @@ const Content = ({
         typography={Typography.titleMedium}
         fontWeight={FontWeight.bold}
         numberOfLines={1}
+        testID={gameTitleTestId}
       >
         {name}
       </TextBlock>
@@ -31,6 +35,7 @@ const Content = ({
           typography={Typography.labelSmall}
           fontWeight={FontWeight.light}
           color={styles.genre.color}
+          testID={gameReleaseDateTestId}
         >
           Release Date - {releaseDate}
         </TextBlock>
