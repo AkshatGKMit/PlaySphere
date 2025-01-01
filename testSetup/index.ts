@@ -70,9 +70,20 @@ jest.mock('react-native-safe-area-context', () => {
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
+//#region - Mocking react-query
 jest.mock('@tanstack/react-query', () => ({
+  QueryClientProvider: jest.fn().mockImplementation(({ children }) => children),
+  QueryClient: jest.fn().mockImplementation(() => ({
+    getQueryData: jest.fn(),
+    setQueryData: jest.fn(),
+  })),
   useQuery: jest.fn(),
   useInfiniteQuery: jest.fn(),
   usePrefetchInfiniteQuery: jest.fn(),
   useMutation: jest.fn(),
 }));
+
+jest.mock('@tanstack/react-query-persist-client', () => ({
+  PersistQueryClientProvider: jest.fn().mockImplementation(({ children }) => children),
+}));
+//#endregion

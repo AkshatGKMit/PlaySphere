@@ -6,6 +6,7 @@ import { TestIds } from '@constants';
 import Splash from '@screens/splash/Splash';
 import { setupStore } from '@store';
 import { render } from '@utility/test';
+import { usePrefetchInfiniteQuery } from '@tanstack/react-query';
 
 const { integration: integrationTestIds, unit: unitTestIds } = TestIds;
 
@@ -78,6 +79,14 @@ describe('<Splash/>', () => {
     await waitFor(() => {
       expect(mockDispatch).toBeCalled();
       expect(mockDispatch).toBeCalledTimes(1);
+    });
+  });
+
+  it('Prefetch Home Page Game List', async () => {
+    render(<Splash onReady={onReadyMock} />);
+
+    await waitFor(() => {
+      expect(usePrefetchInfiniteQuery).toHaveBeenCalledTimes(1);
     });
   });
 });
