@@ -37,10 +37,11 @@ const Screenshots = ({ isPending, screenshots, styles, theme }: DetailsScreensho
   return (
     <>
       <View style={styles.separator} />
-      <View style={styles.contentSection}>
+      <View style={styles.screenshotContentSection}>
         <TextBlock
           typography={Typography.titleLarge}
           fontWeight={FontWeight.bold}
+          style={styles.screenshotsTitle}
         >
           Screenshots
         </TextBlock>

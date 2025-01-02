@@ -107,8 +107,16 @@ const ThemedStyles = (theme: ThemeColors, insets: EdgeInsets) => {
       justifyContent: 'space-between',
       alignItems: 'flex-end',
     },
+    screenshotContentSection: {
+      marginVertical: 5,
+      gap: 10,
+    },
+    screenshotsTitle: {
+      paddingHorizontal: 10,
+    },
     screenshotContainer: {
       marginTop: 5,
+      paddingHorizontal: 10,
       gap: 10,
     },
     screenshot: {
