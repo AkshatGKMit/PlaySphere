@@ -47,6 +47,7 @@ export const TestIds = {
     search: {
       root: 'search-screen',
       inputBox: 'search-text-input',
+      gameList: 'search-game-list',
     },
   },
 };
@@ -454,4 +455,267 @@ export const gameDetail: GameDetailResponse = {
   clip: null,
   description_raw:
     'Rockstar Games went bigger, since their previous installment of the series. You get the complicated and realistic world-building from Liberty City of GTA4 in the setting of lively and diverse Los Santos, from an old fan favorite GTA San Andreas. 561 different vehicles (including every transport you can operate) and the amount is rising with every update. \nSimultaneous storytelling from three unique perspectives: \nFollow Michael, ex-criminal living his life of leisure away from the past, Franklin, a kid that seeks the better future, and Trevor, the exact past Michael is trying to run away from. \nGTA Online will provide a lot of additional challenge even for the experienced players, coming fresh from the story mode. Now you will have other players around that can help you just as likely as ruin your mission. Every GTA mechanic up to date can be experienced by players through the unique customizable character, and community content paired with the leveling system tends to keep everyone busy and engaged.\n\nEspañol\nRockstar Games se hizo más grande desde su entrega anterior de la serie. Obtienes la construcción del mundo complicada y realista de Liberty City de GTA4 en el escenario de Los Santos, un viejo favorito de los fans, GTA San Andreas. 561 vehículos diferentes (incluidos todos los transportes que puede operar) y la cantidad aumenta con cada actualización.\nNarración simultánea desde tres perspectivas únicas:\nSigue a Michael, ex-criminal que vive su vida de ocio lejos del pasado, Franklin, un niño que busca un futuro mejor, y Trevor, el pasado exacto del que Michael está tratando de huir.\nGTA Online proporcionará muchos desafíos adicionales incluso para los jugadores experimentados, recién llegados del modo historia. Ahora tendrás otros jugadores cerca que pueden ayudarte con la misma probabilidad que arruinar tu misión. Los jugadores pueden experimentar todas las mecánicas de GTA actualizadas a través del personaje personalizable único, y el contenido de la comunidad combinado con el sistema de nivelación tiende a mantener a todos ocupados y comprometidos.',
+};
+
+export const gtaSearch: PaginatedGamesResponse = {
+  count: 76,
+  next: 'https://api.rawg.io/api/games?key=c542e67aec3a4340908f9de9e86038af&page=2&page_size=2&search=gta',
+  previous: null,
+  results: [
+    {
+      slug: 'grand-theft-auto-1998',
+      name: 'Grand Theft Auto',
+      playtime: 1,
+      platforms: [
+        {
+          platform: {
+            id: 4,
+            name: 'PC',
+            slug: 'pc',
+          },
+          released_at: '',
+          requirements: {
+            minimum: undefined,
+            recommended: undefined,
+          },
+        },
+        {
+          platform: {
+            id: 27,
+            name: 'PlayStation',
+            slug: 'playstation1',
+          },
+          released_at: '',
+          requirements: {
+            minimum: undefined,
+            recommended: undefined,
+          },
+        },
+        {
+          platform: {
+            id: 43,
+            name: 'Game Boy Color',
+            slug: 'game-boy-color',
+          },
+          released_at: '',
+          requirements: {
+            minimum: undefined,
+            recommended: undefined,
+          },
+        },
+        {
+          platform: {
+            id: 26,
+            name: 'Game Boy',
+            slug: 'game-boy',
+          },
+          released_at: '',
+          requirements: {
+            minimum: undefined,
+            recommended: undefined,
+          },
+        },
+      ],
+      released: '1997-10-21',
+      tba: false,
+      background_image:
+        'https://media.rawg.io/media/games/786/786f9a212646c793ccbad196cba2cf36.jpg',
+      rating: 3.86,
+      rating_top: 4,
+      ratings: [
+        {
+          id: 4,
+          title: 'recommended',
+          count: 218,
+          percent: 54.91,
+        },
+        {
+          id: 5,
+          title: 'exceptional',
+          count: 85,
+          percent: 21.41,
+        },
+        {
+          id: 3,
+          title: 'meh',
+          count: 71,
+          percent: 17.88,
+        },
+        {
+          id: 1,
+          title: 'skip',
+          count: 23,
+          percent: 5.79,
+        },
+      ],
+      metacritic: null,
+      updated: '2024-12-30T13:39:51',
+      id: 52998,
+      clip: null,
+      tags: [
+        {
+          id: 31,
+          name: 'Singleplayer',
+          slug: 'singleplayer',
+          games_count: 233260,
+          image_background:
+            'https://media.rawg.io/media/games/d58/d588947d4286e7b5e0e12e1bea7d9844.jpg',
+        },
+        {
+          id: 7,
+          name: 'Multiplayer',
+          slug: 'multiplayer',
+          games_count: 39665,
+          image_background:
+            'https://media.rawg.io/media/games/2ba/2bac0e87cf45e5b508f227d281c9252a.jpg',
+        },
+        {
+          id: 36,
+          name: 'Open World',
+          slug: 'open-world',
+          games_count: 8164,
+          image_background:
+            'https://media.rawg.io/media/games/34b/34b1f1850a1c06fd971bc6ab3ac0ce0e.jpg',
+        },
+        {
+          id: 45,
+          name: '2D',
+          slug: '2d',
+          games_count: 199708,
+          image_background:
+            'https://media.rawg.io/media/games/a91/a911f0a91991469e398fa70091507a5b.jpg',
+        },
+        {
+          id: 193,
+          name: 'Classic',
+          slug: 'classic',
+          games_count: 1804,
+          image_background:
+            'https://media.rawg.io/media/games/4fb/4fb548e4816c84d1d70f1a228fb167cc.jpg',
+        },
+        {
+          id: 61,
+          name: 'Top-Down',
+          slug: 'top-down',
+          games_count: 26474,
+          image_background:
+            'https://media.rawg.io/media/screenshots/71c/71c015df012029897e87ac00b7a8de4c.jpg',
+        },
+      ],
+      esrb_rating: {
+        id: 4,
+        name: 'Mature',
+        slug: 'mature',
+      },
+      saturated_color: '0f0f0f',
+      dominant_color: '0f0f0f',
+      parent_platforms: [
+        {
+          platform: {
+            id: 1,
+            name: 'PC',
+            slug: 'pc',
+          },
+        },
+        {
+          platform: {
+            id: 2,
+            name: 'PlayStation',
+            slug: 'playstation',
+          },
+        },
+        {
+          platform: {
+            id: 7,
+            name: 'Nintendo',
+            slug: 'nintendo',
+          },
+        },
+      ],
+      genres: [
+        {
+          id: 4,
+          name: 'Action',
+          slug: 'action',
+        },
+      ],
+      name_original: '',
+      description: '',
+      metacritic_platforms: [],
+      background_image_additional: '',
+      website: '',
+      screenshots_count: 0,
+      movies_count: 0,
+      creators_count: 0,
+      achievements_count: 0,
+      parent_achievements_count: 0,
+      reddit_url: '',
+      description_raw: '',
+    },
+    {
+      slug: 'gta-bankrob',
+      name: 'GTA-bankrob',
+      playtime: 0,
+      platforms: [
+        {
+          platform: {
+            id: 4,
+            name: 'PC',
+            slug: 'pc',
+          },
+          released_at: '',
+          requirements: {
+            minimum: undefined,
+            recommended: undefined,
+          },
+        },
+      ],
+      released: '2017-04-10',
+      tba: false,
+      background_image:
+        'https://media.rawg.io/media/screenshots/70d/70d98f3c42cdc6db6cfd6318e6519b96.jpg',
+      rating: 0.0,
+      rating_top: 0,
+      ratings: [],
+      metacritic: null,
+      updated: '2019-01-09T12:41:06',
+      id: 197932,
+      clip: null,
+      tags: [
+        {
+          id: 604,
+          name: 'simple',
+          slug: 'simple',
+          games_count: 9292,
+          image_background:
+            'https://media.rawg.io/media/screenshots/662/662c62b3368611fb5d1c2ac39d700350.jpg',
+        },
+      ],
+      esrb_rating: null,
+      saturated_color: '0f0f0f',
+      dominant_color: '0f0f0f',
+      parent_platforms: [
+        {
+          platform: {
+            id: 1,
+            name: 'PC',
+            slug: 'pc',
+          },
+        },
+      ],
+      genres: [],
+      name_original: '',
+      description: '',
+      metacritic_platforms: [],
+      background_image_additional: '',
+      website: '',
+      screenshots_count: 0,
+      movies_count: 0,
+      creators_count: 0,
+      achievements_count: 0,
+      parent_achievements_count: 0,
+      reddit_url: '',
+      description_raw: '',
+    },
+  ],
 };

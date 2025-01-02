@@ -41,7 +41,11 @@ import ThemedStyles from './styles';
 const { mainGameList: mainGameListKey } = QueryKeys;
 const { list: listEndpoint } = ApiConstants.endpoints.games;
 
-const { root: rootTestId, inputBox: inputBoxTestId } = TestIds.integration.search;
+const {
+  root: rootTestId,
+  inputBox: inputBoxTestId,
+  gameList: gameListTestId,
+} = TestIds.integration.search;
 
 const Search = () => {
   const insets = useSafeAreaInsets();
@@ -209,6 +213,7 @@ const Search = () => {
         stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}
         onEndReached={onEndReached}
+        testID={gameListTestId}
       />
     </View>
   );
