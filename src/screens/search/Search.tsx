@@ -25,6 +25,7 @@ import {
   orderByDropdownItems,
   QueryKeys,
   systemPlatformDropdownItems,
+  TestIds,
   Typography,
 } from '@constants';
 import useStyles from '@config/useStyles';
@@ -39,6 +40,8 @@ import ThemedStyles from './styles';
 
 const { mainGameList: mainGameListKey } = QueryKeys;
 const { list: listEndpoint } = ApiConstants.endpoints.games;
+
+const { root: rootTestId, inputBox: inputBoxTestId } = TestIds.integration.search;
 
 const Search = () => {
   const insets = useSafeAreaInsets();
@@ -119,7 +122,10 @@ const Search = () => {
   const showFooter = useMemo(() => !!searchText && hasNextPage, [hasNextPage, searchText]);
 
   return (
-    <View style={styles.screen}>
+    <View
+      style={styles.screen}
+      testID={rootTestId}
+    >
       <View style={headerStyles}>
         <Pressable onPress={goBack}>
           <Icon
@@ -137,6 +143,7 @@ const Search = () => {
           autoCorrect={false}
           style={styles.textInput}
           selectionColor={styles.textInput.color}
+          testID={inputBoxTestId}
         />
         {searchText ? (
           <Pressable onPress={() => handleSearchTextChange('')}>

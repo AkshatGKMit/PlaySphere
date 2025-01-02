@@ -44,6 +44,10 @@ export const TestIds = {
       root: 'home-screen',
       title: 'home-screen-title',
     },
+    search: {
+      root: 'search-screen',
+      inputBox: 'search-text-input',
+    },
   },
 };
 
