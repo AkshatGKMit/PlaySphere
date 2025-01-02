@@ -84,3 +84,5 @@ debug.keystore
 .bundle
 .vscode
 .env
+__snapshots__
+*.snap
