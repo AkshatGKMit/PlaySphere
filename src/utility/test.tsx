@@ -2,13 +2,13 @@ import React, { ReactElement } from 'react';
 import { Provider } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigationContainer } from '@react-navigation/native';
 import { QueryClient } from '@tanstack/react-query';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { render as renderFunction } from '@testing-library/react-native';
 
 import { setupStore } from '@store';
-import { NavigationContainer } from '@react-navigation/native';
 
 const asyncStoragePersister = createAsyncStoragePersister({
   storage: AsyncStorage,

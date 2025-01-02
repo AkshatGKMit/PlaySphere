@@ -5,8 +5,17 @@ import { BlurView } from '@react-native-community/blur';
 import ActionButton from '@components/actionButton';
 import TextBlock from '@components/textBlock';
 import Textfield from '@components/textfield';
-import { AuthFields, FontWeight, Icons, Typography } from '@constants';
+import { AuthFields, FontWeight, Icons, TestIds, Typography } from '@constants';
 import { globalStyles } from '@themes';
+
+const {
+  usernameField: usernameFieldTestId,
+  emailField: emailFieldTestId,
+  passwordField: passwordFieldTestId,
+  formSwitchButton: formSwitchButtonTestId,
+  formSwitchButtonText: formSwitchButtonTextTestId,
+  submitButton: submitButtonTestId,
+} = TestIds.integration.auth;
 
 const Form = ({
   authTypeLogin,
@@ -76,6 +85,7 @@ const Form = ({
           onSubmitEditing={() => emailRef.current?.focus()}
           autoCapitalize="none"
           textContentType="username"
+          testID={usernameFieldTestId}
         />
       ) : null}
       <Textfield
@@ -90,6 +100,7 @@ const Form = ({
         autoCapitalize="none"
         keyboardType="email-address"
         textContentType="emailAddress"
+        testID={emailFieldTestId}
       />
       <Textfield
         ref={passwordRef}
@@ -109,6 +120,7 @@ const Form = ({
         textContentType="password"
         autoCapitalize="none"
         autoComplete="off"
+        testID={passwordFieldTestId}
       />
       <Animated.View style={buttonContainerStyles}>
         <ActionButton
@@ -117,13 +129,20 @@ const Form = ({
           fontWeight={FontWeight.bold}
           loading={loading}
           onPress={authenticate}
+          testID={submitButtonTestId}
         />
         <View style={styles.authOptions}>
           <TextBlock>
             {authTypeLogin ? "Didn't have an account?" : 'Already have an account!'}
           </TextBlock>
-          <Pressable onPress={() => setAuthTypeLogin((value: boolean) => !value)}>
-            <TextBlock style={styles.authOptionTextButton}>
+          <Pressable
+            onPress={() => setAuthTypeLogin((value: boolean) => !value)}
+            testID={formSwitchButtonTestId}
+          >
+            <TextBlock
+              style={styles.authOptionTextButton}
+              testID={formSwitchButtonTextTestId}
+            >
               {authTypeLogin ? 'Sign Up' : 'Login'}
             </TextBlock>
           </Pressable>

@@ -36,6 +36,12 @@ export const TestIds = {
     },
     auth: {
       root: 'auth-screen',
+      usernameField: 'auth-screen-username-input',
+      emailField: 'auth-screen-email-input',
+      passwordField: 'auth-screen-password-input',
+      formSwitchButton: 'auth-screen-form-switch-button',
+      formSwitchButtonText: 'auth-screen-form-switch-button-text',
+      submitButton: 'auth-screen-submit-button',
     },
     stackNavigator: {
       root: 'stack-navigator',
