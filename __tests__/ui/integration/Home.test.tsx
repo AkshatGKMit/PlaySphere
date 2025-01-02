@@ -1,10 +1,10 @@
 import React from 'react';
 import { it, describe, expect } from '@jest/globals';
-import { waitFor } from '@testing-library/react-native';
+import { fireEvent, waitFor } from '@testing-library/react-native';
 
 import { TestIds } from '@constants';
-import Home from '@screens/home/Home';
 import ApiConstants from '@network/apiConstants';
+import Home from '@screens/home/Home';
 import { setupStore } from '@store';
 import { render } from '@utility/test';
 
@@ -15,24 +15,13 @@ const {
   rootButton: rootButtonId,
   popular: popularId,
   thisWeek: thisWeekId,
-  bestOfTheYear: bestOfTheYearId,
-  popular2023: popular2023Id,
-  top250: top250Id,
 } = unitIds.floatingDrawer;
 
 const {
   list: listGamesEndpoints,
   thisWeekGames: thisWeekGamesEndpoint,
   bestOfTheYear: bestGamesOfYearEndpoint,
-  popularIn2023: popularIn2023Endpoint,
-  mostPopular: top250GamesEndpoint,
 } = ApiConstants.endpoints.games;
-
-const setMockParams = (mockParams: HomeRouteProps) => {
-  require('@react-navigation/native').useRoute.mockReturnValue({
-    params: mockParams,
-  });
-};
 
 describe('<Home/>', () => {
   const store = setupStore({
@@ -41,6 +30,26 @@ describe('<Home/>', () => {
       isLogin: true,
     },
   });
+
+  const setMockParams = (mockParams: HomeRouteProps) => {
+    require('@react-navigation/native').useRoute.mockReturnValue({
+      params: mockParams,
+    });
+  };
+
+  const openDrawerAndTriggerAndVerifyTitle = async (buttonId: string, title: string) => {
+    const { getByTestId } = render(<Home />, { store });
+
+    const drawerButton = await waitFor(() => getByTestId(rootButtonId));
+    fireEvent.press(drawerButton);
+
+    expect(getByTestId(rootId)).toBeTruthy();
+
+    fireEvent.press(await waitFor(() => getByTestId(buttonId)));
+
+    const homeTitle = await waitFor(() => getByTestId(homeTestIds.title));
+    expect(homeTitle.children[0]).toEqual(title);
+  };
 
   it('Renders Popular Games Home Screen', async () => {
     const mockParams: HomeRouteProps = {
@@ -91,5 +100,26 @@ describe('<Home/>', () => {
 
     expect(screen).toBeTruthy();
     expect(screenTitle.children[0]).toEqual(mockParams.title);
+  });
+
+  it('Switch Home Screen', async () => {
+    setMockParams({
+      title: 'Popular Games',
+      url: listGamesEndpoints,
+    });
+
+    await openDrawerAndTriggerAndVerifyTitle(popularId, 'Popular Games');
+
+    setMockParams({
+      title: 'This Week Games',
+      url: thisWeekGamesEndpoint,
+    });
+
+    await openDrawerAndTriggerAndVerifyTitle(thisWeekId, 'This Week Games');
+
+    setMockParams({
+      title: 'This Week Games',
+      url: thisWeekGamesEndpoint,
+    });
   });
 });
