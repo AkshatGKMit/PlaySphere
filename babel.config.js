@@ -30,6 +30,7 @@ module.exports = {
         verbose: false,
       },
     ],
+    'transform-remove-console',
     'react-native-reanimated/plugin',
   ],
 };
