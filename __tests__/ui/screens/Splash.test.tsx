@@ -1,6 +1,6 @@
 import React from 'react';
 import { describe, it, expect, jest, afterEach } from '@jest/globals';
-import { waitFor } from '@testing-library/react-native';
+import { act, waitFor } from '@testing-library/react-native';
 
 import { TestIds } from '@constants';
 import Splash from '@screens/splash/Splash';
@@ -21,7 +21,11 @@ describe('<Splash/>', () => {
   });
 
   it('Renders Splash Screen', () => {
+    jest.useFakeTimers();
     const { getByTestId } = render(<Splash onReady={onReadyMock} />);
+    act(() => {
+      jest.advanceTimersByTime(0);
+    });
 
     expect(getByTestId(rootId)).toBeTruthy();
     expect(getByTestId(bannerImageViewIds.root)).toBeTruthy();
@@ -38,7 +42,11 @@ describe('<Splash/>', () => {
 
     const mockDispatch = jest.spyOn(store, 'dispatch');
 
+    jest.useFakeTimers();
     render(<Splash onReady={onReadyMock} />, { store });
+    act(() => {
+      jest.advanceTimersByTime(0);
+    });
 
     expect(mockDispatch).not.toBeCalled();
 
@@ -55,7 +63,11 @@ describe('<Splash/>', () => {
 
     const mockDispatch = jest.spyOn(store, 'dispatch');
 
+    jest.useFakeTimers();
     render(<Splash onReady={onReadyMock} />, { store });
+    act(() => {
+      jest.advanceTimersByTime(0);
+    });
 
     expect(mockDispatch).not.toBeCalled();
 
@@ -72,9 +84,11 @@ describe('<Splash/>', () => {
 
     const mockDispatch = jest.spyOn(store, 'dispatch');
 
+    jest.useFakeTimers();
     render(<Splash onReady={onReadyMock} />, { store });
-
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    act(() => {
+      jest.advanceTimersByTime(0);
+    });
 
     await waitFor(() => {
       expect(mockDispatch).toBeCalled();
@@ -83,7 +97,11 @@ describe('<Splash/>', () => {
   });
 
   it('Prefetch Home Page Game List', async () => {
+    jest.useFakeTimers();
     render(<Splash onReady={onReadyMock} />);
+    act(() => {
+      jest.advanceTimersByTime(0);
+    });
 
     await waitFor(() => {
       expect(usePrefetchInfiniteQuery).toHaveBeenCalledTimes(1);

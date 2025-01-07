@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { TestIds } from '@constants';
-import { describe, it, expect } from '@jest/globals';
+import { describe, it, expect, jest } from '@jest/globals';
 import Auth from '@screens/auth/Auth';
 import { setupStore } from '@store';
 import { render } from '@utility/test';
-import { fireEvent, screen } from '@testing-library/react-native';
+import { act, fireEvent, screen } from '@testing-library/react-native';
 import { authValidations } from '@utility/validations';
 
 const {
@@ -26,19 +26,31 @@ describe('<Auth/>', () => {
   });
 
   it('Auth Screen is Displayed', () => {
+    jest.useFakeTimers();
     const { getByTestId } = render(<Auth />, { store });
+    act(() => {
+      jest.advanceTimersByTime(0);
+    });
 
     expect(getByTestId(rootId)).toBeTruthy();
   });
 
   it('Auth Screen For Login', () => {
+    jest.useFakeTimers();
     const { getByTestId } = render(<Auth />, { store });
+    act(() => {
+      jest.advanceTimersByTime(0);
+    });
 
     expect(getByTestId(formSwitchButtonTextId).props.children).toEqual('Sign Up');
   });
 
   it('Auth Screen For Sign Up', () => {
+    jest.useFakeTimers();
     const { getByTestId } = render(<Auth />, { store });
+    act(() => {
+      jest.advanceTimersByTime(0);
+    });
 
     fireEvent.press(getByTestId(formSwitchButtonId));
 
@@ -46,7 +58,11 @@ describe('<Auth/>', () => {
   });
 
   it('Display Error email and password is required', async () => {
+    jest.useFakeTimers();
     const { getByTestId } = render(<Auth />, { store });
+    act(() => {
+      jest.advanceTimersByTime(0);
+    });
 
     fireEvent.press(getByTestId(submitButtonId));
 
@@ -57,7 +73,11 @@ describe('<Auth/>', () => {
   it('Display Error invalid email format', async () => {
     const email = 'abc123';
 
+    jest.useFakeTimers();
     const { getByTestId } = render(<Auth />, { store });
+    act(() => {
+      jest.advanceTimersByTime(0);
+    });
 
     fireEvent.changeText(getByTestId(emailFieldId), email);
     fireEvent.press(getByTestId(submitButtonId));

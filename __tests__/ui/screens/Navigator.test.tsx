@@ -1,6 +1,6 @@
 import React from 'react';
-import { it, describe, expect } from '@jest/globals';
-import { screen } from '@testing-library/react-native';
+import { it, describe, expect, jest } from '@jest/globals';
+import { act, screen } from '@testing-library/react-native';
 
 import { TestIds } from '@constants';
 import Navigator from '@navigation/Navigator';
@@ -18,7 +18,11 @@ describe('<Navigator />', () => {
       },
     });
 
+    jest.useFakeTimers();
     render(<Navigator />, { store });
+    act(() => {
+      jest.advanceTimersByTime(0);
+    });
 
     expect(screen.getByTestId(splashIds.root)).toBeTruthy();
   });
@@ -31,7 +35,11 @@ describe('<Navigator />', () => {
       },
     });
 
+    jest.useFakeTimers();
     render(<Navigator />, { store });
+    act(() => {
+      jest.advanceTimersByTime(0);
+    });
 
     expect(screen.getByTestId(authIds.root)).toBeTruthy();
   });
@@ -44,7 +52,11 @@ describe('<Navigator />', () => {
       },
     });
 
+    jest.useFakeTimers();
     render(<Navigator />, { store });
+    act(() => {
+      jest.advanceTimersByTime(0);
+    });
 
     expect(screen.getByTestId(stackNavigatorId.root)).toBeTruthy();
   });

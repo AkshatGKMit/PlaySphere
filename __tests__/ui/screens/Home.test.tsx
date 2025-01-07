@@ -1,6 +1,6 @@
 import React from 'react';
-import { it, describe, expect } from '@jest/globals';
-import { fireEvent, waitFor } from '@testing-library/react-native';
+import { it, describe, expect, jest } from '@jest/globals';
+import { act, fireEvent, waitFor } from '@testing-library/react-native';
 
 import { TestIds } from '@constants';
 import ApiConstants from '@network/apiConstants';
@@ -38,7 +38,11 @@ describe('<Home/>', () => {
   };
 
   const openDrawerAndTriggerAndVerifyTitle = async (buttonId: string, title: string) => {
+    jest.useFakeTimers();
     const { getByTestId } = render(<Home />, { store });
+    act(() => {
+      jest.advanceTimersByTime(0);
+    });
 
     const drawerButton = await waitFor(() => getByTestId(rootButtonId));
     fireEvent.press(drawerButton);
@@ -59,7 +63,11 @@ describe('<Home/>', () => {
 
     setMockParams(mockParams);
 
+    jest.useFakeTimers();
     const { getByTestId } = render(<Home />, { store });
+    act(() => {
+      jest.advanceTimersByTime(0);
+    });
 
     const screen = await waitFor(() => getByTestId(homeTestIds.root));
     const screenTitle = await waitFor(() => getByTestId(homeTestIds.title));
@@ -76,7 +84,11 @@ describe('<Home/>', () => {
 
     setMockParams(mockParams);
 
+    jest.useFakeTimers();
     const { getByTestId } = render(<Home />, { store });
+    act(() => {
+      jest.advanceTimersByTime(0);
+    });
 
     const screen = await waitFor(() => getByTestId(homeTestIds.root));
     const screenTitle = await waitFor(() => getByTestId(homeTestIds.title));
@@ -93,7 +105,11 @@ describe('<Home/>', () => {
 
     setMockParams(mockParams);
 
+    jest.useFakeTimers();
     const { getByTestId } = render(<Home />, { store });
+    act(() => {
+      jest.advanceTimersByTime(0);
+    });
 
     const screen = await waitFor(() => getByTestId(homeTestIds.root));
     const screenTitle = await waitFor(() => getByTestId(homeTestIds.title));

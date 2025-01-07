@@ -1,7 +1,7 @@
 import 'react-native';
 import React from 'react';
-import { it, describe, expect } from '@jest/globals';
-import { render, screen } from '@testing-library/react-native';
+import { it, describe, expect, jest } from '@jest/globals';
+import { act, render, screen } from '@testing-library/react-native';
 
 import BannerImageView from '@components/bannerImageView';
 import { TestIds } from '@constants';
@@ -14,7 +14,11 @@ const {
 
 describe('<BannerImageView />', () => {
   it('Renders Banner Images', () => {
+    jest.useFakeTimers();
     render(<BannerImageView />);
+    act(() => {
+      jest.advanceTimersByTime(0);
+    });
 
     const container = screen.getByTestId(wrapperTestId);
 

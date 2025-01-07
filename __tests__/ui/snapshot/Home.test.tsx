@@ -26,6 +26,7 @@ describe('Home Screen Snapshot', () => {
       params: mockParams,
     });
 
+    jest.useFakeTimers();
     const homeTree = render(<Home />, { store }).toJSON();
 
     expect(homeTree).toMatchSnapshot();
